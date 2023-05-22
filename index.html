@@ -4,7 +4,7 @@
 <html lang="en">    <!-- il faut préciser la langue du document html -->
   <head>            <!-- entête: titre, feuilles de style, scripts, etc. -->
     <meta charset="utf-8" lang="en">  <!-- encodage des caractères : obligatoire ! -->
-    <title>PolyMusic</title>    <!-- titre de la page: obligatoire -->
+    <title>Mon potager</title>    <!-- titre de la page: obligatoire -->
     <link rel="stylesheet" href="style.css"> <!-- feuille de style: optionnel -->
   </head>
   <body>
@@ -81,7 +81,9 @@
       </ul>
     </header>
     <main>
-      <ul>
+      <img src="images/potager.jpg">
+
+      <ul class="ulToDo">
         <li>
           <div id="general">
             <button type="button" name="button">Mon potager</button>
@@ -94,7 +96,7 @@
             <ul>
               <li>
                 <form>
-                  <input type="checkbox" name="toDo" value="toDo1">
+                  <input type="checkbox" name="toDo1" value="toDo1">
                   <ul class="desc">
                     <li class="desc">
                       <label for="toDo1" id="nomTache">À faire</label>
@@ -103,7 +105,37 @@
                       <label for="toDo1" id="description">Description</label>
                     </li>
                   </ul>
-                  <label for="toDo1" id="date">Date</label>
+                  <label for="toDo1" id="date">31/02/2023</label>
+                  <input type="button" name="assignation" value="Je m'assigne cette tâche">
+                </form>
+              </li>
+              <li>
+                <form>
+                  <input type="checkbox" name="toDo2" value="toDo1">
+                  <ul class="desc">
+                    <li class="desc">
+                      <label for="toDo2" id="nomTache">À faire</label>
+                    </li>
+                    <li class="desc">
+                      <label for="toDo2" id="description">Description</label>
+                    </li>
+                  </ul>
+                  <label for="toDo2" id="date">22/06/2002</label>
+                  <input type="button" name="assignation" value="Je m'assigne cette tâche">
+                </form>
+              </li>
+              <li>
+                <form>
+                  <input type="checkbox" name="toDo3" value="toDo1">
+                  <ul class="desc">
+                    <li class="desc">
+                      <label for="toDo3" id="nomTache">À faire</label>
+                    </li>
+                    <li class="desc">
+                      <label for="toDo3" id="description">Description</label>
+                    </li>
+                  </ul>
+                  <label for="toDo3" id="date">01/02/0345</label>
                   <input type="button" name="assignation" value="Je m'assigne cette tâche">
                 </form>
               </li>

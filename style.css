@@ -95,8 +95,23 @@ main{
   margin-right: 4px;
 }
 
-main ul:not(.desc) {
-  display: block;
+main img:first-of-type{
+  position: absolute;
+  top: 16px;
+  left: 250px;
+  width: 500px;
+  border-radius: 8px;
+}
+
+main ul.ulToDo {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+main ul.ulToDo > li {
+  margin-right: 32px;
+  margin-left: 32px;
 }
 
 main ul li:not(.desc) {
@@ -110,6 +125,7 @@ main #general{
 
 main #general button {
   margin-bottom: 16px;
+  margin-top: 16px;
   background-color: white;
   border-radius: 5px;
   box-shadow: 0px 1px 0px 0px grey;
@@ -117,6 +133,7 @@ main #general button {
   padding-right: 126px;
   border: none;
   text-align: left;
+  white-space: nowrap;
 }
 
 main #toDo {
@@ -124,7 +141,9 @@ main #toDo {
   border-radius: 5px;
   box-shadow: 0px 1px 0px 0px grey;
   padding: 8px;
-  width: 400px;
+  position: relative;
+  padding-bottom: 24px;
+  padding-right: 30px;
 }
 
 main #toDo h2 {
@@ -137,8 +156,16 @@ main #toDo ul {
   list-style-type: none;
 }
 
-main #toDo ul li {
-  margin-bottom: 4px;
+main #toDo ul li:not(.desc) {
+  margin-bottom: 14px;
+  height: 100%;
+  width: 100%;
+}
+
+main #toDo ul li form{
+  display: flex;
+  flex-direction: row;
+  align-items: center;
 }
 
 main #toDo ul li label {
@@ -154,11 +181,14 @@ main #toDo ul li #nomTache {
 main #toDo ul li #description {
   margin-left: 4px;
   margin-top: -10px;
-  font-size: 14px;
+  font-size: 12px;
+  margin-right: 20px;
 }
 
 main #toDo ul li #date {
-  margin-left: 4px;
+  margin-left: 6px;
+  margin-right: 24px;
+  font-size: 12px;
 }
 
 main #toDo ul li label {
@@ -171,4 +201,12 @@ main #toDo ul li input[type="button"] {
   border-radius: 4px;
   padding-left: 8px;
   padding-right: 8px;
+  cursor: pointer;
+}
+
+main #toDo button{
+  border-style: none;
+  background-color: transparent;
+  position: absolute;
+  right: 8px;
 }
