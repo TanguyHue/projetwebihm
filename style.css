@@ -1,0 +1,174 @@
+/* CSS Tanguy HUE INFO3 */
+
+/* mise en page générale */
+*{
+  margin: 0;
+  padding: 0;
+}
+
+body{
+  background-color: gainsboro;
+  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  height: 100vh;
+  width: 100vw;
+}
+
+button {
+  cursor: pointer;
+}
+
+/* header */
+header #infoUser {
+  position: absolute;
+  background-color: rgb(223, 219, 172);
+  color: black;
+  text-align: left;
+  margin-top: 16px;
+  margin-left: 4px;
+  padding: 2px;
+  border-radius: 5px;
+  font-size: 16px;
+  box-shadow: 0px 1px 0px 0px grey;
+}
+
+header #infoUser p {
+  margin: 6px;
+}
+
+header #infoUser button {
+  width: 100%;
+  text-align: center;
+  background: transparent;
+  border-style: none;
+  margin-top: 4px;
+  margin-bottom: 4px;
+}
+
+header #météo {
+  background-color: white;
+  position: absolute;
+  right: 16px;
+  top: 16px;
+  border-radius: 16px;
+  box-shadow: 0px 1px 0px 0px grey;
+  padding: 8px;
+}
+
+header #météo h2 {
+  color: grey;
+  font-size: 16px;
+  margin-left: 24px;
+}
+
+header #météo table {
+  text-align: center;
+}
+
+header #météo table td {
+  padding: 4px;
+}
+
+header #météo button {
+  position: inherit;
+  background: transparent;
+  border-style: none;
+  top: 4px;
+  right: 16px;
+}
+
+header #météo button img {
+  width: 24px;
+  height: 24px;
+  margin-top: 4px;
+}
+
+header #météo img {
+  margin-top: 8px;
+  width: 36px;
+  height: 36px;
+}
+
+/* main */
+main{
+  margin-top: 50vh;
+  margin-left: 4px;
+  margin-right: 4px;
+}
+
+main ul:not(.desc) {
+  display: block;
+}
+
+main ul li:not(.desc) {
+  display: inline-block;
+}
+
+main #general{
+  display: flex;
+  flex-direction: column;
+}
+
+main #general button {
+  margin-bottom: 16px;
+  background-color: white;
+  border-radius: 5px;
+  box-shadow: 0px 1px 0px 0px grey;
+  padding: 8px;
+  padding-right: 126px;
+  border: none;
+  text-align: left;
+}
+
+main #toDo {
+  background-color: white;
+  border-radius: 5px;
+  box-shadow: 0px 1px 0px 0px grey;
+  padding: 8px;
+  width: 400px;
+}
+
+main #toDo h2 {
+  margin-left: 16px;
+  margin-bottom: 8px;
+}
+
+main #toDo ul {
+  margin-left: 20px;
+  list-style-type: none;
+}
+
+main #toDo ul li {
+  margin-bottom: 4px;
+}
+
+main #toDo ul li label {
+  margin-left: 4px;
+}
+
+main #toDo ul li #nomTache {
+  margin-left: 4px;
+  font-weight: bold;
+  font-size: 14px;
+}
+
+main #toDo ul li #description {
+  margin-left: 4px;
+  margin-top: -10px;
+  font-size: 14px;
+}
+
+main #toDo ul li #date {
+  margin-left: 4px;
+}
+
+main #toDo ul li label {
+  margin-left: 4px;
+}
+
+main #toDo ul li input[type="button"] {
+  margin-left: 4px;
+  border-style: none;
+  border-radius: 4px;
+  padding-left: 8px;
+  padding-right: 8px;
+}

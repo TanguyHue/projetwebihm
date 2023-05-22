@@ -10,10 +10,15 @@
     "sqlite3": "^5.0.8"
   },
   "scripts": {
-    "createDB": "sqlite3 Potager.db < createDB.sql",
-    "start": "nodemon server.js"
+    "start": "gulp"
   },
-  "devDependencies": {
-    "nodemon": "^1.19.0"
+  "dependencies": {
+    "ansi-colors": "^4.1.1",
+    "browser-sync": "^2.26.14",
+    "gulp": "^4.0.2",
+    "gulp-cli": "^2.3.0",
+    "gulp-html": "^4.0.0",
+    "gulp-w3c-css": "^2.0.0",
+    "map-stream": "0.0.7"
   }
 }
