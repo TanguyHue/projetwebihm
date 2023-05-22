@@ -1,12 +1,12 @@
 /* CSS Tanguy HUE INFO3 */
 
 /* mise en page générale */
-*{
+* {
   margin: 0;
   padding: 0;
 }
 
-body{
+body {
   background-color: gainsboro;
   font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
   height: 100vh;
@@ -54,7 +54,7 @@ header #météo {
   padding: 8px;
 }
 
-header #météo #titre:hover h2{
+header #météo #titre:hover h2 {
   color: #209fe5;
 }
 
@@ -98,13 +98,13 @@ header #météo img {
 }
 
 /* main */
-main{
+main {
   margin-top: 50vh;
   margin-left: 4px;
   margin-right: 4px;
 }
 
-main img:first-of-type{
+main img:first-of-type {
   position: absolute;
   top: 16px;
   left: 150px;
@@ -112,21 +112,24 @@ main img:first-of-type{
   border-radius: 8px;
 }
 
-main img:first-of-type:hover{
+main img:first-of-type:hover {
   animation: pulse 1s;
 }
 
 @keyframes pulse {
-  0%, 100% {
+
+  0%,
+  100% {
     transform: scale(1);
   }
+
   50% {
     transform: scale(0.8);
   }
 }
 
 @media screen and (max-width: 1220px) {
-  main img:first-of-type{
+  main img:first-of-type {
     width: calc(100vw - 720px);
   }
 }
@@ -137,7 +140,7 @@ main ul.ulToDo {
   justify-content: center;
 }
 
-main ul.ulToDo > li {
+main ul.ulToDo>li {
   margin-right: 32px;
   margin-left: 32px;
 }
@@ -146,7 +149,7 @@ main ul li:not(.desc) {
   display: inline-block;
 }
 
-main #general{
+main #general {
   display: flex;
   flex-direction: column;
 }
@@ -196,7 +199,7 @@ main #toDo ul li:not(.desc) {
   width: 100%;
 }
 
-main #toDo ul li form{
+main #toDo ul li form {
   display: flex;
   flex-direction: row;
   align-items: center;
@@ -246,7 +249,7 @@ main #toDo ul li input[type="button"]:hover {
   background-color: #cacaca;
 }
 
-main #toDo button{
+main #toDo button {
   border-style: none;
   background-color: transparent;
   position: absolute;

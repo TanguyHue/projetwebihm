@@ -1,153 +1,156 @@
 <!-- HTML Tanguy HUE -->
 
-<!DOCTYPE html>     <!-- déclaration du doctype HTML5 -->
-<html lang="en">    <!-- il faut préciser la langue du document html -->
-  <head>            <!-- entête: titre, feuilles de style, scripts, etc. -->
-    <meta charset="utf-8" lang="en">  <!-- encodage des caractères : obligatoire ! -->
-    <title>Mon potager</title>    <!-- titre de la page: obligatoire -->
-    <link rel="stylesheet" href="style.css"> <!-- feuille de style: optionnel -->
-    <link type="image/png" sizes="96x96" rel="icon" href="images/favicon.png">
-  </head>
-  <body>
-    <header>
-      <ul>
-        <li>
-          <div id="infoUser">
-            <p>Nom</p>
-            <p>Rôle : Étudiant</p>
-            <p>Département</p>
-            <button type="button" name="button">Déconnexion</button>
-          </div>
-        </li>
-        <li>
-          <div id="météo">
-            <div id="titre">
-              <h2>Polytech Nantes</h2>
-            </div>
+<!DOCTYPE html> <!-- déclaration du doctype HTML5 -->
+<html lang="en"> <!-- il faut préciser la langue du document html -->
 
-            <table>
-              <tr>
-                <td><img src="images/uv.png" alt="uv"></td>
-                <td><img src="images/thermo.png" alt="thermometre"></td>
-                <td><img src="images/soleil.png" alt="soleil"></td>
-                <td><img src="images/air.png" alt="air"></td>
-                <td><img src="images/goutte.png" alt="goutte"></td>
-                <td><img src="images/pluie.png" alt="pluie"></td>
-              </tr>
-              <tr>
-                <td>
-                  <p>UV</p>
-                </td>
-                <td>
-                  <p>Température</p>
-                </td>
-                <td>
-                  <p>Ozone</p>
-                </td>
-                <td>
-                  <p>Vitesse du vent</p>
-                </td>
-                <td>
-                  <p>Humidité</p>
-                </td>
-                <td>
-                  <p>Précipitation</p>
-                </td>
-              </tr>
-              <tr>
-                <td>
-                  <p id="uv"></p>
-                </td>
-                <td>
-                  <p id="temperature"></p>
-                </td>
-                <td>
-                  <p id="ozone"></p>
-                </td>
-                <td>
-                  <p id="vent"></p>
-                </td>
-                <td>
-                  <p id="humidite"></p>
-                </td>
-                <td>
-                  <p id="pluie"></p>
-                </td>
-              </tr>
-            </table>
+<head> <!-- entête: titre, feuilles de style, scripts, etc. -->
+  <meta charset="utf-8" lang="en"> <!-- encodage des caractères : obligatoire ! -->
+  <title>Mon potager</title> <!-- titre de la page: obligatoire -->
+  <link rel="stylesheet" href="style.css"> <!-- feuille de style: optionnel -->
+  <link type="image/png" sizes="96x96" rel="icon" href="images/favicon.png">
+</head>
 
-            <button type="button" name="reload" id="reload">
-              <img src="images/reload.png" alt="rechargement">
-            </button>
+<body>
+  <header>
+    <ul>
+      <li>
+        <div id="infoUser">
+          <p>Nom</p>
+          <p>Rôle : Étudiant</p>
+          <p>Département</p>
+          <button type="button" name="button">Déconnexion</button>
+        </div>
+      </li>
+      <li>
+        <div id="météo">
+          <div id="titre">
+            <h2>Polytech Nantes</h2>
           </div>
-        </li>
-      </ul>
-    </header>
-    <main>
-      <img src="images/potager.jpg" alt="potager">
 
-      <ul class="ulToDo">
-        <li>
-          <div id="general">
-            <button type="button" name="button">Mon potager 🪴</button>
-            <button type="button" name="button">Agenda général 📅</button>
-          </div>
-        </li>
-        <li>
-          <div id="toDo">
-            <h2>À faire</h2>
-            <ul>
-              <li>
-                <form>
-                  <input type="checkbox" name="toDo1" value="toDo1">
-                  <ul class="desc">
-                    <li class="desc">
-                      <label for="toDo1" id="nomTache">Tâche 1</label>
-                    </li>
-                    <li class="desc">
-                      <label for="toDo1" id="description">Description</label>
-                    </li>
-                  </ul>
-                  <label for="toDo1" id="date">31/02/2023</label>
-                  <input type="button" name="assignation" value="Je m'assigne cette tâche">
-                </form>
-              </li>
-              <li>
-                <form>
-                  <input type="checkbox" name="toDo2" value="toDo1">
-                  <ul class="desc">
-                    <li class="desc">
-                      <label for="toDo2" id="nomTache">Tâche 2</label>
-                    </li>
-                    <li class="desc">
-                      <label for="toDo2" id="description">Description</label>
-                    </li>
-                  </ul>
-                  <label for="toDo2" id="date">22/06/2002</label>
-                  <input type="button" name="assignation" value="Je m'assigne cette tâche">
-                </form>
-              </li>
-              <li>
-                <form>
-                  <input type="checkbox" name="toDo3" value="toDo1">
-                  <ul class="desc">
-                    <li class="desc">
-                      <label for="toDo3" id="nomTache">Tâche 3</label>
-                    </li>
-                    <li class="desc">
-                      <label for="toDo3" id="description">Description</label>
-                    </li>
-                  </ul>
-                  <label for="toDo3" id="date">01/02/0345</label>
-                  <input type="button" name="assignation" value="Je m'assigne cette tâche">
-                </form>
-              </li>
-            </ul>
-            <button type="button" name="button">+ Ajouter une tâche</button>
-          </div>
-        </li>
-      </ul>
-    </main>
-  </body>
-  <script src="main.js"></script>
+          <table>
+            <tr>
+              <td><img src="images/uv.png" alt="uv"></td>
+              <td><img src="images/thermo.png" alt="thermometre"></td>
+              <td><img src="images/soleil.png" alt="soleil"></td>
+              <td><img src="images/air.png" alt="air"></td>
+              <td><img src="images/goutte.png" alt="goutte"></td>
+              <td><img src="images/pluie.png" alt="pluie"></td>
+            </tr>
+            <tr>
+              <td>
+                <p>UV</p>
+              </td>
+              <td>
+                <p>Température</p>
+              </td>
+              <td>
+                <p>Ozone</p>
+              </td>
+              <td>
+                <p>Vitesse du vent</p>
+              </td>
+              <td>
+                <p>Humidité</p>
+              </td>
+              <td>
+                <p>Précipitation</p>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <p id="uv"></p>
+              </td>
+              <td>
+                <p id="temperature"></p>
+              </td>
+              <td>
+                <p id="ozone"></p>
+              </td>
+              <td>
+                <p id="vent"></p>
+              </td>
+              <td>
+                <p id="humidite"></p>
+              </td>
+              <td>
+                <p id="pluie"></p>
+              </td>
+            </tr>
+          </table>
+
+          <button type="button" name="reload" id="reload">
+            <img src="images/reload.png" alt="rechargement">
+          </button>
+        </div>
+      </li>
+    </ul>
+  </header>
+  <main>
+    <img src="images/potager.jpg" alt="potager">
+
+    <ul class="ulToDo">
+      <li>
+        <div id="general">
+          <button type="button" name="button">Mon potager 🪴</button>
+          <button type="button" name="button">Agenda général 📅</button>
+        </div>
+      </li>
+      <li>
+        <div id="toDo">
+          <h2>À faire</h2>
+          <ul>
+            <li>
+              <form>
+                <input type="checkbox" name="toDo1" value="toDo1">
+                <ul class="desc">
+                  <li class="desc">
+                    <label for="toDo1" id="nomTache">Tâche 1</label>
+                  </li>
+                  <li class="desc">
+                    <label for="toDo1" id="description">Description</label>
+                  </li>
+                </ul>
+                <label for="toDo1" id="date">31/02/2023</label>
+                <input type="button" name="assignation" value="Je m'assigne cette tâche">
+              </form>
+            </li>
+            <li>
+              <form>
+                <input type="checkbox" name="toDo2" value="toDo1">
+                <ul class="desc">
+                  <li class="desc">
+                    <label for="toDo2" id="nomTache">Tâche 2</label>
+                  </li>
+                  <li class="desc">
+                    <label for="toDo2" id="description">Description</label>
+                  </li>
+                </ul>
+                <label for="toDo2" id="date">22/06/2002</label>
+                <input type="button" name="assignation" value="Je m'assigne cette tâche">
+              </form>
+            </li>
+            <li>
+              <form>
+                <input type="checkbox" name="toDo3" value="toDo1">
+                <ul class="desc">
+                  <li class="desc">
+                    <label for="toDo3" id="nomTache">Tâche 3</label>
+                  </li>
+                  <li class="desc">
+                    <label for="toDo3" id="description">Description</label>
+                  </li>
+                </ul>
+                <label for="toDo3" id="date">01/02/0345</label>
+                <input type="button" name="assignation" value="Je m'assigne cette tâche">
+              </form>
+            </li>
+          </ul>
+          <button type="button" name="button">+ Ajouter une tâche</button>
+        </div>
+      </li>
+    </ul>
+  </main>
+</body>
+<script src="main.js"></script>
+
 </html>
