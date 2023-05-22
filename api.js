@@ -16,13 +16,13 @@ const dbHelper = require('./dbhelper.js');
 module.exports = (passport) => {
     const app = express();
 
-    // Point d'entrée permettant de récupérer la liste des albums d'un artiste
-    // Pas besoin d'authentification pour accéder aux albums on n'utilise pas passport ici
-    app.get('/artist/:artist_id/albums', function (req, res, next) {
-        dbHelper.artists.byId(req.params.artist_id).albums.then(
-            albums => {
+    // Parti /potager
+
+    app.get('/potager/:id', function (req, res, next) {
+        dbHelper.potager.byId(req.params.id).then(
+            potager => {
                 res.set('Content-type', 'application/json');
-                res.send(JSON.stringify(albums));
+                res.send(JSON.stringify(potager));
             },
             err => {
                 next(err);
@@ -30,13 +30,11 @@ module.exports = (passport) => {
         );
     });
 
-    // Point d'entrée permettant de récupérer la liste des artistes
-    // Pas besoin d'authentification pour accéder aux albums on n'utilise pas passport ici
-    app.get('/artists', function (req, res, next) {
-        dbHelper.artists.all().then(
-            artists => {
+    app.get('/potager', function (req, res, next) {
+        dbHelper.potager.all().then(
+            potager => {
                 res.set('Content-type', 'application/json');
-                res.send(JSON.stringify(artists));
+                res.send(JSON.stringify(potager));
             },
             err => {
                 next(err);
@@ -44,19 +42,105 @@ module.exports = (passport) => {
         );
     });
 
-    // Exemple de point d'entré (qui ne fait rien d'intressant) de l'api
-    // qui nécessite une authentification.
-    // C'est le "require('connect-ensure-login').ensureLoggedIn()" qui vérifie
-    // que l'utilisateur est bien authentifié. Si ce n'est pas le cas il sera redirigé
-    // vers la page de login
-    app.get('/nimportequoi',
-        require('connect-ensure-login').ensureLoggedIn(),
-        function (req, res) {
-            // on fait ce qu'on a a faire (ici on renvoit juste du texte brut "nimp"
-            // si l'utilisateur est bien authentifié
-            res.send('nimp');
-        })
-    ;
+    app.get('/potager/:idUser/plantes', function (req, res, next) {
+        dbHelper.potager.byId(req.params.idUser).plantes.then(
+            plantes => {
+                res.set('Content-type', 'application/json');
+                res.send(JSON.stringify(plantes));
+            },
+            err => {
+                next(err);
+            },
+        );
+    });
+
+    app.get('/potager/:x/:y', function (req, res, next) {
+        dbHelper.potager.byCoord(req.params.x, req.params.y).then(
+            potager => {
+                res.set('Content-type', 'application/json');
+                res.send(JSON.stringify(potager));
+            },
+            err => {
+                next(err);
+            },
+        );
+    });
+
+    // Partie /plante
+
+    app.get('/planteData', function (req, res, next) {
+        dbHelper.planteData.all().then(
+            planteData => {
+                res.set('Content-type', 'application/json');
+                res.send(JSON.stringify(planteData));
+            },
+            err => {
+                next(err);
+            },
+        );
+    });
+
+    app.get('/planteData/:id', function (req, res, next) {
+        dbHelper.planteData.byId(req.params.id).then(
+            planteData => {
+                res.set('Content-type', 'application/json');
+                res.send(JSON.stringify(planteData));
+            },
+            err => {
+                next(err);
+            },
+        );
+    });
+
+    // Parti taches
+
+    app.get('/taches', function (req, res, next) {
+        dbHelper.taches.byEtat(0).then(
+            taches => {
+                res.set('Content-type', 'application/json');
+                res.send(JSON.stringify(taches));
+            },
+            err => {
+                next(err);
+            },
+        );
+    });
+
+    app.get('/taches/:idUser', function (req, res, next) {
+        dbHelper.taches.byUser(req.params.idUser).then(
+            taches => {
+                res.set('Content-type', 'application/json');
+                res.send(JSON.stringify(taches));
+            },
+            err => {
+                next(err);
+            },
+        );
+    });
+
+    app.post('/taches/:idTache/add/:idUser', function (req, res, next) {
+        dbHelper.taches.addUser(req.params.idTache, req.params.idUser).then(
+            taches => {
+                res.set('Content-type', 'application/json');
+                res.send(JSON.stringify(taches));
+            },
+            err => {
+                next(err);
+            },
+        );
+    });
+
+    app.post('/taches/:idTache/remove', function (req, res, next) {
+        dbHelper.taches.suppTache(req.params.idTache).then(
+            taches => {
+                res.set('Content-type', 'application/json');
+                res.send(JSON.stringify(taches));
+            },
+            err => {
+                next(err);
+            },
+        );
+    });
 
 
     // Authentification pour accéder aux parties privées de l'api (on n'en a pas dans cet exemple)

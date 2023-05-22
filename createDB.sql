@@ -1,48 +1,94 @@
 drop table if exists user;
-drop table if exists album;
-drop table if exists artist;
+drop table if exists PlanteData;
+drop table if exists PlantePotager;
+drop table if exists Potager;
+drop table if exists Tache;
 
 --
--- artists
+-- Création de la table `user`
 --
 
-create table artist (
-    id integer primary key,
-    name text not null
+CREATE TABLE IF NOT EXISTS `user` (
+  `id` int NOT NULL,
+  `nom` varchar(255) NOT NULL,
+  `prenom` varchar(255) NOT NULL,
+  `adresse_mail` varchar(255) NOT NULL,
+  `departement` varchar(255) NOT NULL,
+  `disponibilite` date NOT NULL,
+  `preferences` varchar(255) NOT NULL,
+  `langue` varchar(255) NOT NULL,
+  `role` varchar(255) NOT NULL,
+  PRIMARY KEY (`id`)
 );
 
 --
--- albums
+-- Création de la table `PlanteData`
 --
 
-create table album (
-    name text not null,
-    year integer,
-    artist_id integer not null,
-    foreign key(artist_id) references artist(id)
+CREATE TABLE IF NOT EXISTS `PlanteData` (
+  `id` int NOT NULL,
+  `nom` varchar(255) NOT NULL,
+  `prix` int(11) NOT NULL,
+  `intervalle_arrosage` varchar(255) NOT NULL,
+  `conseils` varchar(255) NOT NULL,
+  `engrais_conseille` varchar(255) NOT NULL,	
+  PRIMARY KEY (`id`)
 );
 
 --
--- users
+-- Création de la table `PlantePotager`
 --
 
-create table user (
-    id integer primary key,
-    name text not null,
-    password text
+CREATE TABLE IF NOT EXISTS `PlantePotager` (
+  `id` int NOT NULL,
+  `idPlanteData` int NOT NULL,
+  `idUser` int NOT NULL,
+  `idPotager` int NOT NULL,	
+  `etat` varchar(255) NOT NULL CHECK (etat in(0,1)),
+  `date_floraison` date NOT NULL,
+  `date_recolte` date NOT NULL,
+  `date_dernier_arrosage` date NOT NULL,
+  `x` int(11) NOT NULL,
+  `y` int(11) NOT NULL,
+  PRIMARY KEY (`id`),
+  FOREIGN KEY (idPlanteData) REFERENCES PlanteData(id),
+  FOREIGN KEY (idUser) REFERENCES user(id),
+  FOREIGN KEY (idPotager) REFERENCES Potager(id)
 );
 
 --
--- Populate tables
+-- Création de la table `Potager`
 --
 
-insert into artist (id, name) values
-    (0, 'Cream'),
-    (1, 'Pink Floyd'),
-    (2, 'Frank Zappa');
-insert into album (artist_id, year, name) values
-    (0, 1966, 'Fresh Cream'),
-    (1, 1969, 'Ummagumma');
-insert into user (name, password) values
-    ('admin', 'admin');
+CREATE TABLE IF NOT EXISTS `Potager` (
+  `id` int NOT NULL,
+  `nombre_plante` int(11) NOT NULL,
+  `largeur` int(11) NOT NULL,
+  `longueur` int(11) NOT NULL,
+  PRIMARY KEY (`id`)
+);
 
+--
+-- Création de la table `Tache`
+--
+
+CREATE TABLE IF NOT EXISTS `Tache` (
+  `id` int NOT NULL,
+  `idCreateur` int NOT NULL,
+  `idRealisateur` int,
+  `titre` varchar(255) NOT NULL,
+  `date` date NOT NULL,
+  `notes` varchar(255) NOT NULL,
+  `etat` varchar(255) NOT NULL CHECK (etat in(0,1)),
+  PRIMARY KEY (`id`),
+  FOREIGN KEY (idCreateur) REFERENCES user(id)
+  FOREIGN KEY (idRealisateur) REFERENCES user(id)
+);
+
+
+--
+-- Insertions
+--
+
+INSERT INTO `user` (`id`, `nom`, `prenom`, `adresse_mail`, `departement`, `disponibilite`, `preferences`, `langue`, `role`) VALUES
+(1, 'Dupont', 'Jean', 'jean@dupont', 'INFO', '1980-12-17', 'aucune', 'francais', 'beau-gosse');

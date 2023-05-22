@@ -5,7 +5,7 @@
 // à notre base de données sqlite
 
 const sqlite3 = require('sqlite3').verbose();
-const db = new sqlite3.Database('./PolyMusic.db', sqlite3.OPEN_READWRITE, function (err) {
+const db = new sqlite3.Database('./Potager.db', sqlite3.OPEN_READWRITE, function (err) {
     if (err) {
         console.error(err + '\n' + 'run "npm run createDB" to create a database file');
         // Pas de problème pour faire un appel synchrone ici : on est dans la phase
@@ -38,36 +38,119 @@ const all = sql => new Promise(function (resolve, reject) {
     });
 });
 
-
-// Cet export met à disposition des programmeurs 2 fonctions
-// dbhelper.artists.byId, qui récupère les infos d'un artiste particulier (via son id)
-// dbhelper.artists.all, qui récupère tous les artistes
-module.exports.artists = {
-    byId: id => ({
-        get albums() {
-            return all(`
-                select year, album.name
-                    from album, artist
-                    where artist.id = artist_id
-                        and artist.id = ${id|0};
-            `);
-        },
-    }),
-    all: () => all('select id, name from artist'),
-};
-
-// Cet export met à disposition des programmeurs 2 fonctions
-// utiles pour l'authentification des utilisateurs
-// dbhelper.users.byUsername, qui récupère un utilisateur par son nom
-// dbhelper.users.byId, qui récupère un utilisateur par son Id
 module.exports.users = {
-    byUsername: (username) => get(`
-        select id, password from user where name = '${username}';
-    `),
-    a: Promise.resolve({
-        id: 0,
-        checkPassword: (/*password*/) => true,
+    byId: id => ({
+        get user() {
+            return get(`
+                select * from users where id = ${id|0};
+            `);
+        }
     }),
-    byId: id => get(`select name as username from user where id = ${id}`),
+    byAdresse_mail: adresse_mail => ({
+        get user() {
+            return get(`
+                select * from users where adresse_mail = '${adresse_mail}';
+            `);
+        }
+    }),
+    byNom: nom => ({
+        get user() {
+            return get(`
+                select * from users where nom = '${nom}';
+            `);
+        }
+    }),
 };
 
+
+module.exports.PlantePotager = {
+    byId: id => ({
+        get PlantePotager() {
+            return all(`
+                select * from PlantePotager where id = ${id|0};
+            `);
+        }
+    }),
+    all: () => all('select * from PlantePotager'),
+    byIdUser: id => ({
+        get PlantePotager() {
+            return all(`
+                select * from PlantePotager where idUser = ${id|0};
+            `);
+        }
+    }),
+    byXandY: (x, y) => ({
+        get PlantePotager() {
+            return all(`
+                select * from PlantePotager where x = ${x|0} and y = ${y|0};
+            `);
+        }
+    }),
+};
+
+module.exports.PlanteData = {
+    byId: id => ({
+        get PlanteData() {
+            return all(`
+                select * from PlanteData where id = ${id|0};
+            `);
+        }
+    }),
+    all: () => all('select * from PlanteData'),
+    byIdPlantePotager: id => ({
+        get PlanteData() {
+            return all(`
+                select * from PlanteData where idPlantePotager = ${id|0};
+            `);
+        }
+    }),
+};
+
+module.exports.taches = {
+    byId: id => ({
+        get taches() {
+            return all(`
+                select * from taches where id = ${id|0};
+            `);
+        }
+    }),
+    all: () => all('select * from taches'),
+    byEtat: etat => ({
+        get taches() {
+            return all(`
+                select * from taches where etat = '${etat}';
+            `);
+        }
+    }),
+    byUser: id => ({
+        get taches() {
+            return all(`
+                select * from taches where idUser = ${id|0};
+            `);
+        }
+    }),
+    toDo: () => all(`
+        select * from taches where etat = '0';
+    `),
+    byUserToDo: id => ({
+        get taches() {
+            return all(`
+                select * from taches where idUser = ${id|0} and etat = '0';
+            `);
+        }
+    }),
+    ajoutUser: (id, idUser) => ({
+        get taches() {
+            return all(`
+                update taches set idRealisateur = ${idUser|0} where id = ${id|0};
+            `);
+        }
+    }),
+    suppRealisateurTache: id => ({
+        get taches() {
+            return all(`
+                update tache set idRealisateur = null where id = ${id|0};
+            `);
+        }
+    }),
+};
