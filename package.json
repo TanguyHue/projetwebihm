@@ -1,17 +1,19 @@
 {
-  "name": "TP_Web_et_XML_1",
-  "version": "1.0.0",
-  "description": "Premier TP de Technologies Web et XML",
-  "scripts": {
-    "start": "gulp"
-  },
   "dependencies": {
-    "ansi-colors": "^4.1.1",
-    "browser-sync": "^2.26.14",
-    "gulp": "^4.0.2",
-    "gulp-cli": "^2.3.0",
-    "gulp-html": "^4.0.0",
-    "gulp-w3c-css": "^2.0.0",
-    "map-stream": "0.0.7"
+    "body-parser": "^1.19.0",
+    "connect-ensure-login": "^0.1.1",
+    "cookie-parser": "^1.4.4",
+    "express": "^4.16.4",
+    "express-session": "^1.16.1",
+    "passport": "^0.4.0",
+    "passport-local": "^1.0.0",
+    "sqlite3": "^5.0.8"
+  },
+  "scripts": {
+    "createDB": "sqlite3 Potager.db < createDB.sql",
+    "start": "nodemon server.js"
+  },
+  "devDependencies": {
+    "nodemon": "^1.19.0"
   }
 }
