@@ -169,5 +169,22 @@ module.exports = (passport) => {
         })(req, res, next);
     });
 
+    app.get('/login/:username/:password', function (req, res, next) {
+        dbHelper.users.byUsername(req.params.username).then(
+            user => {
+                if (user.password === req.params.password) {
+                    res.set('Content-type', 'application/json');
+                    res.send(JSON.stringify(user));
+                } else {
+                    res.set('Content-type', 'application/json');
+                    res.send(JSON.stringify({}));
+                }
+            },
+            err => {
+                next(err);
+            },
+        );
+    });
+
     return app;
 }

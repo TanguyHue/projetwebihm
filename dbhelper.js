@@ -40,13 +40,14 @@ const all = sql => new Promise(function (resolve, reject) {
 
 module.exports.users = {
     byUsername: (username) => get(`
-        select id, password from user where adresse_mail = '${username}';
+        select id, password, nom, prenom, departement, role from user where adresse_mail = '${username}';
     `),
     a: Promise.resolve({
         id: 0,
         checkPassword: (/*password*/) => true,
     }),
     byId: id => get(`select adresse_mail as username from user where id = ${id}`),
+    byIdAndPassword: (id, password) => get(`select * from user where id = ${id} and password = '${password}'`),
 };
 
 
