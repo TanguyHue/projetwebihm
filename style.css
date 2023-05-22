@@ -54,7 +54,11 @@ header #météo {
   padding: 8px;
 }
 
-header #météo #titre:hover h2 {
+header #météo{
+  cursor: url(images/plante.cur) 24 24, auto;
+}
+
+header #météo:hover #titre h2 {
   color: #209fe5;
 }
 
@@ -113,6 +117,7 @@ main img:first-of-type {
 }
 
 main img:first-of-type:hover {
+  cursor: url(images/plante.cur) 24 24, auto;
   animation: pulse 1s;
 }
 
@@ -209,20 +214,20 @@ main #toDo ul li label {
   margin-left: 4px;
 }
 
-main #toDo ul li #nomTache {
+main #toDo ul li label.nomTache {
   margin-left: 4px;
   font-weight: bold;
   font-size: 14px;
 }
 
-main #toDo ul li #description {
+main #toDo ul li label.description {
   margin-left: 4px;
   margin-top: -10px;
   font-size: 12px;
   margin-right: 20px;
 }
 
-main #toDo ul li #date {
+main #toDo ul li label.date {
   margin-left: 6px;
   margin-right: 24px;
   font-size: 12px;
