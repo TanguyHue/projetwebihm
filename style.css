@@ -54,6 +54,10 @@ header #météo {
   padding: 8px;
 }
 
+header #météo #titre:hover h2{
+  color: #209fe5;
+}
+
 header #météo h2 {
   color: grey;
   font-size: 16px;
@@ -74,6 +78,11 @@ header #météo button {
   border-style: none;
   top: 4px;
   right: 16px;
+  transition: transform 0.3s ease;
+}
+
+header #météo button:hover {
+  transform: rotate(-360deg);
 }
 
 header #météo button img {
@@ -98,9 +107,28 @@ main{
 main img:first-of-type{
   position: absolute;
   top: 16px;
-  left: 250px;
+  left: 150px;
   width: 500px;
   border-radius: 8px;
+}
+
+main img:first-of-type:hover{
+  animation: pulse 1s;
+}
+
+@keyframes pulse {
+  0%, 100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(0.8);
+  }
+}
+
+@media screen and (max-width: 1220px) {
+  main img:first-of-type{
+    width: calc(100vw - 720px);
+  }
 }
 
 main ul.ulToDo {
@@ -134,6 +162,12 @@ main #general button {
   border: none;
   text-align: left;
   white-space: nowrap;
+  transition: all 0.2s ease-in-out;
+  font-size: 14px;
+}
+
+main #general button:hover {
+  background-color: rgb(223, 219, 172);
 }
 
 main #toDo {
@@ -201,7 +235,15 @@ main #toDo ul li input[type="button"] {
   border-radius: 4px;
   padding-left: 8px;
   padding-right: 8px;
+  padding-top: 4px;
+  padding-bottom: 4px;
   cursor: pointer;
+  width: 160px;
+  transition: all 0.2s ease-in-out;
+}
+
+main #toDo ul li input[type="button"]:hover {
+  background-color: #cacaca;
 }
 
 main #toDo button{

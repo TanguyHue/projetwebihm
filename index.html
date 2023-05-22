@@ -6,6 +6,7 @@
     <meta charset="utf-8" lang="en">  <!-- encodage des caractères : obligatoire ! -->
     <title>Mon potager</title>    <!-- titre de la page: obligatoire -->
     <link rel="stylesheet" href="style.css"> <!-- feuille de style: optionnel -->
+    <link type="image/png" sizes="96x96" rel="icon" href="images/favicon.png">
   </head>
   <body>
     <header>
@@ -20,16 +21,18 @@
         </li>
         <li>
           <div id="météo">
-            <h2>Polytech Nantes</h2>
+            <div id="titre">
+              <h2>Polytech Nantes</h2>
+            </div>
 
             <table>
               <tr>
-                <td><img src="images/uv.png"></td>
-                <td><img src="images/thermo.png"></td>
-                <td><img src="images/soleil.png"></td>
-                <td><img src="images/air.png"></td>
-                <td><img src="images/goutte.png"></td>
-                <td><img src="images/pluie.png"></td>
+                <td><img src="images/uv.png" alt="uv"></td>
+                <td><img src="images/thermo.png" alt="thermometre"></td>
+                <td><img src="images/soleil.png" alt="soleil"></td>
+                <td><img src="images/air.png" alt="air"></td>
+                <td><img src="images/goutte.png" alt="goutte"></td>
+                <td><img src="images/pluie.png" alt="pluie"></td>
               </tr>
               <tr>
                 <td>
@@ -53,41 +56,41 @@
               </tr>
               <tr>
                 <td>
-                  <p>3</p>
+                  <p id="uv"></p>
                 </td>
                 <td>
-                  <p>20°C</p>
+                  <p id="temperature"></p>
                 </td>
                 <td>
-                  <p>300</p>
+                  <p id="ozone"></p>
                 </td>
                 <td>
-                  <p>10km/h</p>
+                  <p id="vent"></p>
                 </td>
                 <td>
-                  <p>50%</p>
+                  <p id="humidite"></p>
                 </td>
                 <td>
-                  <p>0%</p>
+                  <p id="pluie"></p>
                 </td>
               </tr>
             </table>
 
-            <button type="button" name="reload">
-              <img src="images/reload.png">
+            <button type="button" name="reload" id="reload">
+              <img src="images/reload.png" alt="rechargement">
             </button>
           </div>
         </li>
       </ul>
     </header>
     <main>
-      <img src="images/potager.jpg">
+      <img src="images/potager.jpg" alt="potager">
 
       <ul class="ulToDo">
         <li>
           <div id="general">
-            <button type="button" name="button">Mon potager</button>
-            <button type="button" name="button">Agenda général</button>
+            <button type="button" name="button">Mon potager 🪴</button>
+            <button type="button" name="button">Agenda général 📅</button>
           </div>
         </li>
         <li>
@@ -99,7 +102,7 @@
                   <input type="checkbox" name="toDo1" value="toDo1">
                   <ul class="desc">
                     <li class="desc">
-                      <label for="toDo1" id="nomTache">À faire</label>
+                      <label for="toDo1" id="nomTache">Tâche 1</label>
                     </li>
                     <li class="desc">
                       <label for="toDo1" id="description">Description</label>
@@ -114,7 +117,7 @@
                   <input type="checkbox" name="toDo2" value="toDo1">
                   <ul class="desc">
                     <li class="desc">
-                      <label for="toDo2" id="nomTache">À faire</label>
+                      <label for="toDo2" id="nomTache">Tâche 2</label>
                     </li>
                     <li class="desc">
                       <label for="toDo2" id="description">Description</label>
@@ -129,7 +132,7 @@
                   <input type="checkbox" name="toDo3" value="toDo1">
                   <ul class="desc">
                     <li class="desc">
-                      <label for="toDo3" id="nomTache">À faire</label>
+                      <label for="toDo3" id="nomTache">Tâche 3</label>
                     </li>
                     <li class="desc">
                       <label for="toDo3" id="description">Description</label>
@@ -146,4 +149,5 @@
       </ul>
     </main>
   </body>
+  <script src="main.js"></script>
 </html>
