@@ -10,6 +10,7 @@ drop table if exists Tache;
 
 CREATE TABLE IF NOT EXISTS `user` (
   `id` int NOT NULL,
+  `password` varchar(255) NOT NULL,
   `nom` varchar(255) NOT NULL,
   `prenom` varchar(255) NOT NULL,
   `adresse_mail` varchar(255) NOT NULL,
@@ -90,5 +91,5 @@ CREATE TABLE IF NOT EXISTS `Tache` (
 -- Insertions
 --
 
-INSERT INTO `user` (`id`, `nom`, `prenom`, `adresse_mail`, `departement`, `disponibilite`, `preferences`, `langue`, `role`) VALUES
-(1, 'Dupont', 'Jean', 'jean@dupont', 'INFO', '1980-12-17', 'aucune', 'francais', 'beau-gosse');
+INSERT INTO `user` (`id`, `password`, `nom`, `prenom`, `adresse_mail`, `departement`, `disponibilite`, `preferences`, `langue`, `role`) VALUES
+(1, 'aaa', 'Dupont', 'Jean', 'jean@dupont', 'INFO', '1980-12-17', 'aucune', 'francais', 'beau-gosse');

@@ -1,42 +1,12 @@
-<body class="d-flex flex-column h-100">
-    <!--Utilisation du mécanimes des "partials" de Mustache pour importer le header qui sera commun à toutes les pages -->
-    {{>header}}
-    <div class="container">
-        <main class="flex-shrink-0" role="main">
-            <div class="row">
-                <section id="selection" class="col-md p-4 m-1 bg-primary text-white">
-                    <h2>Selection</h2>
-                    <p>Please select your artist:</p>
-                    <form>
-                        <!-- menu déroulant des artistes -->
-                        <select>
-                            <!-- ajout une option pour chaque artiste trouvé dans le contexte -->
-                            {{#artists}}
-                            <option {{#selected}}selected{{/selected}}>{{name}}</option>
-                            {{/artists}}
-                        </select>
-                    </form>
-                </section>
-                <!-- liste des albums de l'artiste -->
-                <section id='albums' class="col-md p-4 m-1 text-white bg-secondary">
-                    <h2>Albums</h2>
-                    <!-- s'il y a des albums -->
-                    {{#albums.length}}
-                    <ul>
-                        <!-- ajout un li pour chaque alcim trouvé dans le contexte -->
-                        {{#albums}}
-                        <li>{{year}} - {{name}}</li>
-                        {{/albums}}
-                    </ul>
-                    {{/albums.length}}
-                    <!-- s'il n'y a pas d'album -->
-                    {{^albums.length}}
-                    <p>No album :-(</p>
-                    {{/albums.length}}
-                </section>
-            </div>
-        </main>
-    </div>
-    <!--Utilisation du mécanimes des "partials" de Mustache pour importer le footer qui sera commun à toutes les pages -->
-    {{>footer}}
+<body>
+<div id="login">
+	<section class="container">
+		<form>
+			<input type="text" name="id" placeholder="Identifiant">
+			<input type="password" name="password" placeholder="Mot de passe">
+
+			<input type="button" id="login-btn" value="Se connecter">
+		</form>
+	</section>
+</div>
 </body>

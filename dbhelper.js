@@ -39,27 +39,14 @@ const all = sql => new Promise(function (resolve, reject) {
 });
 
 module.exports.users = {
-    byId: id => ({
-        get user() {
-            return get(`
-                select * from users where id = ${id|0};
-            `);
-        }
+    byUsername: (username) => get(`
+        select id, password from user where adresse_mail = '${username}';
+    `),
+    a: Promise.resolve({
+        id: 0,
+        checkPassword: (/*password*/) => true,
     }),
-    byAdresse_mail: adresse_mail => ({
-        get user() {
-            return get(`
-                select * from users where adresse_mail = '${adresse_mail}';
-            `);
-        }
-    }),
-    byNom: nom => ({
-        get user() {
-            return get(`
-                select * from users where nom = '${nom}';
-            `);
-        }
-    }),
+    byId: id => get(`select adresse_mail as username from user where id = ${id}`),
 };
 
 

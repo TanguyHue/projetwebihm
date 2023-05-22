@@ -48,42 +48,67 @@ const loadPartials = (() => {
     }
 })();
 
-// Route pour la page d'admin
-page('admin', async function () {
-    // Si on n'est pas authentifé, on affiche la page de login
+page('main', async function () {
     if (!context.logged) {
-        page('/login');
+        page('/');
     }
     else {
-        // Sinon on charge le template d'admin
-        // Si on n'est pas authentifié (ex: un petit malin a changé la valeur de 'logged')
-        // le serveur ne renverra tout de même pas le template puisqu'il est dans la partie 'private'
-        renderTemplate(templates('private/admin.mustache'), {...context, ariane: [{text: 'Home', url: '/'}, {text: 'Admin'}]});
+        renderTemplate(templates('private/main.mustache'), {...context, ariane: [{text: 'Home', url: '/'}, {text: 'Table de bord'}]});
     }
 });
 
-// route pour la page d'authentification des utilisateurs
-page('login', async function () {
-    // pas besoin de faire de await sur cet appel puisqu'il n'y a pas d'autre 
+page('monpotager', async function () {
+    if (!context.logged) {
+        page('/');
+    }
+    else {
+        renderTemplate(templates('private/monpotager.mustache'), {...context, ariane: [{text: 'Home', url: '/'}, {text: 'Admin'}]});
+    }
+});
+
+page('agenda', async function () {
+    if (!context.logged) {
+        page('/');
+    }
+    else {
+        renderTemplate(templates('private/agenda.mustache'), {...context, ariane: [{text: 'Home', url: '/'}, {text: 'Admin'}]});
+    }
+});
+
+page('ajouttache', async function () {
+    if (!context.logged) {
+        page('/');
+    }
+    else {
+        renderTemplate(templates('private/ajouttache.mustache'), {...context, ariane: [{text: 'Home', url: '/'}, {text: 'Admin'}]});
+    }
+});
+
+page('ajoutplante', async function () {
+    if (!context.logged) {
+        page('/');
+    }
+    else {
+        renderTemplate(templates('private/ajoutplante.mustache'), {...context, ariane: [{text: 'Home', url: '/'}, {text: 'Admin'}]});
+    }
+});
+
+// Route pour la page principale (index.html)
+page('/', async function () {
+        // pas besoin de faire de await sur cet appel puisqu'il n'y a pas d'autre 
     // traitement ensuite
     renderLoginPage(context);
 
     // fonction interne d'affichage de la page 
     async function renderLoginPage(context) {
         // On rend le template
-        await renderTemplate(templates('public/templates/login.mustache'), context);
-
-        // Puis on ajoute l'écouteur d'évenement sur les boutons
-        const cancel_btn = document.querySelector('#cancel-btn');
-        cancel_btn.addEventListener('click', function () {
-            page('/');
-        });
+        await renderTemplate(templates('public/templates/index.mustache'), context);
         const login_btn = document.querySelector('#login-btn');
         login_btn.addEventListener('click', async function () {
             // Récupération du login et du mot de passe
-            const username = document.querySelector('input[placeholder="username"]').value;
+            const username = document.querySelector('input[placeholder="Identifiant"]').value;
             console.log('username: ' + username);
-            const password = document.querySelector('input[placeholder="password"]').value;
+            const password = document.querySelector('input[placeholder="Mot de passe"]').value;
             let result;
             try {
                 // On fait ensuite un fetch sur l'api pour s'authentifier
@@ -108,7 +133,7 @@ page('login', async function () {
                     if (result.success) {
                         // on passe à la page d'administration
                         context.logged = true;
-                        page('/admin');
+                        page('/main');
                     }
                     else {
                         // Sinon on réaffiche la page avec quelques infos pour expliquer ce qui n'a pas marché
@@ -120,37 +145,6 @@ page('login', async function () {
                 console.error(e);
                 return;
             }
-        });
-    }
-});
-
-// Route pour la page principale (index.html)
-page('/', async function () {
-    let response;
-
-    // Chargement des artistes à partir de l'API
-    response = await fetch('api/artists');
-    context.artists = await response.json();
-
-    // On charge les albums de l'artiste sélectionné par défaut
-    renderArtist(0);
-
-    // fonction interne de chargement et d'affichage des albums d'un artiste
-    async function renderArtist(id) {
-        // On charge les données depuis l'API
-        const response = await fetch('api/artist/' + id + '/albums');
-        context.albums = await response.json();
-
-        // On selectionne le bon élement dans le contexte
-        context.artists[context.selectedArtist | 0].selected = false;
-        context.artists[context.selectedArtist = id].selected = true;
-
-        // Rendu du template et insertion dans la page html
-        await renderTemplate(templates('public/templates/index.mustache'), {...context, ariane: [{text: 'Home'}]});
-        // Enregistrement de l'écouteur d'évenement sur la liste des artistes
-        let select_item = document.querySelector('#selection select');
-        select_item.addEventListener('change', ({target}) => {
-            renderArtist(target.selectedIndex);
         });
     }
 });
