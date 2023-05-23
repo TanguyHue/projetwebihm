@@ -1,0 +1,70 @@
+/* CSS Tanguy HUE et Bastien BAUDOUIN INFO3 */
+
+/* mise en page générale */
+*{
+  margin: 0;
+  padding: 0;
+}
+
+body{
+  background-color: gainsboro;
+  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+}
+
+button {
+  cursor: pointer;
+}
+
+/* header */
+header h1 {
+  margin-top: 30px;
+  text-align: center;
+  margin-bottom: 30px;
+}
+
+header #back{
+  position: absolute;
+  top: 10%;
+  right: 10%;
+  width: 85px;
+  height: 85px;
+}
+
+header #back img{
+  width: 100%;
+  height: 100%;
+}
+
+/* main */
+main{
+  display: flex;
+  flex-direction: column;
+  margin-left: 4px;
+  margin-right: 4px;
+}
+
+main #general button {
+  margin-bottom: 16px;
+  background-color: white;
+  border-radius: 5px;
+  box-shadow: 0px 1px 0px 0px grey;
+  padding: 8px;
+  padding-right: 126px;
+  border: none;
+  text-align: left;
+}
+
+/* Calendrier */
+#calendar{
+  width: 100%;
+  padding: 0 20%;
+}
+
+#calendar table{
+  width: 100%;
+}
+
+
+main #newTask{
+  margin: 10px auto;
+}
