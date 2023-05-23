@@ -11,6 +11,9 @@
 </head>
 
 <body>
+  <header>
+    <h1>Ajouter une tâche 📝</h1>
+  </header>
   <main>
     <div>
       <form>
@@ -18,22 +21,22 @@
           <input type="text" name="nom" placeholder="Nom de la tâche">
         </div>
         <div>
-          <label for="date">Date de plantation</label>
+          <label for="date">Date : </label>
           <input type="date" name="date" id="date">
         </div>
 
         <div>
-          <label for="quantite">Quantité</label>
-          <input type="number" name="quantite" id="quantite">
+          <label for="assignation">Assigné à : </label>
+          <input type="button" name="assignation" id="assignation" value="Personne pour le moment">
         </div>
 
         <div>
-          <label for="prix">Prix</label>
-          <input type="number" name="prix" id="prix">
+          <label for="note">Description</label>
+          <textarea id="note" name="note" rows="4" cols="50" placeholder="Ajouter une description"></textarea>
         </div>
         <div id="bouton">
-          <input type="button" value="Annuler la tâche">
           <input type="button" value="Valider la tâche">
+          <input type="button" value="Annuler la tâche">
         </div>
       </form>
     </div>
