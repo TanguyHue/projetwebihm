@@ -219,6 +219,7 @@ page('agenda', async function () {
 
             calendar.appendChild(table);
         }
+        loadSchedule();
     }
 });
 
