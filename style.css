@@ -37,21 +37,10 @@ header #back img{
 
 /* main */
 main{
-  margin-left: 4px;
-  margin-right: 4px;
-}
-
-main ul:not(.desc) {
-  display: block;
-}
-
-main ul li:not(.desc) {
-  display: inline-block;
-}
-
-main #general{
   display: flex;
   flex-direction: column;
+  margin-left: 4px;
+  margin-right: 4px;
 }
 
 main #general button {
@@ -65,7 +54,6 @@ main #general button {
   text-align: left;
 }
 
-
 /* Calendrier */
 #calendar{
   width: 100%;
@@ -74,4 +62,9 @@ main #general button {
 
 #calendar table{
   width: 100%;
+}
+
+
+main #newTask{
+  margin: 10px auto;
 }
