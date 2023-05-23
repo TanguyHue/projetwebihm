@@ -1,4 +1,4 @@
-/* CSS Tanguy HUE INFO3 */
+/* CSS Tanguy HUE et Bastien BAUDOUIN INFO3 */
 
 /* mise en page générale */
 *{
@@ -171,4 +171,9 @@ main #toDo ul li input[type="button"] {
   border-radius: 4px;
   padding-left: 8px;
   padding-right: 8px;
+}
+
+/* Calendrier */
+#calendar{
+  background-color: aqua;
 }
