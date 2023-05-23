@@ -9,12 +9,12 @@
 const express = require('express');
 // Notre module nodejs d'accès simplifié à la base de données
 const dbHelper = require('./dbhelper.js');
+const app = express();
 
 // Comme c'est un module nodejs il faut exporter les fonction qu'on veut rendre publiques
 // ici on n'exporte qu'ne seule fonction (anonyme) qui est le "constructeur" du module
 // Cette fonction prend en paramètre un objet "passport" pour la gestion de l'authentification 
 module.exports = (passport) => {
-    const app = express();
 
     // Parti /potager
 
@@ -130,6 +130,7 @@ module.exports = (passport) => {
         );
     });
 
+
     app.post('/taches/:idTache/remove', function (req, res, next) {
         dbHelper.taches.suppTache(req.params.idTache).then(
             taches => {
@@ -148,23 +149,23 @@ module.exports = (passport) => {
     // C'est ici qu'on utilise passport pour créer une session utilisateur
     app.post('/login', function (req, res, next) {
         if (!req.body.username) {
-            return res.send({success: false, message: 'empty username'});
+            return res.send({ success: false, message: 'empty username' });
         }
         if (!req.body.password) {
-            return res.send({success: false, message: 'empty password'});
+            return res.send({ success: false, message: 'empty password' });
         }
         passport.authenticate('local', function (err, user) {
             if (err) {
                 return next(err); // will generate a 500 error
             }
             if (!user) {
-                return res.send({succes: false, message: 'authentication failed'});
+                return res.send({ succes: false, message: 'authentication failed' });
             }
             req.login(user, function (err) {
                 if (err) {
                     return next(err);
                 }
-                return res.send({success: true, message: 'authentication succeeded'});
+                return res.send({ success: true, message: 'authentication succeeded' });
             });
         })(req, res, next);
     });
@@ -184,6 +185,22 @@ module.exports = (passport) => {
                 next(err);
             },
         );
+    });
+
+    app.post('/taches/add', function (req, res, next) {
+        const idCreateur = req.body.idCreateur; // Récupérer l'id du créateur de la tâche à partir du corps de la requête
+        const idRealisateur = req.body.idRealisateur; // Récupérer l'id du réalisateur de la tâche à partir du corps de la requête
+        const titre = req.body.titre; // Récupérer le titre de la tâche à partir du corps de la requête
+        const date = req.body.date; // Récupérer la date de la tâche à partir du corps de la requête
+        const notes = req.body.notes; // Récupérer les notes de la tâche à partir du corps de la requête
+    
+        dbHelper.taches.addTache(idCreateur, idRealisateur, titre, date, notes).then(
+            taches => {
+                res.set('Content-type', 'application/json');
+                res.send(JSON.stringify(taches));
+            }
+        );
+        
     });
 
     return app;

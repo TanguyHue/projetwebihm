@@ -55,7 +55,7 @@ module.exports.PlantePotager = {
     byId: id => ({
         get PlantePotager() {
             return all(`
-                select * from PlantePotager where id = ${id|0};
+                select * from PlantePotager where id = ${id | 0};
             `);
         }
     }),
@@ -63,14 +63,14 @@ module.exports.PlantePotager = {
     byIdUser: id => ({
         get PlantePotager() {
             return all(`
-                select * from PlantePotager where idUser = ${id|0};
+                select * from PlantePotager where idUser = ${id | 0};
             `);
         }
     }),
     byXandY: (x, y) => ({
         get PlantePotager() {
             return all(`
-                select * from PlantePotager where x = ${x|0} and y = ${y|0};
+                select * from PlantePotager where x = ${x | 0} and y = ${y | 0};
             `);
         }
     }),
@@ -80,7 +80,7 @@ module.exports.PlanteData = {
     byId: id => ({
         get PlanteData() {
             return all(`
-                select * from PlanteData where id = ${id|0};
+                select * from PlanteData where id = ${id | 0};
             `);
         }
     }),
@@ -88,7 +88,7 @@ module.exports.PlanteData = {
     byIdPlantePotager: id => ({
         get PlanteData() {
             return all(`
-                select * from PlanteData where idPlantePotager = ${id|0};
+                select * from PlanteData where idPlantePotager = ${id | 0};
             `);
         }
     }),
@@ -98,7 +98,7 @@ module.exports.taches = {
     byId: id => ({
         get taches() {
             return all(`
-                select * from taches where id = ${id|0};
+                select * from taches where id = ${id | 0};
             `);
         }
     }),
@@ -113,7 +113,7 @@ module.exports.taches = {
     byUser: id => ({
         get taches() {
             return all(`
-                select * from taches where idUser = ${id|0};
+                select * from taches where idUser = ${id | 0};
             `);
         }
     }),
@@ -123,21 +123,27 @@ module.exports.taches = {
     byUserToDo: id => ({
         get taches() {
             return all(`
-                select * from taches where idUser = ${id|0} and etat = '0';
+                select * from taches where idUser = ${id | 0} and etat = '0';
             `);
         }
     }),
     ajoutUser: (id, idUser) => ({
         get taches() {
             return all(`
-                update taches set idRealisateur = ${idUser|0} where id = ${id|0};
+                update taches set idRealisateur = ${idUser | 0} where id = ${id | 0};
             `);
         }
     }),
+
+    addTache: (idCreateur, idRealisateur, titre, date, notes) => get(`
+              insert into taches (idCreateur, idRealisateur, titre, date, notes, etat)
+              values (${idCreateur | 0}, ${idRealisateur | 0}, '${titre}', '${date}', '${notes}', 0);
+          `),
+
     suppRealisateurTache: id => ({
         get taches() {
             return all(`
-                update tache set idRealisateur = null where id = ${id|0};
+                update tache set idRealisateur = null where id = ${id | 0};
             `);
         }
     }),

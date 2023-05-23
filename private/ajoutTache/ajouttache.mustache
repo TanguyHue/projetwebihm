@@ -1,0 +1,47 @@
+<!-- HTML Tanguy HUE -->
+
+<!DOCTYPE html> <!-- déclaration du doctype HTML5 -->
+<html lang="en"> <!-- il faut préciser la langue du document html -->
+
+<head> <!-- entête: titre, feuilles de style, scripts, etc. -->
+  <meta charset="utf-8" lang="en"> <!-- encodage des caractères : obligatoire ! -->
+  <title>Mon potager</title> <!-- titre de la page: obligatoire -->
+  <link rel="stylesheet" href="private/ajoutTache/style.css"> <!-- feuille de style: optionnel -->
+  <link type="image/png" sizes="96x96" rel="icon" href="images/favicon.png">
+</head>
+
+<body>
+  <header>
+    <h1>Ajouter une tâche 📝</h1>
+  </header>
+  <main>
+    <div>
+      <form>
+        <div>
+          <input type="text" name="nom" placeholder="Nom de la tâche" id="titre">
+        </div>
+        <div>
+          <label for="date">Date : </label>
+          <input type="date" name="date" id="date">
+        </div>
+
+        <div>
+          <label for="assignation">Assigné à : </label>
+          <input type="button" name="assignation" id="assignation" value="Personne pour le moment">
+        </div>
+
+        <div>
+          <label for="note">Description</label>
+          <textarea id="note" name="note" rows="4" cols="50" placeholder="Ajouter une description"></textarea>
+        </div>
+        <div id="bouton">
+          <input type="button" value="Valider la tâche" id="validé">
+          <input type="button" value="Annuler la tâche" id="annulé">
+        </div>
+      </form>
+    </div>
+  </main>
+  <script src="main.js"></script>
+</body>
+
+</html>

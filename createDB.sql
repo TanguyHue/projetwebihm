@@ -2,24 +2,23 @@ drop table if exists user;
 drop table if exists PlanteData;
 drop table if exists PlantePotager;
 drop table if exists Potager;
-drop table if exists Tache;
+drop table if exists Taches;
 
 --
 -- Création de la table `user`
 --
 
 CREATE TABLE IF NOT EXISTS `user` (
-  `id` int NOT NULL,
+  `id` INTEGER PRIMARY KEY AUTOINCREMENT,
   `password` varchar(255) NOT NULL,
   `nom` varchar(255) NOT NULL,
   `prenom` varchar(255) NOT NULL,
-  `adresse_mail` varchar(255) NOT NULL,
+  `adresse_mail` varchar(255) NOT NULL UNIQUE,
   `departement` varchar(255) NOT NULL,
   `disponibilite` date NOT NULL,
   `preferences` varchar(255) NOT NULL,
   `langue` varchar(255) NOT NULL,
-  `role` varchar(255) NOT NULL,
-  PRIMARY KEY (`id`)
+  `role` varchar(255) NOT NULL
 );
 
 --
@@ -27,13 +26,12 @@ CREATE TABLE IF NOT EXISTS `user` (
 --
 
 CREATE TABLE IF NOT EXISTS `PlanteData` (
-  `id` int NOT NULL,
+  `id` INTEGER PRIMARY KEY AUTOINCREMENT,
   `nom` varchar(255) NOT NULL,
   `prix` int(11) NOT NULL,
   `intervalle_arrosage` varchar(255) NOT NULL,
   `conseils` varchar(255) NOT NULL,
-  `engrais_conseille` varchar(255) NOT NULL,	
-  PRIMARY KEY (`id`)
+  `engrais_conseille` varchar(255) NOT NULL
 );
 
 --
@@ -41,7 +39,7 @@ CREATE TABLE IF NOT EXISTS `PlanteData` (
 --
 
 CREATE TABLE IF NOT EXISTS `PlantePotager` (
-  `id` int NOT NULL,
+  `id` INTEGER PRIMARY KEY AUTOINCREMENT,
   `idPlanteData` int NOT NULL,
   `idUser` int NOT NULL,
   `idPotager` int NOT NULL,	
@@ -51,7 +49,6 @@ CREATE TABLE IF NOT EXISTS `PlantePotager` (
   `date_dernier_arrosage` date NOT NULL,
   `x` int(11) NOT NULL,
   `y` int(11) NOT NULL,
-  PRIMARY KEY (`id`),
   FOREIGN KEY (idPlanteData) REFERENCES PlanteData(id),
   FOREIGN KEY (idUser) REFERENCES user(id),
   FOREIGN KEY (idPotager) REFERENCES Potager(id)
@@ -62,26 +59,24 @@ CREATE TABLE IF NOT EXISTS `PlantePotager` (
 --
 
 CREATE TABLE IF NOT EXISTS `Potager` (
-  `id` int NOT NULL,
+  `id` INTEGER PRIMARY KEY AUTOINCREMENT,
   `nombre_plante` int(11) NOT NULL,
   `largeur` int(11) NOT NULL,
-  `longueur` int(11) NOT NULL,
-  PRIMARY KEY (`id`)
+  `longueur` int(11) NOT NULL
 );
 
 --
 -- Création de la table `Tache`
 --
 
-CREATE TABLE IF NOT EXISTS `Tache` (
-  `id` int NOT NULL,
+CREATE TABLE IF NOT EXISTS `Taches` (
+  `id` INTEGER PRIMARY KEY AUTOINCREMENT,
   `idCreateur` int NOT NULL,
   `idRealisateur` int,
   `titre` varchar(255) NOT NULL,
   `date` date NOT NULL,
   `notes` varchar(255) NOT NULL,
   `etat` varchar(255) NOT NULL CHECK (etat in(0,1)),
-  PRIMARY KEY (`id`),
   FOREIGN KEY (idCreateur) REFERENCES user(id)
   FOREIGN KEY (idRealisateur) REFERENCES user(id)
 );
@@ -91,5 +86,11 @@ CREATE TABLE IF NOT EXISTS `Tache` (
 -- Insertions
 --
 
-INSERT INTO `user` (`id`, `password`, `nom`, `prenom`, `adresse_mail`, `departement`, `disponibilite`, `preferences`, `langue`, `role`) VALUES
-(1, 'aaa', 'Dupont', 'Jean', 'jean@dupont', 'INFO', '1980-12-17', 'aucune', 'francais', 'beau-gosse');
+INSERT INTO `user` (`password`, `nom`, `prenom`, `adresse_mail`, `departement`, `disponibilite`, `preferences`, `langue`, `role`) VALUES
+('aaa', 'Dupont', 'Jean', 'jean@dupont', 'INFO', '1980-12-17', 'aucune', 'francais', 'beau-gosse');
+
+INSERT INTO `user` (`password`, `nom`, `prenom`, `adresse_mail`, `departement`, `disponibilite`, `preferences`, `langue`, `role`) VALUES
+('aaa', 'Dupond', 'Jean', 'jean@dupond', 'INFO', '1980-12-17', 'aucune', 'francais', 'beau-gosse');
+
+insert into taches (idCreateur, idRealisateur, titre, date, notes, etat) values (1, 1, 'zzaeaz', '1980-12-17', 'aaza', 0);
+insert into taches (idCreateur, idRealisateur, titre, date, notes, etat) values (1, 1, 'zzaeaz', '1980-12-17', 'aaza', 0);

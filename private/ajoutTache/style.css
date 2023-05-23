@@ -1,0 +1,127 @@
+/* CSS Tanguy HUE INFO3 */
+
+/* mise en page générale */
+* {
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  background-color: gainsboro;
+  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  height: 100vh;
+  width: 100vw;
+  justify-content: center;
+  align-items: center;
+}
+
+button {
+  cursor: pointer;
+}
+
+header h1 {
+  margin-top: 30px;
+  text-align: center;
+  margin-bottom: 30px;
+}
+
+main {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+form {
+  width: 500px;
+  padding: 8px;
+  border-radius: 4px;
+}
+
+form > div {
+  background-color: white;
+  padding: 8px;
+  border-radius: 8px;
+  margin-top: 24px;
+  margin-bottom: 24px;
+  position: relative;
+}
+
+form div input#assignation {
+  margin-left: 8px;
+  background-color: #f44336;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  padding-left: 8px;
+  padding-right: 8px;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  cursor: pointer;
+  width: 200px;
+  transition: all 0.2s ease-in-out;
+}
+
+input[type="text"],
+input[type="date"],
+input[type="number"],
+textarea {
+  width: 100%;
+  padding: 8px;
+  box-sizing: border-box;
+  border: 1px solid black;
+  border-radius: 8px;
+  margin-top: 8px;
+}
+
+input:first-of-type {
+  margin-top: 0;
+}
+
+label i {
+  font-size: 12px;
+}
+
+label {
+  margin-bottom: 4px;
+}
+
+textarea {
+  resize: vertical;
+  max-height: 230px;
+  min-height: 90px;
+}
+
+input[type="text"]:focus, 
+input[type="date"]:focus, 
+input[type="number"]:focus,
+textarea:focus {
+  outline: none;
+  border: 1px solid #4CAF50;
+}
+
+#bouton {
+  position: relative;
+  padding: 16px;
+  width: 484px;
+  height: 70px;
+}
+
+#bouton input {
+  border: none;
+  cursor: pointer;
+  color: white;
+  font-weight: bold;
+  border-radius: 8px;
+  position: absolute;
+  padding: 8px;
+}
+
+#bouton input:first-of-type {
+  left: 8px;
+  background-color: #4CAF50;
+}
+
+#bouton input:last-of-type {
+  right: 8px;
+  background-color: red;
+}

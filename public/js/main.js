@@ -123,7 +123,7 @@ page('main', async function () {
                 context.logged = false;
                 context.user = 0;
                 page('/');
-            }  
+            }
             );
 
             const nomUser = document.getElementById('nomUser');
@@ -164,7 +164,70 @@ page('ajouttache', async function () {
         page('/');
     }
     else {
-        renderTemplate(templates('private/ajouttache.mustache'), { ...context, ariane: [{ text: 'Home', url: '/' }, { text: 'Admin' }] });
+        async function load() {
+            await renderTemplate(templates('private/ajoutTache/ajouttache.mustache'));
+            var buttonAssignation = document.getElementById("assignation");
+            buttonAssignation.checked = false;
+
+            buttonAssignation.addEventListener("click", function () {
+                if (buttonAssignation.checked) {
+                    buttonAssignation.value = "Personne pour le moment";
+                    buttonAssignation.style.backgroundColor = "#f44336";
+                    buttonAssignation.checked = false;
+                } else {
+                    buttonAssignation.value = "Assigné à moi";
+                    buttonAssignation.style.backgroundColor = "#4CAF50";
+                    buttonAssignation.checked = true;
+                }
+            });
+
+            var date = document.getElementById("date");
+            date.value = new Date().toISOString().slice(0, 10);
+
+            var buttonAnnuler = document.getElementById("annulé");
+            buttonAnnuler.addEventListener("click", function () {
+                page('/main');
+            }
+            );
+
+            var buttonValider = document.getElementById("validé");
+            buttonValider.addEventListener("click", async function () {
+                var titre = document.getElementById("titre").value;
+                var description = document.getElementById("note").value;
+                var date = document.getElementById("date").value;
+                if (document.getElementById("assignation").checked) {
+                    var assignation = context.user.id;
+                } else {
+                    var assignation = "none";
+                }
+                var tache = { titre: titre, description: description, date: date, assignation: assignation };
+                console.log(tache);
+
+                try {
+                    // On fait ensuite un fetch sur l'api pour s'authentifier
+                    const result = await fetch('api/taches/add', {
+                        headers: {
+                            'Accept': 'application/json',
+                            'Content-Type': 'application/x-www-form-urlencoded; charset=utf-8',
+                        },
+                        method: 'POST',
+                        body: 'idCreateur=' + encodeURIComponent(context.user.id) + '&idRealisateur=' + encodeURIComponent(assignation) + '&titre=' + encodeURIComponent(titre) + '&date=' + encodeURIComponent(date) + '&notes=' + encodeURIComponent(description),
+                    });
+
+                    // On récupère le résultat de la requête
+                    const data = await result.json();
+                    console.log(data);
+                    page('/main');
+                }
+                catch (e) {
+                    console.error(e);
+                    page('/main');
+                    return;
+                }
+            }
+            );
+        }
+        load();
     }
 });
 
@@ -188,7 +251,19 @@ page('/', async function () {
         // On rend le template
         await renderTemplate(templates('public/templates/index.mustache'), context);
         const login_btn = document.querySelector('#login-btn');
-        login_btn.addEventListener('click', async function () {
+        login_btn.addEventListener('click', loadMain);
+        document.querySelector('#identifiant').addEventListener('keypress', (event) => {
+            if (event.keyCode === 13) {
+                loadMain();
+            }
+        });
+        document.querySelector('#password').addEventListener('keypress', (event) => {
+            if (event.keyCode === 13) {
+                loadMain();
+            }
+        });
+
+        async function loadMain() {
             // Récupération du login et du mot de passe
             const username = document.querySelector('input[placeholder="Identifiant"]').value;
             console.log('username: ' + username);
@@ -219,11 +294,12 @@ page('/', async function () {
                         context.logged = true;
                         var user = await fetch('api/login/' + username + '/' + password);
                         user = await user.json();
-                        context.user = { 
-                            nom: user.nom, 
-                            prenom: user.prenom, 
-                            departement: user.departement, 
-                            role: user.role 
+                        context.user = {
+                            id: user.id,
+                            nom: user.nom,
+                            prenom: user.prenom,
+                            departement: user.departement,
+                            role: user.role
                         };
                         console.log(context.user);
                         page('/main');
@@ -238,7 +314,7 @@ page('/', async function () {
                 console.error(e);
                 return;
             }
-        });
+        };
     }
 });
 
