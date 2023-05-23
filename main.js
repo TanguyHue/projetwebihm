@@ -45,6 +45,20 @@ for (var i = 8; i <= 22; i++){
 
     tableBody.appendChild(new_row)
 }
+
+// Ajout des cases "notes"
+const memo_row = document.createElement('tr');
+const empty = document.createElement('td');
+memo_row.appendChild(empty);
+
+for (var i = 1; i < daysOfWeek.length; i++){
+    const memo = document.createElement('td');
+    const memoText = document.createTextNode('Notes :');
+    memo.appendChild(memoText);
+    memo_row.appendChild(memo);
+}
+tableBody.appendChild(memo_row);
+
 table.appendChild(tableBody);
 
 calendar.appendChild(table);
