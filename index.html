@@ -91,6 +91,36 @@
                     <input type="button" name="assignation" value="Je m'assigne cette tâche">
                   </form>
                 </li>
+                <li>
+                  <form>
+                    <input type="checkbox" name="toDo4" value="toDo1">
+                    <ul class="desc">
+                      <li class="desc">
+                        <label class="nomTache">Tâche 4</label>
+                      </li>
+                      <li class="desc">
+                        <label class="description">Description</label>
+                      </li>
+                    </ul>
+                    <label class="date">01/02/0345</label>
+                    <input type="button" name="assignation" value="Je m'assigne cette tâche">
+                  </form>
+                </li>
+                <li>
+                  <form>
+                    <input type="checkbox" name="toDo5" value="toDo1">
+                    <ul class="desc">
+                      <li class="desc">
+                        <label class="nomTache">Tâche 5</label>
+                      </li>
+                      <li class="desc">
+                        <label class="description">Description</label>
+                      </li>
+                    </ul>
+                    <label class="date">01/02/0345</label>
+                    <input type="button" name="assignation" value="Je m'assigne cette tâche">
+                  </form>
+                </li>
               </ul>
               <button type="button" name="button">+ Ajouter une tâche</button>
             </div>
@@ -102,8 +132,25 @@
       <li class="mainLi">
         <ul>
           <li id="info">
-            <div>
-
+            <div class="etatPotager">
+              <h2>Nom plante
+                <img src="images/type/tomate.png" alt="typePlante">
+              </h2>
+              <p>Arrosé
+                <img src="images/ok.png" alt="ok">
+              </p>
+              <br>
+              <p>Date de plantation : 01/01/0001</p>
+              <p>Date de floraison : 01/01/0001</p>
+              <p>Date du dernier arrossage : 01/01/0001</p>
+              <p>Date du prochain arrossage : 01/01/0001</p>
+              <br>
+              <p>Intervalle d'arrossage : 4 jours</p>
+              <p>Engrais conseillé : Rien</p>
+              <br>
+              <button type="button" name="button" id="arroser">Arrosé ! 💧</button>
+              <br>
+              <p>Conseil : blablabla</p>
             </div>
           </li>
           <li id="potager">
@@ -223,6 +270,13 @@
         </ul>
       </li>
     </ul>
+
+    <!--Notification arrosé-->
+    <div id="notification">
+      <p>La plante a été arrosée !
+        <img src="images/etatPotager/arroser.png" alt="arrosoir">
+      </p>
+    </div>
   </main>
   <script src="main.js"></script>
 </body>

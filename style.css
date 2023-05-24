@@ -153,12 +153,16 @@ main #toDo h2 {
 main #toDo ul {
   margin-left: 20px;
   list-style-type: none;
+  max-height: 140px;
+  overflow-y: auto;
+  overflow-x: hidden;
 }
 
 main #toDo ul li:not(.desc) {
   margin-bottom: 14px;
   height: 100%;
   width: 100%;
+  margin-right: 10px;
 }
 
 main #toDo ul li form {
@@ -230,6 +234,50 @@ main li.info div {
   right: 4px;
 }
 
+main #info div.etatPotager {
+  margin-left: 16px;
+  max-height: 350px;
+  overflow-y: auto;
+  width: 100%;
+}
+
+main #info div.etatPotager h2 {
+  display: flex;
+  align-items: center;
+}
+
+main #info div.etatPotager h2:first-of-type + p {
+  margin-left: 16px;
+  font-size: 14px;
+  margin-bottom: 8px;
+  color: rgb(97, 156, 233);
+  display: flex;
+  align-items: center;
+}
+
+main #info div.etatPotager h2:first-of-type + p img{
+  height: 14px;
+  margin-left: 8px;
+}
+
+main #info div.etatPotager img {
+  margin-left: 12px;
+  height: 28px;
+}
+
+main #info div.etatPotager button {
+  background-color: aqua;
+  border-radius: 4px;
+  border-style: none;
+  padding: 4px;
+  transition: all 0.2s ease-in-out;
+  margin-bottom: 12px;
+}
+
+main #info div.etatPotager button:hover {
+  background-color: aquamarine;
+}
+
 
 main button.buttonType {
   border-style: none;
@@ -248,4 +296,32 @@ main button.buttonType:hover {
 main button.buttonType img {
   height: 64px;
   border: 2px solid rgb(70, 192, 70);
+}
+
+
+main #notification {
+  position: absolute;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  top: 30px;
+  height: 30px;
+  background-color: white;
+  border-radius: 5px;
+  box-shadow: 0px 1px 0px 0px grey;
+  padding: 8px;
+  width: 250px;
+  right: calc(50vw - 125px);
+  opacity: 0;
+  transition: all 0.2s ease-in-out;
+}
+
+main #notification p {
+  display: flex;
+  align-items: center;
+  font-size: 18px;
+}
+
+main #notification img {
+  height: 32px;
 }

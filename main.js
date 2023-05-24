@@ -39,3 +39,14 @@ boutonsAssignation.forEach(function (bouton) {
         }
     });
 });
+
+const notification = document.getElementById('notification');
+const boutonArroser = document.getElementById('arroser');
+
+boutonArroser.addEventListener('click', (event) => {
+    console.log("click");
+    notification.style.opacity = "1";
+    setTimeout(function(){
+        notification.style.opacity = "0";
+    }, 3000);
+});
