@@ -1,35 +1,29 @@
-async function getData() {
-    await fetch('https://api.open-meteo.com/v1/forecast?latitude=47.22&longitude=-1.55&hourly=temperature_2m,relativehumidity_2m,precipitation_probability,windspeed_10m,uv_index,terrestrial_radiation&current_weather=true&forecast_days=1&timezone=Europe%2FBerlin')
-        .then(response => response.json())
-        .then(data => {
-            const uv = document.getElementById('uv');
-            const temp = document.getElementById('temperature');
-            const ozone = document.getElementById('ozone');
-            const vent = document.getElementById('vent');
-            const humidite = document.getElementById('humidite');
-            const pluie = document.getElementById('pluie');
+const etatSelect = document.getElementById('etat');
+const imgEtat = document.getElementById('imgEtat');
 
-            const hour = new Date().getHours();
-
-            temp.innerHTML = data.current_weather.temperature + data.hourly_units.temperature_2m;
-            vent.innerHTML = data.current_weather.windspeed + data.hourly_units.windspeed_10m;
-
-            uv.innerHTML = data.hourly.uv_index[hour] + data.hourly_units.uv_index;
-            ozone.innerHTML = data.hourly.terrestrial_radiation[hour] + data.hourly_units.terrestrial_radiation;
-            humidite.innerHTML = data.hourly.relativehumidity_2m[hour] + data.hourly_units.relativehumidity_2m;
-            pluie.innerHTML = data.hourly.precipitation_probability[hour] + data.hourly_units.precipitation_probability;
-
-            const buttonReload = document.getElementById('reload');
-            buttonReload.addEventListener('click', () => {
-                console.log("Reload");
-                getData();
-            }
-            );
-        })
-        .catch(err => console.error(err));
+const etat = etatSelect.value;
+if (etat == "0") {
+    imgEtat.src = "images/etatPotager/bon.png";
+} else if (etat == "1") {
+    imgEtat.src = "images/etatPotager/mauvais.png";
+} else if (etat == "2") {
+    imgEtat.src = "images/etatPotager/arroser.png";
+} else {
+    imgEtat.src = "images/etatPotager/travaux.png";
 }
 
-getData();
+etatSelect.addEventListener('change', (event) => {
+    const etat = event.target.value;
+    if (etat == "0") {
+        imgEtat.src = "images/etatPotager/bon.png";
+    } else if (etat == "1") {
+        imgEtat.src = "images/etatPotager/mauvais.png";
+    } else if (etat == "2") {
+        imgEtat.src = "images/etatPotager/arroser.png";
+    } else {
+        imgEtat.src = "images/etatPotager/travaux.png";
+    }
+});
 
 var boutonsAssignation = document.querySelectorAll("#toDo input[name='assignation']");
 boutonsAssignation.forEach(function (bouton) {

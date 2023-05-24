@@ -18,125 +18,62 @@ button {
 }
 
 /* header */
-header #infoUser {
-  position: absolute;
-  background-color: rgb(223, 219, 172);
+header div:first-of-type {
+  display: inline-block;
+  background-color: white;
   color: black;
-  text-align: left;
+  text-align: center;
   margin-top: 16px;
-  margin-left: 4px;
-  padding: 2px;
+  margin-left: 16px;
+  padding: 8px;
+  padding-top: 12px;
+  padding-bottom: 12px;
   border-radius: 5px;
   font-size: 16px;
   box-shadow: 0px 1px 0px 0px grey;
 }
 
-header #infoUser p {
-  margin: 6px;
+header div:first-of-type img {
+  display: inline;
+  height: 16px;
 }
 
-header #infoUser button {
-  width: 100%;
-  text-align: center;
-  background: transparent;
-  border-style: none;
-  margin-top: 4px;
-  margin-bottom: 4px;
-}
-
-header #météo {
-  background-color: white;
+header div:last-of-type {
   position: absolute;
   right: 16px;
   top: 16px;
-  border-radius: 16px;
-  box-shadow: 0px 1px 0px 0px grey;
-  padding: 8px;
 }
 
-header #météo{
-  cursor: url(images/plante.cur) 24 24, auto;
-}
-
-header #météo:hover #titre h2 {
-  color: #209fe5;
-}
-
-header #météo h2 {
-  color: grey;
-  font-size: 16px;
-  margin-left: 24px;
-}
-
-header #météo table {
-  text-align: center;
-}
-
-header #météo table td {
-  padding: 4px;
-}
-
-header #météo button {
-  position: inherit;
-  background: transparent;
-  border-style: none;
-  top: 4px;
-  right: 16px;
-  transition: transform 0.3s ease;
-}
-
-header #météo button:hover {
-  transform: rotate(-360deg);
-}
-
-header #météo button img {
-  width: 24px;
-  height: 24px;
-  margin-top: 4px;
-}
-
-header #météo img {
-  margin-top: 8px;
-  width: 36px;
-  height: 36px;
+header div:last-of-type img {
+  width: 64px;
 }
 
 /* main */
 main {
-  margin-top: 50vh;
   margin-left: 4px;
   margin-right: 4px;
 }
 
-main img:first-of-type {
-  position: absolute;
-  top: 16px;
-  left: 150px;
-  width: 500px;
-  border-radius: 8px;
+main li.mainLi:first-of-type {
+  margin-top: 16px;
+  margin-bottom: 16px;
 }
 
-main img:first-of-type:hover {
-  cursor: url(images/plante.cur) 24 24, auto;
-  animation: pulse 1s;
+main li.mainLi>ul {
+  display: flex;
+  justify-content: space-between;
+  list-style-type: none;
+  align-items: center;
+  padding: 0;
+  margin: 0;
 }
 
-@keyframes pulse {
-
-  0%,
-  100% {
-    transform: scale(1);
-  }
-
-  50% {
-    transform: scale(0.8);
-  }
+main li.mainLi>ul>li:first-of-type {
+  margin-left: 20px;
 }
 
-@media screen and (max-width: 1220px) {
-  main img:first-of-type {
-    width: calc(100vw - 720px);
-  }
+main li.mainLi>ul>li:last-of-type {
+  margin-right: 20px;
 }
 
 main ul.ulToDo {
@@ -150,32 +87,51 @@ main ul.ulToDo>li {
   margin-left: 32px;
 }
 
-main ul li:not(.desc) {
-  display: inline-block;
-}
-
-main #general {
-  display: flex;
-  flex-direction: column;
-}
-
-main #general button {
-  margin-bottom: 16px;
-  margin-top: 16px;
+main *.etatPotager {
   background-color: white;
   border-radius: 5px;
   box-shadow: 0px 1px 0px 0px grey;
-  padding: 8px;
-  padding-right: 126px;
-  border: none;
-  text-align: left;
-  white-space: nowrap;
-  transition: all 0.2s ease-in-out;
-  font-size: 14px;
+  padding: 16px;
+  width: 250px;
+  margin-top: 16px;
+  margin-bottom: 16px;
 }
 
-main #general button:hover {
-  background-color: rgb(223, 219, 172);
+main *.etatPotager label {
+  font-size: 16px;
+  margin-right: 16px;
+}
+
+main *.etatPotager select {
+  font-size: 14px;
+  border-radius: 4px;
+}
+
+main *.etatPotager select option img {
+  height: 16px;
+  margin-right: 8px;
+  margin-left: 8px;
+}
+
+main #retour {
+  font-size: 16px;
+  border: none;
+  align-items: center;
+  display: flex;
+  justify-content: center;
+  width: 170px;
+  padding: 16px;
+  transition: all 0.2s ease-in-out;
+}
+
+main #retour img {
+  cursor: pointer;
+  height: 20px;
+  margin-left: 64px;
+}
+
+main #retour:hover {
+  background-color: #cacaca;
 }
 
 main #toDo {
@@ -186,6 +142,7 @@ main #toDo {
   position: relative;
   padding-bottom: 24px;
   padding-right: 30px;
+  right: 4px;
 }
 
 main #toDo h2 {
@@ -259,4 +216,36 @@ main #toDo button {
   background-color: transparent;
   position: absolute;
   right: 8px;
+}
+
+
+main li.info div {
+  background-color: white;
+  border-radius: 5px;
+  box-shadow: 0px 1px 0px 0px grey;
+  padding: 8px;
+  position: relative;
+  padding-bottom: 24px;
+  padding-right: 30px;
+  right: 4px;
+}
+
+
+main button.buttonType {
+  border-style: none;
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+  overflow: hidden;
+  height: 68px;
+  width: 68px;
+  margin: 8px;
+}
+
+main button.buttonType:hover {
+  background-color: rgb(70, 192, 70);
+}
+
+main button.buttonType img {
+  height: 64px;
+  border: 2px solid rgb(70, 192, 70);
 }
