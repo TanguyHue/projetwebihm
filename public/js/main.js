@@ -7,7 +7,7 @@
 
 // Notre objet contexte, qui contiendra toutes les données
 // pour les templates Mustache
-let context = { 'logged': false, 'user': 0 };
+let context = { 'logged': false, 'user': 0, 'previous': 0 };
 
 // fonction utilitaire permettant de faire du 
 // lazy loading (chargement à la demande) des templates
@@ -53,7 +53,7 @@ page('main', async function () {
         page('/');
     }
     else {
-
+        context.previous = 'main';
         async function getData() {
             await renderTemplate(templates('private/main/main.mustache'));
             await fetch('https://api.open-meteo.com/v1/forecast?latitude=47.22&longitude=-1.55&hourly=temperature_2m,relativehumidity_2m,precipitation_probability,windspeed_10m,uv_index,terrestrial_radiation&current_weather=true&forecast_days=1&timezone=Europe%2FBerlin')
@@ -146,7 +146,76 @@ page('monpotager', async function () {
         page('/');
     }
     else {
-        renderTemplate(templates('private/monpotager.mustache'), { ...context, ariane: [{ text: 'Home', url: '/' }, { text: 'Admin' }] });
+        context.previous = 'monpotager';
+        async function getData() {
+            await renderTemplate(templates('private/monpotager/monpotager.mustache'));
+            const etatSelect = document.getElementById('etat');
+            const imgEtat = document.getElementById('imgEtat');
+
+            const etat = etatSelect.value;
+            if (etat == "0") {
+                imgEtat.src = "private/monPotager/images/etatPotager/bon.png";
+            } else if (etat == "1") {
+                imgEtat.src = "private/monPotager/images/etatPotager/mauvais.png";
+            } else if (etat == "2") {
+                imgEtat.src = "private/monPotager/images/etatPotager/arroser.png";
+            } else {
+                imgEtat.src = "private/monPotager/images/etatPotager/travaux.png";
+            }
+
+            etatSelect.addEventListener('change', (event) => {
+                const etat = event.target.value;
+                if (etat == "0") {
+                    imgEtat.src = "private/monPotager/images/etatPotager/bon.png";
+                } else if (etat == "1") {
+                    imgEtat.src = "private/monPotager/images/etatPotager/mauvais.png";
+                } else if (etat == "2") {
+                    imgEtat.src = "private/monPotager/images/etatPotager/arroser.png";
+                } else {
+                    imgEtat.src = "private/monPotager/images/etatPotager/travaux.png";
+                }
+            });
+
+            var boutonsAssignation = document.querySelectorAll("#toDo input[name='assignation']");
+            boutonsAssignation.forEach(function (bouton) {
+                bouton.addEventListener('click', function () {
+                    if (!this.checked) {
+                        this.style.backgroundColor = "rgb(223, 219, 172)";
+                        this.checked = true;
+                        this.value = "Assigné";
+                    } else {
+                        this.checked = false;
+                        this.style.backgroundColor = "#e9e9ed";
+                        this.value = "Je m'assigne cette tâche";
+                    }
+                });
+            });
+
+            const notification = document.getElementById('notification');
+            const boutonArroser = document.getElementById('arroser');
+
+            boutonArroser.addEventListener('click', (event) => {
+                console.log("click");
+                notification.style.opacity = "1";
+                setTimeout(function () {
+                    notification.style.opacity = "0";
+                }, 3000);
+            });
+
+            const boutonRetour = document.getElementById('retour');
+            boutonRetour.addEventListener('click', () => {
+                page('/main');
+            }
+            );
+
+            const boutonAjoutTache = document.getElementById('ajouttache');
+            boutonAjoutTache.addEventListener('click', () => {
+                page('/ajouttache');
+            }
+            );
+        }
+
+        getData();
     }
 });
 
@@ -155,6 +224,7 @@ page('agenda', async function () {
         page('/');
     }
     else {
+        context.previous = 'agenda';
         async function loadSchedule() {
             await renderTemplate(templates('private/agenda/agenda.mustache'));
             console.log('Construction du calendrier.');
@@ -218,6 +288,12 @@ page('agenda', async function () {
             table.appendChild(tableBody);
 
             calendar.appendChild(table);
+
+            const boutonNewTask = document.getElementById('newTask');
+            boutonNewTask.addEventListener('click', () => {
+                page('/ajouttache');
+            }
+            );
         }
         loadSchedule();
     }
@@ -250,7 +326,13 @@ page('ajouttache', async function () {
 
             var buttonAnnuler = document.getElementById("annulé");
             buttonAnnuler.addEventListener("click", function () {
-                page('/main');
+                if(context.previous == "main"){
+                    page('/main');
+                } else if(context.previous == "monpotager"){
+                    page('/monpotager');
+                } else if(context.previous == "agenda"){
+                    page('/agenda');
+                }
             }
             );
 

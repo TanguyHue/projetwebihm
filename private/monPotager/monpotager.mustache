@@ -1,0 +1,283 @@
+<!-- HTML Tanguy HUE -->
+
+<!DOCTYPE html> <!-- déclaration du doctype HTML5 -->
+<html lang="en"> <!-- il faut préciser la langue du document html -->
+
+<head> <!-- entête: titre, feuilles de style, scripts, etc. -->
+  <meta charset="utf-8" lang="en"> <!-- encodage des caractères : obligatoire ! -->
+  <title>Mon potager</title> <!-- titre de la page: obligatoire -->
+  <link rel="stylesheet" href="private/monPotager/style.css"> <!-- feuille de style: optionnel -->
+  <link type="image/png" sizes="96x96" rel="icon" href="images/favicon.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"> <!-- responsive: obligatoire -->
+</head>
+
+<body>
+  <header>
+    <div>
+      <h1>Mon potager
+        <img src="private/monPotager/images/uwu.png" alt="uwu">
+      </h1>
+    </div>
+    <div>
+      <img src="" alt="etat" id="imgEtat">
+    </div>
+  </header>
+  <main>
+    <ul id="mainUl">
+      <!--Etat potager + a faire-->
+      <li class="mainLi">
+        <ul>
+          <li>
+            <div class="etatPotager">
+              <label for="etat">État potager</label>
+              <select name="etat" id="etat">
+                <option value="0">Bon état &#128522;</option>
+                <option value="1">Mauvais état &#128532;</option>
+                <option value="2">À arroser &#128167;</option>
+                <option value="3">En travaux &#x1F6A7;</option>
+              </select>
+            </div>
+            <button id="retour" type="button" class="etatPotager">
+              Retour
+              <img src="private/monPotager/images/retour.png" alt="retour">
+            </button>
+          </li>
+          <li>
+            <div id="toDo">
+              <h2>À faire</h2>
+              <ul>
+                <li>
+                  <form>
+                    <input type="checkbox" name="toDo1" value="toDo1">
+                    <ul class="desc">
+                      <li class="desc">
+                        <label class="nomTache">Tâche 1</label>
+                      </li>
+                      <li class="desc">
+                        <label class="description">Description</label>
+                      </li>
+                    </ul>
+                    <label class="date">31/02/2023</label>
+                    <input type="button" name="assignation" value="Je m'assigne cette tâche">
+                  </form>
+                </li>
+                <li>
+                  <form>
+                    <input type="checkbox" name="toDo2" value="toDo1">
+                    <ul class="desc">
+                      <li class="desc">
+                        <label class="nomTache">Tâche 2</label>
+                      </li>
+                      <li class="desc">
+                        <label class="description">Description</label>
+                      </li>
+                    </ul>
+                    <label class="date">22/06/2002</label>
+                    <input type="button" name="assignation" value="Je m'assigne cette tâche">
+                  </form>
+                </li>
+                <li>
+                  <form>
+                    <input type="checkbox" name="toDo3" value="toDo1">
+                    <ul class="desc">
+                      <li class="desc">
+                        <label class="nomTache">Tâche 3</label>
+                      </li>
+                      <li class="desc">
+                        <label class="description">Description</label>
+                      </li>
+                    </ul>
+                    <label class="date">01/02/0345</label>
+                    <input type="button" name="assignation" value="Je m'assigne cette tâche">
+                  </form>
+                </li>
+                <li>
+                  <form>
+                    <input type="checkbox" name="toDo4" value="toDo1">
+                    <ul class="desc">
+                      <li class="desc">
+                        <label class="nomTache">Tâche 4</label>
+                      </li>
+                      <li class="desc">
+                        <label class="description">Description</label>
+                      </li>
+                    </ul>
+                    <label class="date">01/02/0345</label>
+                    <input type="button" name="assignation" value="Je m'assigne cette tâche">
+                  </form>
+                </li>
+                <li>
+                  <form>
+                    <input type="checkbox" name="toDo5" value="toDo1">
+                    <ul class="desc">
+                      <li class="desc">
+                        <label class="nomTache">Tâche 5</label>
+                      </li>
+                      <li class="desc">
+                        <label class="description">Description</label>
+                      </li>
+                    </ul>
+                    <label class="date">01/02/0345</label>
+                    <input type="button" name="assignation" value="Je m'assigne cette tâche">
+                  </form>
+                </li>
+              </ul>
+              <button type="button" name="button" id="ajouttache">+ Ajouter une tâche</button>
+            </div>
+          </li>
+        </ul>
+      </li>
+
+      <!--Etat plante + représentation potager-->
+      <li class="mainLi">
+        <ul>
+          <li id="info">
+            <div class="etatPotager">
+              <h2>Nom plante
+                <img src="private/monPotager/images/type/tomate.png" alt="typePlante">
+              </h2>
+              <p>Arrosé
+                <img src="private/monPotager/images/ok.png" alt="ok">
+              </p>
+              <br>
+              <p>Date de plantation : 01/01/0001</p>
+              <p>Date de floraison : 01/01/0001</p>
+              <p>Date du dernier arrossage : 01/01/0001</p>
+              <p>Date du prochain arrossage : 01/01/0001</p>
+              <br>
+              <p>Intervalle d'arrossage : 4 jours</p>
+              <p>Engrais conseillé : Rien</p>
+              <br>
+              <button type="button" name="button" id="arroser">Arrosé ! 💧</button>
+              <br>
+              <p>Conseil : blablabla</p>
+            </div>
+          </li>
+          <li id="potager">
+            <table>
+              <tbody>
+                <tr>
+                  <td>
+                    <button type="button" name="button" class="buttonType">
+                      <img src="private/monPotager/images/type/ajouter.png" alt="typePlante">
+                    </button>
+                  </td>
+                  <td>
+                    <button type="button" name="button" class="buttonType">
+                      <img src="private/monPotager/images/type/ajouter.png" alt="typePlante">
+                    </button>
+                  </td>
+                  <td>
+                    <button type="button" name="button" class="buttonType">
+                      <img src="private/monPotager/images/type/ajouter.png" alt="typePlante">
+                    </button>
+                  </td>
+                  <td>
+                    <button type="button" name="button" class="buttonType">
+                      <img src="private/monPotager/images/type/ajouter.png" alt="typePlante">
+                    </button>
+                  </td>
+                  <td>
+                    <button type="button" name="button" class="buttonType">
+                      <img src="private/monPotager/images/type/ajouter.png" alt="typePlante">
+                    </button>
+                  </td>
+                </tr>
+                <tr>
+                  <td>
+                    <button type="button" name="button" class="buttonType">
+                      <img src="private/monPotager/images/type/ajouter.png" alt="typePlante">
+                    </button>
+                  </td>
+                  <td>
+                    <button type="button" name="button" class="buttonType">
+                      <img src="private/monPotager/images/type/ajouter.png" alt="typePlante">
+                    </button>
+                  </td>
+                  <td>
+                    <button type="button" name="button" class="buttonType">
+                      <img src="private/monPotager/images/type/ajouter.png" alt="typePlante">
+                    </button>
+                  </td>
+                  <td>
+                    <button type="button" name="button" class="buttonType">
+                      <img src="private/monPotager/images/type/ajouter.png" alt="typePlante">
+                    </button>
+                  </td>
+                  <td>
+                    <button type="button" name="button" class="buttonType">
+                      <img src="private/monPotager/images/type/ajouter.png" alt="typePlante">
+                    </button>
+                  </td>
+                </tr>
+                <tr>
+                  <td>
+                    <button type="button" name="button" class="buttonType">
+                      <img src="private/monPotager/images/type/ajouter.png" alt="typePlante">
+                    </button>
+                  </td>
+                  <td>
+                    <button type="button" name="button" class="buttonType">
+                      <img src="private/monPotager/images/type/ajouter.png" alt="typePlante">
+                    </button>
+                  </td>
+                  <td>
+                    <button type="button" name="button" class="buttonType">
+                      <img src="private/monPotager/images/type/ajouter.png" alt="typePlante">
+                    </button>
+                  </td>
+                  <td>
+                    <button type="button" name="button" class="buttonType">
+                      <img src="private/monPotager/images/type/ajouter.png" alt="typePlante">
+                    </button>
+                  </td>
+                  <td>
+                    <button type="button" name="button" class="buttonType">
+                      <img src="private/monPotager/images/type/ajouter.png" alt="typePlante">
+                    </button>
+                  </td>
+                </tr>
+                <tr>
+                  <td>
+                    <button type="button" name="button" class="buttonType">
+                      <img src="private/monPotager/images/type/ajouter.png" alt="typePlante">
+                    </button>
+                  </td>
+                  <td>
+                    <button type="button" name="button" class="buttonType">
+                      <img src="private/monPotager/images/type/ajouter.png" alt="typePlante">
+                    </button>
+                  </td>
+                  <td>
+                    <button type="button" name="button" class="buttonType">
+                      <img src="private/monPotager/images/type/ajouter.png" alt="typePlante">
+                    </button>
+                  </td>
+                  <td>
+                    <button type="button" name="button" class="buttonType">
+                      <img src="private/monPotager/images/type/ajouter.png" alt="typePlante">
+                    </button>
+                  </td>
+                  <td>
+                    <button type="button" name="button" class="buttonType">
+                      <img src="private/monPotager/images/type/ajouter.png" alt="typePlante">
+                    </button>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </li>
+        </ul>
+      </li>
+    </ul>
+
+    <!--Notification arrosé-->
+    <div id="notification">
+      <p>La plante a été arrosée !
+        <img src="private/monPotager/images/etatPotager/arroser.png" alt="arrosoir">
+      </p>
+    </div>
+  </main>
+</body>
+
+</html>
