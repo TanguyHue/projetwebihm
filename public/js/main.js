@@ -326,11 +326,11 @@ page('ajouttache', async function () {
 
             var buttonAnnuler = document.getElementById("annulé");
             buttonAnnuler.addEventListener("click", function () {
-                if(context.previous == "main"){
+                if (context.previous == "main") {
                     page('/main');
-                } else if(context.previous == "monpotager"){
+                } else if (context.previous == "monpotager") {
                     page('/monpotager');
-                } else if(context.previous == "agenda"){
+                } else if (context.previous == "agenda") {
                     page('/agenda');
                 }
             }
@@ -398,7 +398,7 @@ page('/', async function () {
         await renderTemplate(templates('public/templates/index.mustache'), context);
         const notificationAccueil = document.querySelector('#notificationAccueil');
         notificationAccueil.style.opacity = "0";
-        if(context.erreur){
+        if (context.erreur) {
             notificationAccueil.innerHTML = context.erreur + '<img src="public/images/mauvais.png" alt="erreur">';
             console.log(context.erreur);
             notificationAccueil.style.opacity = "1";
