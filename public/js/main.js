@@ -396,6 +396,16 @@ page('/', async function () {
     async function renderLoginPage(context) {
         // On rend le template
         await renderTemplate(templates('public/templates/index.mustache'), context);
+        const notificationAccueil = document.querySelector('#notificationAccueil');
+        notificationAccueil.style.opacity = "0";
+        if(context.erreur){
+            notificationAccueil.innerHTML = context.erreur + '<img src="public/images/mauvais.png" alt="erreur">';
+            console.log(context.erreur);
+            notificationAccueil.style.opacity = "1";
+            setTimeout(function () {
+                notificationAccueil.style.opacity = "0";
+            }, 3000);
+        }
         const login_btn = document.querySelector('#login-btn');
         login_btn.addEventListener('click', loadMain);
         document.querySelector('#identifiant').addEventListener('keypress', (event) => {
@@ -448,11 +458,13 @@ page('/', async function () {
                             role: user.role
                         };
                         console.log(context.user);
+                        context.erreur = false;
                         page('/main');
                     }
                     else {
                         // Sinon on réaffiche la page avec quelques infos pour expliquer ce qui n'a pas marché
-                        renderLoginPage({ ...context, username, password, message: result.message });
+                        context.erreur = result.message;
+                        renderLoginPage(context);
                     }
                 }
             }

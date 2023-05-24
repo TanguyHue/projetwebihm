@@ -1,4 +1,5 @@
-html, body{
+html,
+body {
     background-color: rgb(228, 228, 228);
     height: 100vh;
     width: 100vw;
@@ -51,10 +52,10 @@ html, body{
 }
 
 #login form input:focus {
-   border: 1px solid greenyellow;
+    border: 1px solid greenyellow;
 }
 
-#login form input:last-of-type{
+#login form input:last-of-type {
     margin-top: 1em;
     border-radius: 8px;
     background-color: greenyellow;
@@ -65,7 +66,36 @@ html, body{
     transition: all 0.2s ease-in-out;
 }
 
-#login form input:last-of-type:hover{
+#login form input:last-of-type:hover {
     background-color: rgb(190, 255, 93);
     cursor: pointer;
+}
+
+#notificationAccueil {
+    position: absolute;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    top: 30px;
+    height: 50px;
+    background-color: white;
+    border-radius: 5px;
+    border: 1px solid red;
+    padding: 8px;
+    width: 250px;
+    right: calc(50vw - 125px);
+    opacity: 0;
+    transition: all 0.2s ease-in-out;
+}
+
+#notificationAccueil p {
+    display: flex;
+    align-items: center;
+    font-size: 18px;
+    margin-bottom: 0;
+}
+
+#notificationAccueil img {
+    height: 32px;
+    margin-right: 8px;
 }
