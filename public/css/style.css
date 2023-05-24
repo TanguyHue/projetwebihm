@@ -1,29 +1,57 @@
 html, body{
-    height: 100%;
-}
-
-#login{
-    background-color: #f5f5f5;
+    background-color: rgb(228, 228, 228);
     height: 100vh;
     width: 100vw;
-    position: absolute;
-    top: 0;
 }
 
-#login form {
-    margin-top: calc(50vh - 200px);
+#login {
+    overflow: hidden;
+    padding-top: 16px;
+    text-align: center;
+    padding-bottom: 8px;
     display: flex;
     flex-direction: column;
     align-items: center;
 }
 
+#login h1 {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+#presentation {
+    width: 50vw;
+    border-radius: 8px;
+    box-shadow: 2px 2px 2px #888888;
+    transition: all 1s ease-in-out;
+}
+
+#presentation:hover {
+    opacity: 0.4;
+    width: 48vw;
+}
+
+#login form {
+    margin-top: 30px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 50vw;
+}
+
 #login form input:not([type="button"]) {
     margin: 1em;
-    width: 100%;
+    width: 300px;
     border-radius: 4px;
     box-shadow: 2px 2px 2px #888888;
     border: none;
     padding: 4px;
+}
+
+#login form input:focus {
+   border: 1px solid greenyellow;
 }
 
 #login form input:last-of-type{
@@ -34,13 +62,10 @@ html, body{
     border: none;
     padding: 4px;
     align-self: flex-end;
+    transition: all 0.2s ease-in-out;
 }
 
-.container {
-    margin-bottom: 0.5em;
-}
-
-.footer {
-    background-color: #f5f5f5;
-    text-align: center;
+#login form input:last-of-type:hover{
+    background-color: rgb(190, 255, 93);
+    cursor: pointer;
 }
