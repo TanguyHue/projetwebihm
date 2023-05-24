@@ -54,36 +54,40 @@ page('main', async function () {
     }
     else {
         context.previous = 'main';
-        async function getData() {
+        async function loadMain() {
             await renderTemplate(templates('private/main/main.mustache'));
-            await fetch('https://api.open-meteo.com/v1/forecast?latitude=47.22&longitude=-1.55&hourly=temperature_2m,relativehumidity_2m,precipitation_probability,windspeed_10m,uv_index,terrestrial_radiation&current_weather=true&forecast_days=1&timezone=Europe%2FBerlin')
-                .then(response => response.json())
-                .then(data => {
-                    const uv = document.getElementById('uv');
-                    const temp = document.getElementById('temperature');
-                    const ozone = document.getElementById('ozone');
-                    const vent = document.getElementById('vent');
-                    const humidite = document.getElementById('humidite');
-                    const pluie = document.getElementById('pluie');
+            async function getMeteo() {
+                await fetch('https://api.open-meteo.com/v1/forecast?latitude=47.22&longitude=-1.55&hourly=temperature_2m,relativehumidity_2m,precipitation_probability,windspeed_10m,uv_index,terrestrial_radiation&current_weather=true&forecast_days=1&timezone=Europe%2FBerlin')
+                    .then(response => response.json())
+                    .then(data => {
+                        const uv = document.getElementById('uv');
+                        const temp = document.getElementById('temperature');
+                        const ozone = document.getElementById('ozone');
+                        const vent = document.getElementById('vent');
+                        const humidite = document.getElementById('humidite');
+                        const pluie = document.getElementById('pluie');
 
-                    const hour = new Date().getHours();
+                        const hour = new Date().getHours();
 
-                    temp.innerHTML = data.current_weather.temperature + data.hourly_units.temperature_2m;
-                    vent.innerHTML = data.current_weather.windspeed + data.hourly_units.windspeed_10m;
+                        temp.innerHTML = data.current_weather.temperature + data.hourly_units.temperature_2m;
+                        vent.innerHTML = data.current_weather.windspeed + data.hourly_units.windspeed_10m;
 
-                    uv.innerHTML = data.hourly.uv_index[hour] + data.hourly_units.uv_index;
-                    ozone.innerHTML = data.hourly.terrestrial_radiation[hour] + data.hourly_units.terrestrial_radiation;
-                    humidite.innerHTML = data.hourly.relativehumidity_2m[hour] + data.hourly_units.relativehumidity_2m;
-                    pluie.innerHTML = data.hourly.precipitation_probability[hour] + data.hourly_units.precipitation_probability;
+                        uv.innerHTML = data.hourly.uv_index[hour] + data.hourly_units.uv_index;
+                        ozone.innerHTML = data.hourly.terrestrial_radiation[hour] + data.hourly_units.terrestrial_radiation;
+                        humidite.innerHTML = data.hourly.relativehumidity_2m[hour] + data.hourly_units.relativehumidity_2m;
+                        pluie.innerHTML = data.hourly.precipitation_probability[hour] + data.hourly_units.precipitation_probability;
+                    })
+                    .catch(err => console.error(err));
+            }
 
-                    const buttonReload = document.getElementById('reload');
-                    buttonReload.addEventListener('click', () => {
-                        console.log("Reload");
-                        getData();
-                    }
-                    );
-                })
-                .catch(err => console.error(err));
+            getMeteo();
+
+            const buttonReload = document.getElementById('reload');
+            buttonReload.addEventListener('click', () => {
+                console.log("Reload");
+                getMeteo();
+            }
+            );
 
             const boutonsAssignation = document.querySelectorAll("#toDo input[name='assignation']");
             boutonsAssignation.forEach(function (bouton) {
@@ -136,7 +140,7 @@ page('main', async function () {
             departUser.innerHTML = "Département : " + context.user.departement;
         }
 
-        getData();
+        loadMain();
         console.log("main.js chargé");
     }
 });
@@ -147,7 +151,7 @@ page('monpotager', async function () {
     }
     else {
         context.previous = 'monpotager';
-        async function getData() {
+        async function loadPotager() {
             await renderTemplate(templates('private/monpotager/monpotager.mustache'));
             const etatSelect = document.getElementById('etat');
             const imgEtat = document.getElementById('imgEtat');
@@ -215,7 +219,7 @@ page('monpotager', async function () {
             );
         }
 
-        getData();
+        loadPotager();
     }
 });
 
