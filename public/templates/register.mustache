@@ -1,0 +1,77 @@
+<!-- HTML Tanguy HUE -->
+
+<!DOCTYPE html> <!-- déclaration du doctype HTML5 -->
+<html lang="en"> <!-- il faut préciser la langue du document html -->
+
+<head> <!-- entête: titre, feuilles de style, scripts, etc. -->
+  <meta charset="utf-8" lang="en"> <!-- encodage des caractères : obligatoire ! -->
+  <link rel="stylesheet" href="public/css/ajoutUser.css"> <!-- feuille de style: optionnel -->
+  <link type="image/png" sizes="96x96" rel="icon" href="images/favicon.png">
+</head>
+
+<body>
+  <header>
+    <h1>Ajouter un utilisateur
+      <img src="public/images/ajout.webp" alt="ajout">
+    </h1>
+  </header>
+  <main>
+    <div>
+      <form id="formRegister">
+        <div>
+          <p>Veuillez rentrer les informations demandées pour la création du compte</p>
+          <p>Les informations avec un astérisque (*) sont obligatoires</p>
+        </div>
+        <div>
+          <label for="nom">Nom *</label>
+          <input type="text" name="nom" placeholder="Entrez votre nom" id="nom" required>
+        </div>
+        <div>
+          <label for="prenom">Prénom *</label>
+          <input type="text" name="prenom" placeholder="Entrez votre prénom" id="prenom" required>
+        </div>
+        <div>
+          <label for="email">Email *</label>
+          <input type="email" name="email" placeholder="Entrez votre email" id="email" required>
+        </div>
+        <div>
+          <label for="password">Mot de passe *</label>
+          <input type="password" name="password" placeholder="Entrez votre mot de passe" id="password" required>
+          <input type="password" name="password" placeholder="Confirmez votre mot de passe" id="password2" required>
+        </div>
+        <div>
+          <label for="departement">Département *</label>
+          <input type="text" name="departement" placeholder="Entrez votre département" id="departement" required>
+        </div>
+        <div>
+          <label for="disponibilite">Disponibilité</label>
+          <input type="date" name="disponibilite" placeholder="Entrez votre disponibilité" id="disponibilite">
+        </div>
+        <div>
+          <label for="preferences">Préférences</label>
+          <input type="text" name="preferences" placeholder="Entrez vos préférences" id="preferences">
+        </div>
+        <div>
+          <label for="langue">Langue</label>
+          <input type="text" name="langue" placeholder="Entrez votre langue" id="langue">
+          </div>
+        <div>
+          <label for="role">Role *</label>
+          <input type="text" name="role" placeholder="Entrez votre role" id="role" required>
+        </div>
+        <div id="bouton">
+          <input type="submit" value="Créer mon compte" id="validé">
+          <input type="button" value="Revenir à l'accueil" id="annulé">
+        </div>
+      </form>
+    </div>
+    <!--Notification erreur-->
+    <div id="notificationRegister">
+      <p>Les mots de passe de correspondent pas
+        <img src="public/images/mauvais.png" alt="erreur">
+      </p>
+    </div>
+  </main>
+</body>
+
+</html>

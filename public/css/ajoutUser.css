@@ -9,10 +9,11 @@
 body {
   background-color: gainsboro;
   font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
-  height: 100vh;
   width: 100vw;
+  height: 100%;
   justify-content: center;
   align-items: center;
+  overflow-x: hidden;
 }
 
 button {
@@ -23,6 +24,14 @@ header h1 {
   padding-top: 30px;
   text-align: center;
   margin-bottom: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+header h1 img {
+  width: 32px;
+  margin-left: 16px;
 }
 
 main {
@@ -37,7 +46,12 @@ form {
   border-radius: 4px;
 }
 
-form > div {
+form>div:first-of-type p{
+  font-size: 14px;
+  margin-bottom: 0;
+}
+
+form>div {
   background-color: white;
   padding: 8px;
   border-radius: 8px;
@@ -63,8 +77,8 @@ form div input#assignation {
 
 input[type="text"],
 input[type="date"],
-input[type="number"],
-textarea {
+input[type="password"],
+input[type="email"] {
   width: 100%;
   padding: 8px;
   box-sizing: border-box;
@@ -91,10 +105,10 @@ textarea {
   min-height: 90px;
 }
 
-input[type="text"]:focus, 
-input[type="date"]:focus, 
-input[type="number"]:focus,
-textarea:focus {
+input[type="text"]:focus,
+input[type="date"]:focus,
+input[type="password"]:focus,
+input[type="email"]:focus {
   outline: none;
   border: 1px solid #4CAF50;
 }
@@ -124,4 +138,33 @@ textarea:focus {
 #bouton input:last-of-type {
   right: 8px;
   background-color: red;
+}
+
+#notificationRegister {
+  position: absolute;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  top: 30px;
+  height: 50px;
+  background-color: white;
+  border-radius: 5px;
+  border: 1px solid red;
+  padding: 8px;
+  width: 250px;
+  right: calc(50vw - 125px);
+  opacity: 0;
+  transition: all 0.2s ease-in-out;
+}
+
+#notificationRegister p {
+  display: flex;
+  align-items: center;
+  font-size: 18px;
+  margin-bottom: 0;
+}
+
+#notificationRegister img {
+  height: 32px;
+  margin-right: 8px;
 }

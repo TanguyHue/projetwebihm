@@ -390,6 +390,83 @@ page('ajoutplante', async function () {
     }
 });
 
+page('register', async function () {
+    await renderTemplate(templates('public/templates/register.mustache'), context);
+    const boutonBack = document.getElementById('annulé');
+    boutonBack.addEventListener('click', () => {
+        page('/');
+    }
+    );
+
+    const formRegister = document.getElementById('formRegister');
+    formRegister.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        console.log('register');   
+    }
+    );
+    const boutonRegister = document.getElementById('validé');
+    boutonRegister.addEventListener('click', async () => {
+        console.log('register');
+        const nom = document.getElementById('nom').value;
+        console.log(nom);
+        const prenom = document.getElementById('prenom').value;
+        console.log(prenom);
+        const email = document.getElementById('email').value;
+        console.log(email);
+        const password = document.getElementById('password').value;
+        console.log(password);
+        const password2 = document.getElementById('password2').value;
+        const departement = document.getElementById('departement').value;
+        const disponibilite = document.getElementById('disponibilite').value;
+        console.log(disponibilite);
+        const preferences = document.getElementById('preferences').value;
+        console.log(preferences);
+        const langue = document.getElementById('langue').value;
+        const role = document.getElementById('role').value;
+
+        if (nom == "" || prenom == "" || email == "" || password == "" || password2 == "" || role == "" || departement == "") {
+            const notificationRegister = document.getElementById('notificationRegister');
+            notificationRegister.style.top = window.scrollY + 20 + "px";
+            notificationRegister.innerHTML = 'Il manque des informations<img src="public/images/mauvais.png" alt="erreur">'
+            notificationRegister.style.opacity = 1;
+            setTimeout(function () {
+                notificationRegister.style.opacity = "0";
+            }, 3000);
+        } else if (password != password2) {
+            console.log('mdp pas identique');
+            const notificationRegister = document.getElementById('notificationRegister');
+            notificationRegister.style.top = window.scrollY + 20 + "px";
+            notificationRegister.innerHTML = 'Les mots de passe de correspondent pas<img src="public/images/mauvais.png" alt="erreur">'
+            notificationRegister.style.opacity = 1;
+            setTimeout(function () {
+                notificationRegister.style.opacity = "0";
+            }, 3000);
+        } else {
+            try {
+                // On fait ensuite un fetch sur l'api pour s'authentifier
+                const result = await fetch('api/user/add', {
+                    headers: {
+                        'Accept': 'application/json',
+                        'Content-Type': 'application/x-www-form-urlencoded; charset=utf-8',
+                    },
+                    method: 'POST',
+                    body: 'nom=' + encodeURIComponent(nom) + '&prenom=' + encodeURIComponent(prenom) + '&email=' + encodeURIComponent(email) + '&password=' + encodeURIComponent(password) + '&departement=' + encodeURIComponent(departement) + '&disponibilite=' + encodeURIComponent(disponibilite) + '&preferences=' + encodeURIComponent(preferences) + '&langue=' + encodeURIComponent(langue) + '&role=' + encodeURIComponent(role),
+                });
+
+                context.previous = 'register';
+
+                page('/');
+            }
+            catch (e) {
+                console.error(e);
+                page('/');
+                return;
+            }
+        }
+    }
+    );
+});
+
 // Route pour la page principale (index.html)
 page('/', async function () {
     // pas besoin de faire de await sur cet appel puisqu'il n'y a pas d'autre 
@@ -409,7 +486,22 @@ page('/', async function () {
             setTimeout(function () {
                 notificationAccueil.style.opacity = "0";
             }, 3000);
+            context.erreur = '';
         }
+
+        if (context.previous == 'register') {
+            notificationAccueil.innerHTML = 'Votre compte a bien été créé ! <img src="public/images/bon.png" alt="bon">';
+            notificationAccueil.style.borderColor = "green";
+            notificationAccueil.style.width = "280px";
+            notificationAccueil.style.opacity = "1";
+            setTimeout(function () {
+                notificationAccueil.style.opacity = "0";
+                notificationAccueil.style.borderColor = "red";
+                notificationAccueil.style.width = "250px";
+            }, 3000);
+            context.previous = '';
+        }
+
         const login_btn = document.querySelector('#login-btn');
         login_btn.addEventListener('click', loadMain);
         document.querySelector('#identifiant').addEventListener('keypress', (event) => {
@@ -421,6 +513,10 @@ page('/', async function () {
             if (event.keyCode === 13) {
                 loadMain();
             }
+        });
+
+        document.querySelector('#register-btn').addEventListener('click', () => {
+            page('/register');
         });
 
         async function loadMain() {

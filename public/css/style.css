@@ -1,8 +1,22 @@
 html,
 body {
     background-color: rgb(228, 228, 228);
-    height: 100vh;
     width: 100vw;
+}
+
+div.erreurChargement {
+    text-align: center;
+}
+
+img.erreurChargement {
+    width: 40vw;
+    border-radius: 8px;
+    box-shadow: 2px 2px 2px #888888;
+    margin-bottom: 2em;
+}
+
+h1.erreurChargement {
+    padding: 2em;
 }
 
 #login {
@@ -55,7 +69,7 @@ body {
     border: 1px solid greenyellow;
 }
 
-#login form input:last-of-type {
+#login form ul input {
     margin-top: 1em;
     border-radius: 8px;
     background-color: greenyellow;
@@ -66,10 +80,21 @@ body {
     transition: all 0.2s ease-in-out;
 }
 
-#login form input:last-of-type:hover {
+#login form ul input:hover {
     background-color: rgb(190, 255, 93);
     cursor: pointer;
 }
+
+#login ul {
+    width: 300px;
+    display: flex;
+    justify-content: space-between;
+    list-style-type: none;
+    align-items: center;
+    padding: 0;
+    margin: 0;
+}
+
 
 #notificationAccueil {
     position: absolute;

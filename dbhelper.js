@@ -48,6 +48,11 @@ module.exports.users = {
     }),
     byId: id => get(`select adresse_mail as username from user where id = ${id}`),
     byIdAndPassword: (id, password) => get(`select * from user where id = ${id} and password = '${password}'`),
+
+    addUser: (adresse_mail, password, nom, prenom, departement, disponibilite, preferences, langue, role) => get(`
+              insert into user (adresse_mail, password, nom, prenom, departement, disponibilite, preferences, langue, role)
+                values ('${adresse_mail}', '${password}', '${nom}', '${prenom}', '${departement}', '${disponibilite}', '${preferences}', '${langue}', '${role}');
+          `),
 };
 
 
