@@ -1,0 +1,53 @@
+<!-- HTML Tanguy HUE & Bastien BAUDOUIN -->
+
+<!DOCTYPE html>     <!-- déclaration du doctype HTML5 -->
+<html lang="en">    <!-- il faut préciser la langue du document html -->
+  <head>            <!-- entête: titre, feuilles de style, scripts, etc. -->
+    <meta charset="utf-8" lang="en"> <!-- encodage des caractères : obligatoire ! -->
+    <link rel="stylesheet" href="private/ajoutPlante/style.css"> <!-- feuille de style: optionnel -->
+  </head>
+  <body>
+    <header>
+      <h1>Ajouter une nouvelle plante
+        <img src="private/ajoutPlante/images/villageois.png" alt="villageois">
+      </h1>
+    </header>
+    <main>
+      <div>
+        <form id="formRegister">
+          <div>
+            <p>Les informations avec un astérisque (*) sont obligatoires</p>
+          </div>
+          <div>
+            <label for="nom">Nom *</label>
+            <input type="text" name="nom" placeholder="Entrez le nom de la plante" id="nom" required>
+          </div>
+          <div>
+            <label for="datePlantation">Date de plantation *</label>
+            <input type="date" name="datePlantation" id="datePlantation" required>
+          </div>
+          <div>
+            <label for="dateFloraison">Date de floraison *</label>
+            <input type="date" name="dateFloraison" id="dateFloraison" required>
+          </div>
+          <div>
+            <label for="intervalleArrosage">Intervalle d'arrosage *</label>
+            <input type="number" name="intervalleArrosage" placeholder="Entrez l'intervalle d'arrosage de la plante" id="intervalleArrosage" required>
+          </div>
+          <div>
+            <label for="engrais">Engrais conseillé</label>
+            <input type="text" name="engrais" placeholder="Entrez l'engrais de la plante" id="engrais" required>
+          </div>
+          <div>
+            <label for="commentaire">Commentaire</label>
+            <textarea id="commentaire" name="commentaire" rows="4" cols="50" placeholder="Entrez un commentaire"></textarea>
+          </div>
+          <div id="bouton">
+            <input type="button" value="Revenir à l'accueil" id="annulé">
+            <input type="submit" value="Ajouter la plante" id="validé">
+          </div>
+        </form>
+      </div>
+    </main>
+  </body>
+</html>

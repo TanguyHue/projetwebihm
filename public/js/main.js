@@ -386,7 +386,7 @@ page('ajoutplante', async function () {
         page('/');
     }
     else {
-        renderTemplate(templates('private/ajoutplante.mustache'), { ...context, ariane: [{ text: 'Home', url: '/' }, { text: 'Admin' }] });
+        renderTemplate(templates('private/ajoutPlante/ajoutPlante.mustache'));
     }
 });
 
