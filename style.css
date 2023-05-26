@@ -1,12 +1,12 @@
 /* CSS Tanguy HUE INFO3 */
 
 /* mise en page générale */
-*{
+* {
   margin: 0;
   padding: 0;
 }
 
-body{
+body {
   background-color: gainsboro;
   font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
   height: 100vh;
@@ -18,105 +18,120 @@ button {
 }
 
 /* header */
-header #infoUser {
-  position: absolute;
-  background-color: rgb(223, 219, 172);
+header div:first-of-type {
+  display: inline-block;
+  background-color: white;
   color: black;
-  text-align: left;
+  text-align: center;
   margin-top: 16px;
-  margin-left: 4px;
-  padding: 2px;
+  margin-left: 16px;
+  padding: 8px;
+  padding-top: 12px;
+  padding-bottom: 12px;
   border-radius: 5px;
   font-size: 16px;
   box-shadow: 0px 1px 0px 0px grey;
 }
 
-header #infoUser p {
-  margin: 6px;
+header div:first-of-type img {
+  display: inline;
+  height: 16px;
 }
 
-header #infoUser button {
-  width: 100%;
-  text-align: center;
-  background: transparent;
-  border-style: none;
-  margin-top: 4px;
-  margin-bottom: 4px;
-}
-
-header #météo {
-  background-color: white;
+header div:last-of-type {
   position: absolute;
   right: 16px;
   top: 16px;
-  border-radius: 16px;
-  box-shadow: 0px 1px 0px 0px grey;
-  padding: 8px;
 }
 
-header #météo h2 {
-  color: grey;
-  font-size: 16px;
-  margin-left: 24px;
-}
-
-header #météo table {
-  text-align: center;
-}
-
-header #météo table td {
-  padding: 4px;
-}
-
-header #météo button {
-  position: inherit;
-  background: transparent;
-  border-style: none;
-  top: 4px;
-  right: 16px;
-}
-
-header #météo button img {
-  width: 24px;
-  height: 24px;
-  margin-top: 4px;
-}
-
-header #météo img {
-  margin-top: 8px;
-  width: 36px;
-  height: 36px;
+header div:last-of-type img {
+  width: 64px;
 }
 
 /* main */
-main{
-  margin-top: 50vh;
+main {
   margin-left: 4px;
   margin-right: 4px;
 }
 
-main ul:not(.desc) {
-  display: block;
-}
-
-main ul li:not(.desc) {
-  display: inline-block;
-}
-
-main #general{
-  display: flex;
-  flex-direction: column;
-}
-
-main #general button {
+main li.mainLi:first-of-type {
+  margin-top: 16px;
   margin-bottom: 16px;
+}
+
+main li.mainLi>ul {
+  display: flex;
+  justify-content: space-between;
+  list-style-type: none;
+  align-items: center;
+  padding: 0;
+  margin: 0;
+}
+
+main li.mainLi>ul>li:first-of-type {
+  margin-left: 20px;
+}
+
+main li.mainLi>ul>li:last-of-type {
+  margin-right: 20px;
+}
+
+main ul.ulToDo {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+main ul.ulToDo>li {
+  margin-right: 32px;
+  margin-left: 32px;
+}
+
+main *.etatPotager {
   background-color: white;
   border-radius: 5px;
   box-shadow: 0px 1px 0px 0px grey;
-  padding: 8px;
-  padding-right: 126px;
+  padding: 16px;
+  width: 250px;
+  margin-top: 16px;
+  margin-bottom: 16px;
+}
+
+main *.etatPotager label {
+  font-size: 16px;
+  margin-right: 16px;
+}
+
+main *.etatPotager select {
+  font-size: 14px;
+  border-radius: 4px;
+}
+
+main *.etatPotager select option img {
+  height: 16px;
+  margin-right: 8px;
+  margin-left: 8px;
+}
+
+main #retour {
+  font-size: 16px;
   border: none;
-  text-align: left;
+  align-items: center;
+  display: flex;
+  justify-content: center;
+  width: 170px;
+  padding: 16px;
+  transition: all 0.2s ease-in-out;
+}
+
+main #retour img {
+  cursor: pointer;
+  height: 20px;
+  margin-left: 64px;
+}
+
+main #retour:hover {
+  background-color: #cacaca;
 }
 
 main #toDo {
@@ -124,7 +139,10 @@ main #toDo {
   border-radius: 5px;
   box-shadow: 0px 1px 0px 0px grey;
   padding: 8px;
-  width: 400px;
+  position: relative;
+  padding-bottom: 28px;
+  padding-right: 30px;
+  right: 4px;
 }
 
 main #toDo h2 {
@@ -135,30 +153,45 @@ main #toDo h2 {
 main #toDo ul {
   margin-left: 20px;
   list-style-type: none;
+  max-height: 140px;
+  overflow-y: auto;
+  overflow-x: hidden;
 }
 
-main #toDo ul li {
-  margin-bottom: 4px;
+main #toDo ul li:not(.desc) {
+  margin-bottom: 14px;
+  height: 100%;
+  width: 100%;
+  margin-right: 10px;
+}
+
+main #toDo ul li form {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
 }
 
 main #toDo ul li label {
   margin-left: 4px;
 }
 
-main #toDo ul li #nomTache {
+main #toDo ul li label.nomTache {
   margin-left: 4px;
   font-weight: bold;
   font-size: 14px;
 }
 
-main #toDo ul li #description {
+main #toDo ul li label.description {
   margin-left: 4px;
   margin-top: -10px;
-  font-size: 14px;
+  font-size: 12px;
+  margin-right: 20px;
 }
 
-main #toDo ul li #date {
-  margin-left: 4px;
+main #toDo ul li label.date {
+  margin-left: 6px;
+  margin-right: 24px;
+  font-size: 12px;
 }
 
 main #toDo ul li label {
@@ -171,4 +204,125 @@ main #toDo ul li input[type="button"] {
   border-radius: 4px;
   padding-left: 8px;
   padding-right: 8px;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  cursor: pointer;
+  width: 200px;
+  transition: all 0.2s ease-in-out;
+}
+
+main #toDo ul li input[type="button"]:hover {
+  background-color: #cacaca;
+}
+
+main #toDo button {
+  border-style: none;
+  background-color: transparent;
+  position: absolute;
+  right: 8px;
+}
+
+
+main li.info div {
+  background-color: white;
+  border-radius: 5px;
+  box-shadow: 0px 1px 0px 0px grey;
+  padding: 8px;
+  position: relative;
+  padding-bottom: 24px;
+  padding-right: 30px;
+  right: 4px;
+}
+
+main #info div.etatPotager {
+  margin-left: 16px;
+  max-height: 350px;
+  overflow-y: auto;
+  width: 100%;
+}
+
+main #info div.etatPotager h2 {
+  display: flex;
+  align-items: center;
+}
+
+main #info div.etatPotager h2:first-of-type + p {
+  margin-left: 16px;
+  font-size: 14px;
+  margin-bottom: 8px;
+  color: rgb(97, 156, 233);
+  display: flex;
+  align-items: center;
+}
+
+main #info div.etatPotager h2:first-of-type + p img{
+  height: 14px;
+  margin-left: 8px;
+}
+
+main #info div.etatPotager img {
+  margin-left: 12px;
+  height: 28px;
+}
+
+main #info div.etatPotager button {
+  background-color: aqua;
+  border-radius: 4px;
+  border-style: none;
+  padding: 4px;
+  transition: all 0.2s ease-in-out;
+  margin-bottom: 12px;
+}
+
+main #info div.etatPotager button:hover {
+  background-color: aquamarine;
+}
+
+
+main button.buttonType {
+  border-style: none;
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+  overflow: hidden;
+  height: 64px;
+  width: 64px;
+  margin: 8px;
+}
+
+main button.buttonType:hover {
+  background-color: rgb(70, 192, 70);
+}
+
+main button.buttonType img {
+  height: 64px;
+  border: 2px solid rgb(70, 192, 70);
+}
+
+
+main #notification {
+  position: absolute;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  top: 30px;
+  height: 50px;
+  background-color: white;
+  border-radius: 5px;
+  box-shadow: 0px 1px 0px 0px grey;
+  padding: 8px;
+  width: 250px;
+  right: calc(50vw - 125px);
+  opacity: 0;
+  transition: all 0.2s ease-in-out;
+}
+
+main #notification p {
+  display: flex;
+  align-items: center;
+  font-size: 18px;
+  margin-bottom: 0;
+}
+
+main #notification img {
+  height: 32px;
 }
