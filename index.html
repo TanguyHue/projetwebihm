@@ -3,115 +3,53 @@
 <!DOCTYPE html>     <!-- déclaration du doctype HTML5 -->
 <html lang="en">    <!-- il faut préciser la langue du document html -->
   <head>            <!-- entête: titre, feuilles de style, scripts, etc. -->
-    <meta charset="utf-8" lang="en">  <!-- encodage des caractères : obligatoire ! -->
-    <title>PolyMusic</title>    <!-- titre de la page: obligatoire -->
+    <meta charset="utf-8" lang="en"> <!-- encodage des caractères : obligatoire ! -->
+    <title>titre</title>
     <link rel="stylesheet" href="style.css"> <!-- feuille de style: optionnel -->
+    <link type="image/png" sizes="96x96" rel="icon" href="images/favicon.png">
   </head>
   <body>
     <header>
-      <ul>
-        <li>
-          <div id="infoUser">
-            <p>Nom</p>
-            <p>Rôle : Étudiant</p>
-            <p>Département</p>
-            <button type="button" name="button">Déconnexion</button>
-          </div>
-        </li>
-        <li>
-          <div id="météo">
-            <h2>Polytech Nantes</h2>
-
-            <table>
-              <tr>
-                <td><img src="images/uv.png"></td>
-                <td><img src="images/thermo.png"></td>
-                <td><img src="images/soleil.png"></td>
-                <td><img src="images/air.png"></td>
-                <td><img src="images/goutte.png"></td>
-                <td><img src="images/pluie.png"></td>
-              </tr>
-              <tr>
-                <td>
-                  <p>UV</p>
-                </td>
-                <td>
-                  <p>Température</p>
-                </td>
-                <td>
-                  <p>Ozone</p>
-                </td>
-                <td>
-                  <p>Vitesse du vent</p>
-                </td>
-                <td>
-                  <p>Humidité</p>
-                </td>
-                <td>
-                  <p>Précipitation</p>
-                </td>
-              </tr>
-              <tr>
-                <td>
-                  <p>3</p>
-                </td>
-                <td>
-                  <p>20°C</p>
-                </td>
-                <td>
-                  <p>300</p>
-                </td>
-                <td>
-                  <p>10km/h</p>
-                </td>
-                <td>
-                  <p>50%</p>
-                </td>
-                <td>
-                  <p>0%</p>
-                </td>
-              </tr>
-            </table>
-
-            <button type="button" name="reload">
-              <img src="images/reload.png">
-            </button>
-          </div>
-        </li>
-      </ul>
+      <h1>Ajouter une nouvelle plante
+        <img src="images/villageois.png" alt="villageois">
+      </h1>
     </header>
     <main>
-      <ul>
-        <li>
-          <div id="general">
-            <button type="button" name="button">Mon potager</button>
-            <button type="button" name="button">Agenda général</button>
+      <div>
+        <form id="formRegister">
+          <div>
+            <p>Les informations avec un astérisque (*) sont obligatoires</p>
           </div>
-        </li>
-        <li>
-          <div id="toDo">
-            <h2>À faire</h2>
-            <ul>
-              <li>
-                <form>
-                  <input type="checkbox" name="toDo" value="toDo1">
-                  <ul class="desc">
-                    <li class="desc">
-                      <label for="toDo1" id="nomTache">À faire</label>
-                    </li>
-                    <li class="desc">
-                      <label for="toDo1" id="description">Description</label>
-                    </li>
-                  </ul>
-                  <label for="toDo1" id="date">Date</label>
-                  <input type="button" name="assignation" value="Je m'assigne cette tâche">
-                </form>
-              </li>
-            </ul>
-            <button type="button" name="button">+ Ajouter une tâche</button>
+          <div>
+            <label for="nom">Nom *</label>
+            <input type="text" name="nom" placeholder="Entrez le nom de la plante" id="nom" required>
           </div>
-        </li>
-      </ul>
+          <div>
+            <label for="datePlantation">Date de plantation *</label>
+            <input type="date" name="datePlantation" id="datePlantation" required>
+          </div>
+          <div>
+            <label for="dateFloraison">Date de floraison *</label>
+            <input type="date" name="dateFloraison" id="dateFloraison" required>
+          </div>
+          <div>
+            <label for="intervalleArrosage">Intervalle d'arrosage *</label>
+            <input type="number" name="intervalleArrosage" placeholder="Entrez l'intervalle d'arrosage de la plante" id="intervalleArrosage" required>
+          </div>
+          <div>
+            <label for="engrais">Engrais conseillé</label>
+            <input type="text" name="engrais" placeholder="Entrez l'engrais de la plante" id="engrais" required>
+          </div>
+          <div>
+            <label for="commentaire">Commentaire</label>
+            <textarea id="commentaire" name="commentaire" rows="4" cols="50" placeholder="Entrez un commentaire"></textarea>
+          </div>
+          <div id="bouton">
+            <input type="button" value="Revenir à l'accueil" id="annulé">
+            <input type="submit" value="Ajouter la plante" id="validé">
+          </div>
+        </form>
+      </div>
     </main>
   </body>
 </html>
