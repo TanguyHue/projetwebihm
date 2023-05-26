@@ -393,7 +393,15 @@ page('ajoutplante', async function () {
         page('/');
     }
     else {
-        renderTemplate(templates('private/ajoutPlante/ajoutPlante.mustache'));
+        async function load(){
+            await renderTemplate(templates('private/ajoutPlante/ajoutPlante.mustache'));
+            const boutonRetour = document.getElementById('annulé');
+            boutonRetour.addEventListener('click', () => {
+                page('/monPotager');
+            }
+            );
+        }
+        load();
     }
 });
 
