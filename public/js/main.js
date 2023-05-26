@@ -217,6 +217,13 @@ page('monpotager', async function () {
                 page('/ajouttache');
             }
             );
+
+            const boutonsAjout = document.getElementsByClassName("buttonType");
+            for (var i = 0; i < boutonsAjout.length; i++) {
+                boutonsAjout[i].addEventListener('click', function () {
+                    page('/ajoutplante');
+                });
+            }
         }
 
         loadPotager();
