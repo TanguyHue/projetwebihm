@@ -213,7 +213,7 @@ page('monpotager', async function () {
             const ulToDo = document.getElementById('toDo').querySelector('ul');
             console.log(ulToDo);
             try {
-                const result = fetch('http://127.0.0.1:8080/api/taches/' + context.user.id);
+                const result = await fetch('http://127.0.0.1:8080/api/taches/' + context.user.id);
                 const taches = await result.json();
                 console.log(taches);
                 let li;
@@ -225,7 +225,7 @@ page('monpotager', async function () {
                     const input = document.createElement('input');
                     input.type = "checkbox";
                     input.name = "toDo" + i;
-                    if(taches[i].etat == 1){
+                    if (taches[i].etat == 1) {
                         input.checked = true;
                     }
                     input.value = "Je m'assigne cette tâche";
@@ -253,7 +253,7 @@ page('monpotager', async function () {
                     date.className = "date";
                     const date2 = new Date(taches[i].date);
                     date.innerHTML = date2.toLocaleDateString();
-                    
+
                     const bouton = document.createElement('input');
                     bouton.type = "button";
                     bouton.name = "assignation";
@@ -267,7 +267,7 @@ page('monpotager', async function () {
                     li.appendChild(form);
 
                     ulToDo.appendChild(li);
-                }      
+                }
             } catch (error) {
                 console.log(error);
             }
@@ -313,10 +313,17 @@ page('monpotager', async function () {
 
                             const titre = document.getElementById('infoTitre');
                             const infoDernArrosage = document.getElementById('infoDernArrosage');
+                            infoDernArrosage.style.display = "flex";
                             const infoProchArrosage = document.getElementById('infoProchArrosage');
+                            infoProchArrosage.style.display = "flex";
                             const infoIntervalle = document.getElementById('infoIntervalle');
+                            infoIntervalle.style.display = "flex";
                             const infoEngrais = document.getElementById('infoEngrais');
+                            infoEngrais.style.display = "flex";
                             const infoConseil = document.getElementById('infoConseil');
+                            infoConseil.style.display = "flex";
+                            const arroser = document.getElementById('arroser');
+                            arroser.style.display = "flex";
 
                             titre.innerHTML = plantes[this.numero].nom;
                             let date = potagers[this.numero].date_dernier_arrosage.split('-');
@@ -349,32 +356,52 @@ page('monpotager', async function () {
                 }
             }
 
-            const titre = document.getElementById('infoTitre');
-            const infoDernArrosage = document.getElementById('infoDernArrosage');
-            const infoProchArrosage = document.getElementById('infoProchArrosage');
-            const infoIntervalle = document.getElementById('infoIntervalle');
-            const infoEngrais = document.getElementById('infoEngrais');
-            const infoConseil = document.getElementById('infoConseil');
+            if (plantes.length > 0) {
+                const titre = document.getElementById('infoTitre');
+                const infoDernArrosage = document.getElementById('infoDernArrosage');
+                const infoProchArrosage = document.getElementById('infoProchArrosage');
+                const infoIntervalle = document.getElementById('infoIntervalle');
+                const infoEngrais = document.getElementById('infoEngrais');
+                const infoConseil = document.getElementById('infoConseil');
 
-            titre.innerHTML = plantes[0].nom;
-            let date = potagers[0].date_dernier_arrosage.split('-');
-            let annee = date[0];
-            let mois = date[1];
-            let jour = date[2];
-            let nouvelleDateChaine = 'Date du dernier arrossage : ' + jour + '/' + mois + '/' + annee;
-            infoDernArrosage.innerHTML = nouvelleDateChaine;
-            let dateObjet = new Date(potagers[0].date_dernier_arrosage);
-            dateObjet.setDate(dateObjet.getDate() + Number(plantes[0].intervalle_arrosage));
+                titre.innerHTML = plantes[0].nom;
+                let date = potagers[0].date_dernier_arrosage.split('-');
+                let annee = date[0];
+                let mois = date[1];
+                let jour = date[2];
+                let nouvelleDateChaine = 'Date du dernier arrossage : ' + jour + '/' + mois + '/' + annee;
+                infoDernArrosage.innerHTML = nouvelleDateChaine;
+                let dateObjet = new Date(potagers[0].date_dernier_arrosage);
+                dateObjet.setDate(dateObjet.getDate() + Number(plantes[0].intervalle_arrosage));
 
-            jour = String(dateObjet.getDate()).padStart(2, '0');
-            mois = String(dateObjet.getMonth() + 1).padStart(2, '0');
-            annee = String(dateObjet.getFullYear());
+                jour = String(dateObjet.getDate()).padStart(2, '0');
+                mois = String(dateObjet.getMonth() + 1).padStart(2, '0');
+                annee = String(dateObjet.getFullYear());
 
-            nouvelleDateChaine = 'Date du prochain arrossage : ' + jour + '/' + mois + '/' + annee;
-            infoProchArrosage.innerHTML = nouvelleDateChaine;
-            infoIntervalle.innerHTML = "Intervalle d'arrossage : " + plantes[0].intervalle_arrosage + ' jours';
-            infoEngrais.innerHTML = "Engrais conseillé : " + plantes[0].engrais_conseille;
-            infoConseil.innerHTML = "Conseil : " + plantes[0].conseils;
+                nouvelleDateChaine = 'Date du prochain arrossage : ' + jour + '/' + mois + '/' + annee;
+                infoProchArrosage.innerHTML = nouvelleDateChaine;
+                infoIntervalle.innerHTML = "Intervalle d'arrossage : " + plantes[0].intervalle_arrosage + ' jours';
+                infoEngrais.innerHTML = "Engrais conseillé : " + plantes[0].engrais_conseille;
+                infoConseil.innerHTML = "Conseil : " + plantes[0].conseils;
+            } else {
+                const titre = document.getElementById('infoTitre');
+                const checkArrosé = document.getElementById('checkArrosé');
+                const infoDernArrosage = document.getElementById('infoDernArrosage');
+                const infoProchArrosage = document.getElementById('infoProchArrosage');
+                const infoIntervalle = document.getElementById('infoIntervalle');
+                const infoEngrais = document.getElementById('infoEngrais');
+                const infoConseil = document.getElementById('infoConseil');
+                const arroser = document.getElementById('arroser');
+
+                titre.innerHTML = "Aucune plante";
+                checkArrosé.innerHTML = "Ajouter une plante en cliquant sur le bouton + à droite";
+                infoDernArrosage.style.display = "none";
+                infoProchArrosage.style.display = "none";
+                infoIntervalle.style.display = "none";
+                infoEngrais.style.display = "none";
+                infoConseil.style.display = "none";
+                arroser.style.display = "none";
+            }
 
             const notification = document.getElementById('notification');
             const boutonArroser = document.getElementById('arroser');
