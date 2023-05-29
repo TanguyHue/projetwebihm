@@ -1,7 +1,6 @@
 drop table if exists user;
 drop table if exists PlanteData;
 drop table if exists PlantePotager;
-drop table if exists Potager;
 drop table if exists Taches;
 
 --
@@ -27,11 +26,11 @@ CREATE TABLE IF NOT EXISTS `user` (
 
 CREATE TABLE IF NOT EXISTS `PlanteData` (
   `id` INTEGER PRIMARY KEY AUTOINCREMENT,
-  `nom` varchar(255) NOT NULL,
-  `prix` int(11) NOT NULL,
+  `nom` varchar(255) NOT NULL UNIQUE,
   `intervalle_arrosage` varchar(255) NOT NULL,
   `conseils` varchar(255) NOT NULL,
-  `engrais_conseille` varchar(255) NOT NULL
+  `engrais_conseille` varchar(255) NOT NULL,
+  `img` int(11) NOT NULL
 );
 
 --
@@ -40,29 +39,14 @@ CREATE TABLE IF NOT EXISTS `PlanteData` (
 
 CREATE TABLE IF NOT EXISTS `PlantePotager` (
   `id` INTEGER PRIMARY KEY AUTOINCREMENT,
-  `idPlanteData` int NOT NULL,
-  `idUser` int NOT NULL,
-  `idPotager` int NOT NULL,	
-  `etat` varchar(255) NOT NULL CHECK (etat in(0,1)),
-  `date_floraison` date NOT NULL,
-  `date_recolte` date NOT NULL,
-  `date_dernier_arrosage` date NOT NULL,
   `x` int(11) NOT NULL,
   `y` int(11) NOT NULL,
+  `idPlanteData` int NOT NULL,
+  `idUser` int NOT NULL,
+  `date_recolte` date NOT NULL,
+  `date_dernier_arrosage` date NOT NULL,
   FOREIGN KEY (idPlanteData) REFERENCES PlanteData(id),
-  FOREIGN KEY (idUser) REFERENCES user(id),
-  FOREIGN KEY (idPotager) REFERENCES Potager(id)
-);
-
---
--- Création de la table `Potager`
---
-
-CREATE TABLE IF NOT EXISTS `Potager` (
-  `id` INTEGER PRIMARY KEY AUTOINCREMENT,
-  `nombre_plante` int(11) NOT NULL,
-  `largeur` int(11) NOT NULL,
-  `longueur` int(11) NOT NULL
+  FOREIGN KEY (idUser) REFERENCES user(id)
 );
 
 --
@@ -92,5 +76,4 @@ INSERT INTO `user` (`password`, `nom`, `prenom`, `adresse_mail`, `departement`, 
 INSERT INTO `user` (`password`, `nom`, `prenom`, `adresse_mail`, `departement`, `disponibilite`, `preferences`, `langue`, `role`) VALUES
 ('aaa', 'Dupond', 'Jean', 'jean@dupond', 'INFO', '1980-12-17', 'aucune', 'francais', 'beau-gosse');
 
-insert into taches (idCreateur, idRealisateur, titre, date, notes, etat) values (1, 1, 'zzaeaz', '1980-12-17', 'aaza', 0);
 insert into taches (idCreateur, idRealisateur, titre, date, notes, etat) values (1, 1, 'zzaeaz', '1980-12-17', 'aaza', 0);

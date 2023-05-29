@@ -186,6 +186,7 @@ main #toDo ul li label.description {
   margin-top: -10px;
   font-size: 12px;
   margin-right: 20px;
+  width: 300px;
 }
 
 main #toDo ul li label.date {

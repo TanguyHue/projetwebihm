@@ -7,7 +7,10 @@
 
 // Notre objet contexte, qui contiendra toutes les données
 // pour les templates Mustache
-let context = { 'logged': false, 'user': 0, 'previous': 0 };
+let context = { 'logged': false, 'user': 0, 'previous': 0, 'button': 0 };
+let dataPlante = [];
+let plantes = [];
+let potagers = [];
 
 // fonction utilitaire permettant de faire du 
 // lazy loading (chargement à la demande) des templates
@@ -195,17 +198,6 @@ page('monpotager', async function () {
                 });
             });
 
-            const notification = document.getElementById('notification');
-            const boutonArroser = document.getElementById('arroser');
-
-            boutonArroser.addEventListener('click', (event) => {
-                console.log("click");
-                notification.style.opacity = "1";
-                setTimeout(function () {
-                    notification.style.opacity = "0";
-                }, 3000);
-            });
-
             const boutonRetour = document.getElementById('retour');
             boutonRetour.addEventListener('click', () => {
                 page('/main');
@@ -218,12 +210,240 @@ page('monpotager', async function () {
             }
             );
 
-            const boutonsAjout = document.getElementsByClassName("buttonType");
-            for (var i = 0; i < boutonsAjout.length; i++) {
-                boutonsAjout[i].addEventListener('click', function () {
-                    page('/ajoutplante');
-                });
+            const ulToDo = document.getElementById('toDo').querySelector('ul');
+            console.log(ulToDo);
+            try {
+                const result = fetch('http://127.0.0.1:8080/api/taches/' + context.user.id);
+                const taches = await result.json();
+                console.log(taches);
+                let li;
+                for (var i = 0; i < taches.length; i++) {
+                    console.log(taches[i]);
+                    li = document.createElement('li');
+                    const form = document.createElement('form');
+                    li.appendChild(form);
+                    const input = document.createElement('input');
+                    input.type = "checkbox";
+                    input.name = "toDo" + i;
+                    if(taches[i].etat == 1){
+                        input.checked = true;
+                    }
+                    input.value = "Je m'assigne cette tâche";
+
+                    const ulDescription = document.createElement('ul');
+                    ulDescription.className = "desc";
+
+                    const liDescription1 = document.createElement('li');
+                    liDescription.className = "desc";
+                    const labelDescription = document.createElement('label');
+                    labelDescription.className = "nomTache";
+                    labelDescription.innerHTML = taches[i].titre;
+                    liDescription1.appendChild(labelDescription);
+
+                    const liDescription2 = document.createElement('li');
+                    liDescription.className = "desc";
+                    const labelDescription2 = document.createElement('label');
+                    labelDescription2.className = "description";
+                    labelDescription2.innerHTML = taches[i].notes;
+
+                    ulDescription.appendChild(liDescription1);
+                    ulDescription.appendChild(liDescription2);
+
+                    const date = document.createElement('label');
+                    date.className = "date";
+                    const date2 = new Date(taches[i].date);
+                    date.innerHTML = date2.toLocaleDateString();
+                    
+                    const bouton = document.createElement('input');
+                    bouton.type = "button";
+                    bouton.name = "assignation";
+                    bouton.value = "Je m'assigne cette tâche";
+
+                    form.appendChild(input);
+                    form.appendChild(ulDescription);
+                    form.appendChild(date);
+                    form.appendChild(bouton);
+
+                    li.appendChild(form);
+
+                    ulToDo.appendChild(li);
+                }      
+            } catch (error) {
+                console.log(error);
             }
+
+            const boutonsAjout = document.getElementsByClassName("buttonType");
+            let j = 0;
+            let result;
+            let potager;
+            let plante;
+            for (var i = 0; i < boutonsAjout.length; i++) {
+                boutonsAjout[i].id = j + "" + i % 5;
+                if (i % 5 == 4) {
+                    j++;
+                }
+
+                try {
+                    result = await fetch('http://127.0.0.1:8080/api/potager/byXandYandUser/' + j + '/' + i % 5 + '/' + context.user.id);
+                    potager = await result.json();
+
+                    if (potager != null) {
+                        result = await fetch('http://127.0.0.1:8080/api/planteData/' + potager.idPlanteData);
+                        plante = await result.json();
+                        plantes.push(plante);
+                        potagers.push(potager);
+                        boutonsAjout[i].numero = plantes.length - 1;
+                        console.log("potager : " + plante);
+                        console.log("potager.img : " + plante.img);
+                        let icone;
+                        if (plante.img == 0) {
+                            icone = "private/monPotager/images/type/carotte.png";
+                        } else if (plante.img == 1) {
+                            icone = "private/monPotager/images/type/salade.png";
+                        } else if (plante.img == 2) {
+                            icone = "private/monPotager/images/type/tomate.png";
+                        } else {
+                            console.log("Erreur : potager.img = " + plante.img);
+                        }
+                        boutonsAjout[i].querySelector('img').src = icone;
+
+                        boutonsAjout[i].addEventListener('click', function () {
+                            context.button = this.id;
+                            console.log("bouton : " + context.button);
+
+                            const titre = document.getElementById('infoTitre');
+                            const infoDernArrosage = document.getElementById('infoDernArrosage');
+                            const infoProchArrosage = document.getElementById('infoProchArrosage');
+                            const infoIntervalle = document.getElementById('infoIntervalle');
+                            const infoEngrais = document.getElementById('infoEngrais');
+                            const infoConseil = document.getElementById('infoConseil');
+
+                            titre.innerHTML = plantes[this.numero].nom;
+                            let date = potagers[this.numero].date_dernier_arrosage.split('-');
+                            let annee = date[0];
+                            let mois = date[1];
+                            let jour = date[2];
+                            let nouvelleDateChaine = 'Date du dernier arrossage : ' + jour + '/' + mois + '/' + annee;
+                            infoDernArrosage.innerHTML = nouvelleDateChaine;
+                            let dateObjet = new Date(potagers[this.numero].date_dernier_arrosage);
+                            dateObjet.setDate(dateObjet.getDate() + Number(plantes[this.numero].intervalle_arrosage));
+
+                            jour = String(dateObjet.getDate()).padStart(2, '0');
+                            mois = String(dateObjet.getMonth() + 1).padStart(2, '0');
+                            annee = String(dateObjet.getFullYear());
+
+                            nouvelleDateChaine = 'Date du prochain arrossage : ' + jour + '/' + mois + '/' + annee;
+                            infoProchArrosage.innerHTML = nouvelleDateChaine;
+                            infoIntervalle.innerHTML = "Intervalle d'arrossage : " + plantes[this.numero].intervalle_arrosage + ' jours';
+                            infoEngrais.innerHTML = "Engrais conseillé : " + plantes[this.numero].engrais_conseille;
+                            infoConseil.innerHTML = "Conseil : " + plantes[this.numero].conseils;
+                        });
+                    } else {
+                        boutonsAjout[i].addEventListener('click', function () {
+                            context.button = this.id;
+                            page('/ajoutplante');
+                        });
+                    }
+                } catch (error) {
+                    console.log(error);
+                }
+            }
+
+            const titre = document.getElementById('infoTitre');
+            const infoDernArrosage = document.getElementById('infoDernArrosage');
+            const infoProchArrosage = document.getElementById('infoProchArrosage');
+            const infoIntervalle = document.getElementById('infoIntervalle');
+            const infoEngrais = document.getElementById('infoEngrais');
+            const infoConseil = document.getElementById('infoConseil');
+
+            titre.innerHTML = plantes[0].nom;
+            let date = potagers[0].date_dernier_arrosage.split('-');
+            let annee = date[0];
+            let mois = date[1];
+            let jour = date[2];
+            let nouvelleDateChaine = 'Date du dernier arrossage : ' + jour + '/' + mois + '/' + annee;
+            infoDernArrosage.innerHTML = nouvelleDateChaine;
+            let dateObjet = new Date(potagers[0].date_dernier_arrosage);
+            dateObjet.setDate(dateObjet.getDate() + Number(plantes[0].intervalle_arrosage));
+
+            jour = String(dateObjet.getDate()).padStart(2, '0');
+            mois = String(dateObjet.getMonth() + 1).padStart(2, '0');
+            annee = String(dateObjet.getFullYear());
+
+            nouvelleDateChaine = 'Date du prochain arrossage : ' + jour + '/' + mois + '/' + annee;
+            infoProchArrosage.innerHTML = nouvelleDateChaine;
+            infoIntervalle.innerHTML = "Intervalle d'arrossage : " + plantes[0].intervalle_arrosage + ' jours';
+            infoEngrais.innerHTML = "Engrais conseillé : " + plantes[0].engrais_conseille;
+            infoConseil.innerHTML = "Conseil : " + plantes[0].conseils;
+
+            const notification = document.getElementById('notification');
+            const boutonArroser = document.getElementById('arroser');
+
+            boutonArroser.addEventListener('click', async (event) => {
+                console.log("click");
+                notification.style.opacity = "1";
+
+                try {
+                    console.log('x=' + context.button[0] + '&y=' + context.button[1] + '&idUser=' + context.user.id);
+                    result = await fetch('api/potager/arrose', {
+                        method: 'POST',
+                        headers: {
+                            'Accept': 'application/json',
+                            'Content-Type': 'application/x-www-form-urlencoded; charset=utf-8',
+                        },
+                        body: 'x=' + context.button[0] + '&y=' + context.button[1] + '&idUser=' + context.user.id
+                    });
+
+
+                    if (result.status == 200) {
+                        console.log(result);
+                        const infoDernArrosage = document.getElementById('infoDernArrosage');
+                        const infoProchArrosage = document.getElementById('infoProchArrosage');
+                        const infoIntervalle = document.getElementById('infoIntervalle');
+
+                        const intervalle_arrosage = Number(infoIntervalle.innerHTML.split(' ')[3]);
+                        console.log("intervalle_arrosage : " + intervalle_arrosage);
+
+                        const dateActuelle = new Date();
+                        let mois = '';
+                        let jour = '';
+                        if (dateActuelle.getMonth() < 10) {
+                            mois = '0' + (dateActuelle.getMonth() + 1);
+                        } else {
+                            mois = dateActuelle.getMonth() + 1;
+                        }
+
+                        if (dateActuelle.getDate() < 10) {
+                            jour = '0' + dateActuelle.getDate();
+                        } else {
+                            jour = dateActuelle.getDate();
+                        }
+
+                        let date = jour + '/' + mois + '/' + dateActuelle.getFullYear();
+                        infoDernArrosage.innerHTML = 'Date du dernier arrossage : ' + date;
+                        date = dateActuelle.getFullYear() + '-' + mois + '-' + jour;
+                        let dateObjet = new Date(date);
+                        dateObjet.setDate(dateObjet.getDate() + intervalle_arrosage);
+
+                        jour = String(dateObjet.getDate()).padStart(2, '0');
+                        mois = String(dateObjet.getMonth() + 1).padStart(2, '0');
+                        let annee = String(dateObjet.getFullYear());
+
+                        let nouvelleDateChaine = 'Date du prochain arrossage : ' + jour + '/' + mois + '/' + annee;
+                        infoProchArrosage.innerHTML = nouvelleDateChaine;
+
+                        potagers.find(potager => potager.x == context.button[0] && potager.y == context.button[1]).date_dernier_arrosage = date;
+                    } else {
+                        console.log("Erreur : " + result.status);
+                    }
+
+                } catch (error) {
+                    console.log(error);
+                }
+                setTimeout(function () {
+                    notification.style.opacity = "0";
+                }, 3000);
+            });
         }
 
         loadPotager();
@@ -393,13 +613,178 @@ page('ajoutplante', async function () {
         page('/');
     }
     else {
-        async function load(){
+        async function load() {
             await renderTemplate(templates('private/ajoutPlante/ajoutPlante.mustache'));
+            const formPlante = document.getElementById('formPlante');
+            formPlante.addEventListener('submit', async (e) => {
+                e.preventDefault();
+                console.log('ajouté !');
+            }
+            );
             const boutonRetour = document.getElementById('annulé');
             boutonRetour.addEventListener('click', () => {
                 page('/monPotager');
             }
             );
+
+            const selectIcone = document.getElementById('icone');
+            const imageIcone = document.getElementById('imageIcone');
+            selectIcone.addEventListener('change', () => {
+                if (selectIcone.selectedIndex == 0) {
+                    imageIcone.src = "private/monPotager/images/type/carotte.png";
+                } else if (selectIcone.selectedIndex == 1) {
+                    imageIcone.src = "private/monPotager/images/type/salade.png";
+                } else if (selectIcone.selectedIndex == 2) {
+                    imageIcone.src = "private/monPotager/images/type/tomate.png";
+                }
+            }
+            );
+
+            const datePlantation = document.getElementById('datePlantation');
+            datePlantation.value = new Date().toISOString().slice(0, 10);
+            const dateRecolte = document.getElementById('dateRecolte');
+            dateRecolte.value = new Date().toISOString().slice(0, 10);
+
+            const selectPlante = document.getElementById('plante');
+            try {
+                const result = await fetch('api/planteData');
+                dataPlante = await result.json();
+                console.log(dataPlante);
+
+                for (var i = 0; i < dataPlante.length; i++) {
+                    var option = document.createElement('option');
+                    option.value = dataPlante[i].id;
+                    option.textContent = dataPlante[i].nom;
+                    selectPlante.appendChild(option);
+                }
+
+                if (!dataPlante.length) {
+                    document.getElementById('selectionPlante').style.opacity = 0;
+                    document.getElementById('selectionPlante').style.position = 'absolute';
+                    document.getElementById('selectionPlante').style.pointerEvents = 'none';
+                    document.getElementById('selectionPlante').style.height = 0;
+                    document.getElementById('selectionPlante').style.width = 0;
+                } else {
+                    selectPlante.addEventListener('change', () => {
+                        if (selectPlante.selectedIndex == 0) {
+                            document.getElementById('nom').value = "";
+                            document.getElementById('nom').disabled = false;
+                            selectIcone.getElementsByTagName("option")[0].selected = 'selected';
+                            selectIcone.disabled = false;
+                            if (selectIcone.selectedIndex == 0) {
+                                imageIcone.src = "private/monPotager/images/type/carotte.png";
+                            } else if (selectIcone.selectedIndex == 1) {
+                                imageIcone.src = "private/monPotager/images/type/salade.png";
+                            } else if (selectIcone.selectedIndex == 2) {
+                                imageIcone.src = "private/monPotager/images/type/tomate.png";
+                            }
+                            document.getElementById('intervalleArrosage').value = "";
+                            document.getElementById('intervalleArrosage').disabled = false;
+                            document.getElementById('engrais').value = "";
+                            document.getElementById('engrais').disabled = false;
+                            document.getElementById('commentaire').value = "";
+                            document.getElementById('commentaire').disabled = false;
+                        }
+                        else {
+                            document.getElementById('nom').value = dataPlante[selectPlante.selectedIndex - 1].nom;
+                            document.getElementById('nom').disabled = true;
+                            console.log(Number(dataPlante[selectPlante.selectedIndex - 1].img));
+                            selectIcone.getElementsByTagName("option")[Number(dataPlante[selectPlante.selectedIndex - 1].img)].selected = 'selected';
+                            selectIcone.disabled = true;
+                            if (selectIcone.selectedIndex == 0) {
+                                imageIcone.src = "private/monPotager/images/type/carotte.png";
+                            } else if (selectIcone.selectedIndex == 1) {
+                                imageIcone.src = "private/monPotager/images/type/salade.png";
+                            } else if (selectIcone.selectedIndex == 2) {
+                                imageIcone.src = "private/monPotager/images/type/tomate.png";
+                            }
+                            document.getElementById('intervalleArrosage').value = Number(dataPlante[selectPlante.selectedIndex - 1].intervalle_arrosage);
+                            document.getElementById('intervalleArrosage').disabled = true;
+                            document.getElementById('engrais').value = dataPlante[selectPlante.selectedIndex - 1].engrais_conseille;
+                            document.getElementById('engrais').disabled = true;
+                            document.getElementById('commentaire').value = dataPlante[selectPlante.selectedIndex - 1].conseils;
+                            document.getElementById('commentaire').disabled = true;
+                        }
+                    });
+                }
+            }
+            catch (e) {
+                console.error(e);
+                return;
+            }
+
+            document.getElementById('validé').addEventListener('click', async () => {
+                const x = Number(context.button[0]);
+                const y = Number(context.button[1]);
+
+
+
+                if (selectPlante.selectedIndex) {
+                    try {
+                        await fetch('api/potager/add', {
+                            headers: {
+                                'Accept': 'application/json',
+                                'Content-Type': 'application/x-www-form-urlencoded; charset=utf-8',
+                            },
+                            method: 'POST',
+                            body: 'idUser=' + encodeURIComponent(context.user.id) + '&idPlante=' + encodeURIComponent(selectPlante.value) + '&x=' + encodeURIComponent(x) + '&y=' + encodeURIComponent(y) + '&date_recolte=' + encodeURIComponent(document.getElementById('dateRecolte').value) + "&date_dernier_arrosage=" + encodeURIComponent(document.getElementById('datePlantation').value),
+                        });
+
+                        page('/monpotager');
+                    }
+                    catch (e) {
+                        console.error(e);
+                        return;
+                    }
+                } else {
+                    if (dataPlante.find(plante => plante.nom === document.getElementById('nom').value) === undefined) {
+                        if (document.getElementById('nom').value != "" && document.getElementById('intervalleArrosage').value != "" && document.getElementById('datePlantation').value != "" && document.getElementById('dateRecolte').value != "") {
+                            try {
+                                await fetch('api/planteData/add', {
+                                    headers: {
+                                        'Accept': 'application/json',
+                                        'Content-Type': 'application/x-www-form-urlencoded; charset=utf-8',
+                                    },
+                                    method: 'POST',
+                                    body: 'nom=' + encodeURIComponent(document.getElementById('nom').value) + '&intervalle_arrosage=' + encodeURIComponent(document.getElementById('intervalleArrosage').value) + '&engrais_conseille=' + encodeURIComponent(document.getElementById('engrais').value) + '&conseils=' + encodeURIComponent(document.getElementById('commentaire').value) + '&img=' + encodeURIComponent(selectIcone.selectedIndex),
+                                });
+
+                                const result = await fetch('api/planteData/nom/' + encodeURIComponent(document.getElementById('nom').value));
+                                const data = await result.json();
+                                console.log(data);
+                                console.log('idUser=' + encodeURIComponent(context.user.id) + '&idPlante=' + encodeURIComponent(data.id) + '&x=' + encodeURIComponent(x) + '&y=' + encodeURIComponent(y) + '&date_recolte=' + encodeURIComponent(document.getElementById('dateRecolte').value) + "&date_dernier_arrosage=" + encodeURIComponent(document.getElementById('datePlantation').value));
+
+                                await fetch('api/potager/add', {
+                                    headers: {
+                                        'Accept': 'application/json',
+                                        'Content-Type': 'application/x-www-form-urlencoded; charset=utf-8',
+                                    },
+                                    method: 'POST',
+                                    body: 'idUser=' + encodeURIComponent(context.user.id) + '&idPlante=' + encodeURIComponent(data.id) + '&x=' + encodeURIComponent(x) + '&y=' + encodeURIComponent(y) + '&date_recolte=' + encodeURIComponent(document.getElementById('dateRecolte').value) + "&date_dernier_arrosage=" + encodeURIComponent(document.getElementById('datePlantation').value),
+                                });
+
+                                page('/monpotager');
+                            }
+                            catch (e) {
+                                console.error(e);
+                                return;
+                            }
+                        }
+                    } else {
+                        alert('La plante existe déjà');
+                        console.log(dataPlante.indexOf(document.getElementById('nom').value) + 2);
+                        selectPlante.getElementsByTagName("option")[dataPlante.indexOf(document.getElementById('nom').value) + 2].selected = 'selected';
+                        document.getElementById('nom').value = dataPlante[selectPlante.selectedIndex - 1].nom;
+                        document.getElementById('nom').disabled = true;
+                        document.getElementById('intervalleArrosage').value = dataPlante[selectPlante.selectedIndex - 1].intervalle_arrosage;
+                        document.getElementById('intervalleArrosage').disabled = true;
+                        document.getElementById('engrais').value = dataPlante[selectPlante.selectedIndex - 1].engrais_conseille;
+                        document.getElementById('engrais').disabled = true;
+                        document.getElementById('commentaire').value = dataPlante[selectPlante.selectedIndex - 1].conseils;
+                        document.getElementById('commentaire').disabled = true;
+                    }
+                }
+            });
         }
         load();
     }
@@ -416,7 +801,7 @@ page('register', async function () {
     const formRegister = document.getElementById('formRegister');
     formRegister.addEventListener('submit', async (e) => {
         e.preventDefault();
-        console.log('register');   
+        console.log('register');
     }
     );
     const boutonRegister = document.getElementById('validé');
@@ -459,7 +844,7 @@ page('register', async function () {
         } else {
             try {
                 // On fait ensuite un fetch sur l'api pour s'authentifier
-                const result = await fetch('api/user/add', {
+                await fetch('api/user/add', {
                     headers: {
                         'Accept': 'application/json',
                         'Content-Type': 'application/x-www-form-urlencoded; charset=utf-8',

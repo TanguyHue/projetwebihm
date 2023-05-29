@@ -14,21 +14,37 @@
     </header>
     <main>
       <div>
-        <form id="formRegister">
+        <form id="formPlante">
           <div>
             <p>Les informations avec un astérisque (*) sont obligatoires</p>
+          </div>
+          <div id="selectionPlante">
+            <label for="plante">Reprendre une plante existante</label>
+            <select id="plante" name="plante">
+              <option value="-1">Créer une plante</option>
+            </select>
           </div>
           <div>
             <label for="nom">Nom *</label>
             <input type="text" name="nom" placeholder="Entrez le nom de la plante" id="nom" required>
           </div>
           <div>
+            <label for="icone" id="labelIcone">Icone : 
+              <img id="imageIcone" src="private/monPotager/images/type/carotte.png" alt="icone carotte">
+            </label>
+            <select id="icone" name="icone">
+              <option value="0">Carotte 🥕</option>
+              <option value="1">Salade 🥗</option>
+              <option value="2">Tomate 🍅</option>
+            </select>
+          </div>
+          <div>
             <label for="datePlantation">Date de plantation *</label>
             <input type="date" name="datePlantation" id="datePlantation" required>
           </div>
           <div>
-            <label for="dateFloraison">Date de floraison *</label>
-            <input type="date" name="dateFloraison" id="dateFloraison" required>
+            <label for="dateRecolte">Date de récolte *</label>
+            <input type="date" name="dateRecolte" id="dateRecolte" required>
           </div>
           <div>
             <label for="intervalleArrosage">Intervalle d'arrosage *</label>
@@ -36,7 +52,7 @@
           </div>
           <div>
             <label for="engrais">Engrais conseillé</label>
-            <input type="text" name="engrais" placeholder="Entrez l'engrais de la plante" id="engrais" required>
+            <input type="text" name="engrais" placeholder="Entrez l'engrais de la plante" id="engrais">
           </div>
           <div>
             <label for="commentaire">Commentaire</label>

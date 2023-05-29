@@ -80,6 +80,7 @@ input[type="date"],
 input[type="password"],
 input[type="email"],
 input[type="number"],
+select,
 textarea {
   width: 100%;
   padding: 8px;
@@ -118,6 +119,7 @@ input[type="date"]:focus,
 input[type="password"]:focus,
 input[type="email"]:focus,
 input[type="number"]:focus,
+select:focus,
 textarea:focus {
   outline: none;
   border: 1px solid #4CAF50;
@@ -177,4 +179,13 @@ textarea:focus {
 #notificationRegister img {
   height: 32px;
   margin-right: 8px;
+}
+
+#labelIcone {
+  display: flex;
+  align-items: center;
+}
+
+#imageIcone {
+  height: 24px;
 }
