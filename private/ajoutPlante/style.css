@@ -140,6 +140,8 @@ textarea:focus {
   border-radius: 8px;
   position: absolute;
   padding: 8px;
+  width: 142px;
+  transition: all 0.2s ease-in-out;
 }
 
 #bouton input:first-of-type {
@@ -147,9 +149,18 @@ textarea:focus {
   background-color: red;
 }
 
+#bouton input:first-of-type:hover {
+  background-color: rgb(255, 53, 53)
+  ;
+}
+
 #bouton input:last-of-type {
   right: 8px;
   background-color: #4CAF50;
+}
+
+#bouton input:last-of-type:hover {
+  background-color: #72b774;
 }
 
 #notificationRegister {

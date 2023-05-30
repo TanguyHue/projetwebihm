@@ -188,18 +188,28 @@ module.exports = (passport) => {
         const nom = req.body.nom; // Récupérer le nom à partir du corps de la requête
         const prenom = req.body.prenom; // Récupérer le prénom à partir du corps de la requête
         const departement = req.body.departement; // Récupérer le département à partir du corps de la requête
-        const disponibilite = req.body.disponibilite; // Récupérer la disponibilité à partir du corps de la requête
-        const preferences = req.body.preferences; // Récupérer les préférences à partir du corps de la requête
         const langue = req.body.langue; // Récupérer la langue à partir du corps de la requête
         const role = req.body.role; // Récupérer le rôle à partir du corps de la requête
+        const etat = 0;
 
-        dbHelper.users.addUser(adresse_mail, password, nom, prenom, departement, disponibilite, preferences, langue, role).then(
+        dbHelper.users.addUser(adresse_mail, password, nom, prenom, departement, langue, role, etat).then(
             taches => {
                 res.set('Content-type', 'application/json');
                 res.send(JSON.stringify(taches));
             }
         );
+    });
 
+    app.post('/user/changeEtat', function (req, res, next) {
+        const id = req.body.id;
+        const etat = req.body.etat;
+
+        dbHelper.users.changeEtat(id, etat).then(
+            taches => {
+                res.set('Content-type', 'application/json');
+                res.send(JSON.stringify(taches));
+            }
+        );
     });
 
     app.post('/taches/add', function (req, res, next) {

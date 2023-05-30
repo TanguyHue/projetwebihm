@@ -40,7 +40,7 @@ const all = sql => new Promise(function (resolve, reject) {
 
 module.exports.users = {
     byUsername: (username) => get(`
-        select id, password, nom, prenom, departement, role from user where adresse_mail = '${username}';
+        select * from user where adresse_mail = '${username}';
     `),
     a: Promise.resolve({
         id: 0,
@@ -49,10 +49,14 @@ module.exports.users = {
     byId: id => get(`select adresse_mail as username from user where id = ${id}`),
     byIdAndPassword: (id, password) => get(`select * from user where id = ${id} and password = '${password}'`),
 
-    addUser: (adresse_mail, password, nom, prenom, departement, disponibilite, preferences, langue, role) => get(`
-              insert into user (adresse_mail, password, nom, prenom, departement, disponibilite, preferences, langue, role)
-                values ('${adresse_mail}', '${password}', '${nom}', '${prenom}', '${departement}', '${disponibilite}', '${preferences}', '${langue}', '${role}');
+    addUser: (adresse_mail, password, nom, prenom, departement, langue, role, etat) => get(`
+              insert into user (adresse_mail, password, nom, prenom, departement, langue, role, etat)
+                values ('${adresse_mail}', '${password}', '${nom}', '${prenom}', '${departement}', '${langue}', '${role}', '${etat});
           `),
+
+    changeEtat: (id, etat) => get(`
+        update user set etat = ${etat | 0} where id = ${id | 0};
+    `)
 };
 
 

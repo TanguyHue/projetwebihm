@@ -15,13 +15,13 @@
   </header>
   <main>
     <div>
-      <form>
+      <form id="formTache">
         <div>
-          <input type="text" name="nom" placeholder="Nom de la tâche" id="titre">
+          <input type="text" name="nom" placeholder="Nom de la tâche" id="titre" required>
         </div>
         <div>
           <label for="date">Date : </label>
-          <input type="date" name="date" id="date">
+          <input type="date" name="date" id="date" required>
         </div>
 
         <div>
@@ -34,8 +34,8 @@
           <textarea id="note" name="note" rows="4" cols="50" placeholder="Ajouter une description"></textarea>
         </div>
         <div id="bouton">
-          <input type="button" value="Valider la tâche" id="validé">
-          <input type="button" value="Annuler la tâche" id="annulé">
+          <input type="button" value="Retour" id="annulé">
+          <input type="submit" value="Ajouter la tache" id="validé">
         </div>
       </form>
     </div>

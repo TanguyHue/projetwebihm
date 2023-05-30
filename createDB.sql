@@ -14,10 +14,9 @@ CREATE TABLE IF NOT EXISTS `user` (
   `prenom` varchar(255) NOT NULL,
   `adresse_mail` varchar(255) NOT NULL UNIQUE,
   `departement` varchar(255) NOT NULL,
-  `disponibilite` date NOT NULL,
-  `preferences` varchar(255) NOT NULL,
   `langue` varchar(255) NOT NULL,
-  `role` varchar(255) NOT NULL
+  `role`varchar(255) NOT NULL,
+  `etat` varchar(255) NOT NULL CHECK (etat in(0,1,2,3))
 );
 
 --
@@ -70,10 +69,10 @@ CREATE TABLE IF NOT EXISTS `Taches` (
 -- Insertions
 --
 
-INSERT INTO `user` (`password`, `nom`, `prenom`, `adresse_mail`, `departement`, `disponibilite`, `preferences`, `langue`, `role`) VALUES
-('aaa', 'Dupont', 'Jean', 'jean@dupont', 'INFO', '1980-12-17', 'aucune', 'francais', 'beau-gosse');
+INSERT INTO `user` (`password`, `nom`, `prenom`, `adresse_mail`, `departement`, `langue`, `role`, `etat`) VALUES
+('aaa', 'Dupont', 'Jean', 'jean@dupont', 'INFO', 'francais', 'beau-gosse', '0');
 
-INSERT INTO `user` (`password`, `nom`, `prenom`, `adresse_mail`, `departement`, `disponibilite`, `preferences`, `langue`, `role`) VALUES
-('aaa', 'Dupond', 'Jean', 'jean@dupond', 'INFO', '1980-12-17', 'aucune', 'francais', 'beau-gosse');
+INSERT INTO `user` (`password`, `nom`, `prenom`, `adresse_mail`, `departement`, `langue`, `role`, `etat`) VALUES
+('aaa', 'Dupond', 'Jean', 'jean@dupond', 'INFO', 'francais', 'beau-gosse', '0');
 
 insert into taches (idCreateur, idRealisateur, titre, date, notes, etat) values (1, 1, 'zzaeaz', '1980-12-17', 'aaza', 0);

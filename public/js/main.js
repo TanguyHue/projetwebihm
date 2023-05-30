@@ -215,6 +215,12 @@ async function loadTaches() {
             }
         }
 
+        if(ulListe.length == 0) {
+            const p = document.createElement('p');
+            p.innerHTML = "Aucune tâche pour le moment";
+            ulToDo.appendChild(document.createElement('li').appendChild(p));
+        }
+
         var boutonsAssignation = document.querySelectorAll("#toDo input[name='assignation']");
         boutonsAssignation.forEach(function (bouton) {
             bouton.addEventListener('click', function () {
@@ -326,8 +332,10 @@ page('monpotager', async function () {
         context.previous = 'monpotager';
         async function loadPotager() {
             await renderTemplate(templates('private/monpotager/monpotager.mustache'));
-            const etatSelect = document.getElementById('etat');
+            let etatSelect = document.getElementById('etat');
             const imgEtat = document.getElementById('imgEtat');
+            
+            etatSelect.value = context.user.etat;
 
             const etat = etatSelect.value;
             if (etat == "0") {
@@ -340,8 +348,9 @@ page('monpotager', async function () {
                 imgEtat.src = "private/monPotager/images/etatPotager/travaux.png";
             }
 
-            etatSelect.addEventListener('change', (event) => {
+            etatSelect.addEventListener('change', async (event) => {
                 const etat = event.target.value;
+                context.user.etat = etat;
                 if (etat == "0") {
                     imgEtat.src = "private/monPotager/images/etatPotager/bon.png";
                 } else if (etat == "1") {
@@ -350,6 +359,19 @@ page('monpotager', async function () {
                     imgEtat.src = "private/monPotager/images/etatPotager/arroser.png";
                 } else {
                     imgEtat.src = "private/monPotager/images/etatPotager/travaux.png";
+                }
+
+                try {
+                    await fetch('api/user/changeEtat', {
+                        method: 'POST',
+                        headers: {
+                            'Accept': 'application/json',
+                            'Content-Type': 'application/x-www-form-urlencoded; charset=utf-8',
+                        },
+                        body: 'id=' + context.user.id + '&etat=' + event.target.value
+                    });
+                } catch (e) {
+                    console.log(e);
                 }
             });
 
@@ -691,43 +713,52 @@ page('ajouttache', async function () {
                 var titre = document.getElementById("titre").value;
                 var description = document.getElementById("note").value;
                 var date = document.getElementById("date").value;
-                if (document.getElementById("assignation").checked) {
-                    var assignation = context.user.id;
-                } else {
-                    var assignation = "none";
-                }
-                var tache = { titre: titre, description: description, date: date, assignation: assignation };
-                console.log(tache);
+                if (titre != '' && date != '') {
+                    if (document.getElementById("assignation").checked) {
+                        var assignation = context.user.id;
+                    } else {
+                        var assignation = "none";
+                    }
+                    var tache = { titre: titre, description: description, date: date, assignation: assignation };
+                    console.log(tache);
 
-                try {
-                    // On fait ensuite un fetch sur l'api pour s'authentifier
-                    await fetch('api/taches/add', {
-                        headers: {
-                            'Accept': 'application/json',
-                            'Content-Type': 'application/x-www-form-urlencoded; charset=utf-8',
-                        },
-                        method: 'POST',
-                        body: 'idCreateur=' + encodeURIComponent(context.user.id) + '&idRealisateur=' + encodeURIComponent(assignation) + '&titre=' + encodeURIComponent(titre) + '&date=' + encodeURIComponent(date) + '&notes=' + encodeURIComponent(description),
-                    });
-                    if (context.previous == "main") {
-                        page('/main');
-                    } else if (context.previous == "monpotager") {
-                        page('/monpotager');
-                    } else if (context.previous == "agenda") {
-                        page('/agenda');
+                    try {
+                        // On fait ensuite un fetch sur l'api pour s'authentifier
+                        await fetch('api/taches/add', {
+                            headers: {
+                                'Accept': 'application/json',
+                                'Content-Type': 'application/x-www-form-urlencoded; charset=utf-8',
+                            },
+                            method: 'POST',
+                            body: 'idCreateur=' + encodeURIComponent(context.user.id) + '&idRealisateur=' + encodeURIComponent(assignation) + '&titre=' + encodeURIComponent(titre) + '&date=' + encodeURIComponent(date) + '&notes=' + encodeURIComponent(description),
+                        });
+                        if (context.previous == "main") {
+                            page('/main');
+                        } else if (context.previous == "monpotager") {
+                            page('/monpotager');
+                        } else if (context.previous == "agenda") {
+                            page('/agenda');
+                        }
+                    }
+                    catch (e) {
+                        console.error(e);
+                        if (context.previous == "main") {
+                            page('/main');
+                        } else if (context.previous == "monpotager") {
+                            page('/monpotager');
+                        } else if (context.previous == "agenda") {
+                            page('/agenda');
+                        }
+                        return;
                     }
                 }
-                catch (e) {
-                    console.error(e);
-                    if (context.previous == "main") {
-                        page('/main');
-                    } else if (context.previous == "monpotager") {
-                        page('/monpotager');
-                    } else if (context.previous == "agenda") {
-                        page('/agenda');
-                    }
-                    return;
-                }
+
+            }
+            );
+
+            const formTache = document.getElementById('formTache');
+            formTache.addEventListener('submit', async (e) => {
+                e.preventDefault();
             }
             );
         }
@@ -944,10 +975,6 @@ page('register', async function () {
         console.log(password);
         const password2 = document.getElementById('password2').value;
         const departement = document.getElementById('departement').value;
-        const disponibilite = document.getElementById('disponibilite').value;
-        console.log(disponibilite);
-        const preferences = document.getElementById('preferences').value;
-        console.log(preferences);
         const langue = document.getElementById('langue').value;
         const role = document.getElementById('role').value;
 
@@ -977,7 +1004,7 @@ page('register', async function () {
                         'Content-Type': 'application/x-www-form-urlencoded; charset=utf-8',
                     },
                     method: 'POST',
-                    body: 'nom=' + encodeURIComponent(nom) + '&prenom=' + encodeURIComponent(prenom) + '&email=' + encodeURIComponent(email) + '&password=' + encodeURIComponent(password) + '&departement=' + encodeURIComponent(departement) + '&disponibilite=' + encodeURIComponent(disponibilite) + '&preferences=' + encodeURIComponent(preferences) + '&langue=' + encodeURIComponent(langue) + '&role=' + encodeURIComponent(role),
+                    body: 'nom=' + encodeURIComponent(nom) + '&prenom=' + encodeURIComponent(prenom) + '&email=' + encodeURIComponent(email) + '&password=' + encodeURIComponent(password) + '&departement=' + encodeURIComponent(departement) + '&langue=' + encodeURIComponent(langue) + '&role=' + encodeURIComponent(role),
                 });
 
                 context.previous = 'register';
@@ -1082,7 +1109,8 @@ page('/', async function () {
                             nom: user.nom,
                             prenom: user.prenom,
                             departement: user.departement,
-                            role: user.role
+                            role: user.role,
+                            etat: user.etat,
                         };
                         console.log(context.user);
                         context.erreur = false;

@@ -61,6 +61,10 @@ form div input#assignation {
   transition: all 0.2s ease-in-out;
 }
 
+form div input#assignation:hover {
+  background-color: #f25b50;
+}
+
 input[type="text"],
 input[type="date"],
 input[type="number"],
@@ -114,14 +118,25 @@ textarea:focus {
   border-radius: 8px;
   position: absolute;
   padding: 8px;
+  transition: all 0.2s ease-in-out;
+  width: 142px;
 }
 
 #bouton input:first-of-type {
   left: 8px;
-  background-color: #4CAF50;
+  background-color: red;
+}
+
+#bouton input:first-of-type:hover {
+  background-color: rgb(255, 53, 53)
+  ;
 }
 
 #bouton input:last-of-type {
   right: 8px;
-  background-color: red;
+  background-color: #4CAF50;
+}
+
+#bouton input:last-of-type:hover {
+  background-color: #72b774;
 }
