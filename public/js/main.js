@@ -536,7 +536,7 @@ page('monpotager', async function () {
                 const arroser = document.getElementById('arroser');
                 const suppression = document.getElementById('supprimer');
 
-                titre.innerHTML = "Aucune plante sélectionné";
+                titre.innerHTML = "Aucune plante sélectionnée";
                 checkArrosé.innerHTML = "Sélectionnez une plante pour voir ses informations";
                 infoDernArrosage.style.display = "none";
                 infoProchArrosage.style.display = "none";
@@ -994,7 +994,7 @@ page('autrePotager', async function () {
                     const infoConseil = document.getElementById('infoConseil');
                     const arroser = document.getElementById('arroser');
     
-                    titre.innerHTML = "Aucune plante sélectionné";
+                    titre.innerHTML = "Aucune plante sélectionnée";
                     checkArrosé.innerHTML = "Sélectionnez une plante pour voir ses informations";
                     infoDernArrosage.style.display = "none";
                     infoProchArrosage.style.display = "none";
