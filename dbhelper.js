@@ -143,7 +143,7 @@ select * from taches where etat = '${etat}';
 `);
         }
     }),
-    byUser: id => get(`
+    byUser: id => all(`
 select * from taches where idRealisateur = ${id | 0} OR idCreateur = ${id | 0};
 `),
 
@@ -177,4 +177,16 @@ values(${idCreateur | 0}, ${idRealisateur | 0}, '${titre}', '${date}', '${notes}
 `);
         }
     }),
+
+    changeEtat: (id, etat) => get(`
+        update taches set etat = ${etat | 0} where id = ${id | 0};
+    `),
+
+    changeRealisateur: (id, realisateur) => get(`
+        update taches set idRealisateur = ${realisateur | 0} where id = ${id | 0};
+    `),
+
+    rmTache: (id) => get(`
+    delete from taches where id = ${id | 0};
+    `),
 };

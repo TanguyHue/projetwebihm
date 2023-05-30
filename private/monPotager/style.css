@@ -208,12 +208,41 @@ main #toDo ul li input[type="button"] {
   padding-top: 4px;
   padding-bottom: 4px;
   cursor: pointer;
-  width: 200px;
   transition: all 0.2s ease-in-out;
 }
 
-main #toDo ul li input[type="button"]:hover {
-  background-color: #cacaca;
+main #toDo ul li input[type="button"][name="assignation"] {
+  width: 200px;
+}
+
+main #toDo ul li input[type="button"][name="assignation"] {
+  width: 200px;
+}
+
+main #toDo ul li input.assigné {
+  background-color: rgb(223, 219, 172);
+}
+
+main #toDo ul li input.assigné:hover {
+  background-color: rgb(229, 226, 190);
+}
+
+main #toDo ul li input.nonassigné {
+  background-color: #e2e2e4;
+}
+
+main #toDo ul li input.nonassigné:hover {
+  background-color: #efefef;
+}
+
+main #toDo ul li input[type="button"][name="suppression"] {
+  width: 100px;
+  background-color: #f78888;
+}
+
+main #toDo ul li input[type="button"][name="suppression"]:hover {
+  width: 100px;
+  background-color: #ffa8a8;
 }
 
 main #toDo button {
@@ -237,7 +266,7 @@ main li.info div {
 
 main #info div.etatPotager {
   margin-left: 16px;
-  max-height: 350px;
+  max-height: 320px;
   overflow-y: auto;
   width: 100%;
 }

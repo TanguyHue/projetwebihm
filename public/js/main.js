@@ -51,6 +51,189 @@ const loadPartials = (() => {
     }
 })();
 
+async function loadTaches() {
+    const ulToDo = document.getElementById('toDo').querySelector('ul');
+    console.log(ulToDo);
+    try {
+        const result = await fetch('http://127.0.0.1:8080/api/taches/' + context.user.id);
+        const taches = await result.json();
+        console.log(taches);
+        let li;
+        let ulListe = [];
+        for (var i = 0; i < taches.length; i++) {
+            console.log(taches[i]);
+            li = document.createElement('li');
+            const form = document.createElement('form');
+            li.appendChild(form);
+            let input = document.createElement('input');
+            input.type = "checkbox";
+            input.name = "toDo" + i;
+            input.value = "Je m'assigne cette tâche";
+            input.idTache = taches[i].id;
+            input.etat = taches[i].etat;
+            if (input.etat == 1) {
+                input.checked = true;
+            }
+
+            input.addEventListener('click', async (event) => {
+                if (event.target.etat == 1) {
+                    event.target.etat = 0;
+                } else {
+                    event.target.etat = 1;
+                }
+                try {
+                    await fetch('api/taches/changeEtat', {
+                        method: 'POST',
+                        headers: {
+                            'Accept': 'application/json',
+                            'Content-Type': 'application/x-www-form-urlencoded; charset=utf-8',
+                        },
+                        body: 'id=' + event.target.idTache + '&etat=' + event.target.etat
+                    });
+                } catch (e) {
+                    console.log(e);
+                }
+            })
+
+            const ulDescription = document.createElement('ul');
+            ulDescription.className = "desc";
+
+            const liDescription1 = document.createElement('li');
+            liDescription1.className = "desc";
+            const labelDescription = document.createElement('label');
+            labelDescription.className = "nomTache";
+            labelDescription.innerHTML = taches[i].titre;
+            liDescription1.appendChild(labelDescription);
+
+            const liDescription2 = document.createElement('li');
+            liDescription2.className = "desc";
+            const labelDescription2 = document.createElement('label');
+            labelDescription2.className = "description";
+            labelDescription2.innerHTML = taches[i].notes;
+
+            liDescription2.appendChild(labelDescription2);
+
+            ulDescription.appendChild(liDescription1);
+            ulDescription.appendChild(liDescription2);
+
+            const date = document.createElement('label');
+            date.className = "date";
+            const date2 = new Date(taches[i].date);
+            date.innerHTML = date2.toLocaleDateString();
+
+            let bouton = document.createElement('input');
+            bouton.type = "button";
+            bouton.name = "assignation";
+            bouton.value = "Je m'assigne cette tâche";
+            bouton.idTache = taches[i].id;
+            bouton.previousRealisateur = taches[i].idRealisateur;
+            console.log("Realisateur précédent : " + bouton.previousRealisateur);
+
+            if (bouton.previousRealisateur == context.user.id) {
+                bouton.className = "assigné";
+                bouton.checked = true;
+                bouton.value = "Assigné";
+                bouton.previousRealisateur = '-1';
+            } else {
+                bouton.className = "nonassigné";
+                bouton.checked = false;
+                bouton.value = "Je m'assigne cette tâche";
+            }
+
+            bouton.addEventListener('click', async (event) => {
+                try {
+                    if (!bouton.checked) {
+                        console.log("User");
+                        await fetch('api/taches/changeRealisateur', {
+                            method: 'POST',
+                            headers: {
+                                'Accept': 'application/json',
+                                'Content-Type': 'application/x-www-form-urlencoded; charset=utf-8',
+                            },
+                            body: 'id=' + event.target.idTache + '&realisateur=' + context.user.id
+                        });
+                    } else {
+                        console.log("Ancien realisateur");
+                        await fetch('api/taches/changeRealisateur', {
+                            method: 'POST',
+                            headers: {
+                                'Accept': 'application/json',
+                                'Content-Type': 'application/x-www-form-urlencoded; charset=utf-8',
+                            },
+                            body: 'id=' + event.target.idTache + '&realisateur=' + event.target.previousRealisateur
+                        });
+                    }
+                } catch (e) {
+                    console.log(e);
+                }
+            })
+
+            let deleteButton = document.createElement('input');
+            deleteButton.type = "button";
+            deleteButton.name = "suppression";
+            deleteButton.value = "Supprimer";
+            deleteButton.idTache = taches[i].id;
+
+            deleteButton.addEventListener('click', async (event) => {
+                try {
+                    await fetch('api/taches/remove', {
+                        method: 'POST',
+                        headers: {
+                            'Accept': 'application/json',
+                            'Content-Type': 'application/x-www-form-urlencoded; charset=utf-8',
+                        },
+                        body: 'id=' + event.target.idTache
+                    });
+
+                    form.style.display = "none";
+                } catch (e) {
+                    console.log(e);
+                }
+            })
+
+            form.appendChild(input);
+            form.appendChild(ulDescription);
+            form.appendChild(date);
+            form.appendChild(bouton);
+            form.appendChild(deleteButton);
+
+            li.appendChild(form);
+            li.checked = bouton.checked;
+
+            ulListe.push(li);
+        }
+
+        for (var i = 0; i < ulListe.length; i++) {
+            if (ulListe[i].checked) {
+                ulToDo.appendChild(ulListe[i]);
+            }
+        }
+
+        for (var i = 0; i < ulListe.length; i++) {
+            if (!ulListe[i].checked) {
+                ulToDo.appendChild(ulListe[i]);
+            }
+        }
+
+        var boutonsAssignation = document.querySelectorAll("#toDo input[name='assignation']");
+        boutonsAssignation.forEach(function (bouton) {
+            bouton.addEventListener('click', function () {
+                if (!this.checked) {
+                    this.style.backgroundColor = "rgb(223, 219, 172)";
+                    this.checked = true;
+                    this.value = "Assigné";
+                } else {
+                    this.checked = false;
+                    this.style.backgroundColor = "#e9e9ed";
+                    this.value = "Je m'assigne cette tâche";
+                }
+            });
+        });
+    } catch (error) {
+        console.log(error);
+    }
+}
+
 page('main', async function () {
     if (!context.logged) {
         page('/');
@@ -92,20 +275,7 @@ page('main', async function () {
             }
             );
 
-            const boutonsAssignation = document.querySelectorAll("#toDo input[name='assignation']");
-            boutonsAssignation.forEach(function (bouton) {
-                bouton.addEventListener('click', function () {
-                    if (!this.checked) {
-                        this.style.backgroundColor = "rgb(223, 219, 172)";
-                        this.checked = true;
-                        this.value = "Assigné";
-                    } else {
-                        this.checked = false;
-                        this.style.backgroundColor = "#e9e9ed";
-                        this.value = "Je m'assigne cette tâche";
-                    }
-                });
-            });
+            loadTaches();
 
             const boutonPotager = document.getElementById('potager');
             boutonPotager.addEventListener('click', () => {
@@ -183,21 +353,6 @@ page('monpotager', async function () {
                 }
             });
 
-            var boutonsAssignation = document.querySelectorAll("#toDo input[name='assignation']");
-            boutonsAssignation.forEach(function (bouton) {
-                bouton.addEventListener('click', function () {
-                    if (!this.checked) {
-                        this.style.backgroundColor = "rgb(223, 219, 172)";
-                        this.checked = true;
-                        this.value = "Assigné";
-                    } else {
-                        this.checked = false;
-                        this.style.backgroundColor = "#e9e9ed";
-                        this.value = "Je m'assigne cette tâche";
-                    }
-                });
-            });
-
             const boutonRetour = document.getElementById('retour');
             boutonRetour.addEventListener('click', () => {
                 page('/main');
@@ -210,67 +365,7 @@ page('monpotager', async function () {
             }
             );
 
-            const ulToDo = document.getElementById('toDo').querySelector('ul');
-            console.log(ulToDo);
-            try {
-                const result = await fetch('http://127.0.0.1:8080/api/taches/' + context.user.id);
-                const taches = await result.json();
-                console.log(taches);
-                let li;
-                for (var i = 0; i < taches.length; i++) {
-                    console.log(taches[i]);
-                    li = document.createElement('li');
-                    const form = document.createElement('form');
-                    li.appendChild(form);
-                    const input = document.createElement('input');
-                    input.type = "checkbox";
-                    input.name = "toDo" + i;
-                    if (taches[i].etat == 1) {
-                        input.checked = true;
-                    }
-                    input.value = "Je m'assigne cette tâche";
-
-                    const ulDescription = document.createElement('ul');
-                    ulDescription.className = "desc";
-
-                    const liDescription1 = document.createElement('li');
-                    liDescription.className = "desc";
-                    const labelDescription = document.createElement('label');
-                    labelDescription.className = "nomTache";
-                    labelDescription.innerHTML = taches[i].titre;
-                    liDescription1.appendChild(labelDescription);
-
-                    const liDescription2 = document.createElement('li');
-                    liDescription.className = "desc";
-                    const labelDescription2 = document.createElement('label');
-                    labelDescription2.className = "description";
-                    labelDescription2.innerHTML = taches[i].notes;
-
-                    ulDescription.appendChild(liDescription1);
-                    ulDescription.appendChild(liDescription2);
-
-                    const date = document.createElement('label');
-                    date.className = "date";
-                    const date2 = new Date(taches[i].date);
-                    date.innerHTML = date2.toLocaleDateString();
-
-                    const bouton = document.createElement('input');
-                    bouton.type = "button";
-                    bouton.name = "assignation";
-                    bouton.value = "Je m'assigne cette tâche";
-
-                    form.appendChild(input);
-                    form.appendChild(ulDescription);
-                    form.appendChild(date);
-                    form.appendChild(bouton);
-
-                    li.appendChild(form);
-
-                    ulToDo.appendChild(li);
-                }
-            } catch (error) {
-                console.log(error);
-            }
+            loadTaches();
 
             const boutonsAjout = document.getElementsByClassName("buttonType");
             let j = 0;
@@ -293,8 +388,6 @@ page('monpotager', async function () {
                         plantes.push(plante);
                         potagers.push(potager);
                         boutonsAjout[i].numero = plantes.length - 1;
-                        console.log("potager : " + plante);
-                        console.log("potager.img : " + plante.img);
                         let icone;
                         if (plante.img == 0) {
                             icone = "private/monPotager/images/type/carotte.png";
@@ -423,7 +516,6 @@ page('monpotager', async function () {
 
 
                     if (result.status == 200) {
-                        console.log(result);
                         const infoDernArrosage = document.getElementById('infoDernArrosage');
                         const infoProchArrosage = document.getElementById('infoProchArrosage');
                         const infoIntervalle = document.getElementById('infoIntervalle');
@@ -609,7 +701,7 @@ page('ajouttache', async function () {
 
                 try {
                     // On fait ensuite un fetch sur l'api pour s'authentifier
-                    const result = await fetch('api/taches/add', {
+                    await fetch('api/taches/add', {
                         headers: {
                             'Accept': 'application/json',
                             'Content-Type': 'application/x-www-form-urlencoded; charset=utf-8',
@@ -617,15 +709,23 @@ page('ajouttache', async function () {
                         method: 'POST',
                         body: 'idCreateur=' + encodeURIComponent(context.user.id) + '&idRealisateur=' + encodeURIComponent(assignation) + '&titre=' + encodeURIComponent(titre) + '&date=' + encodeURIComponent(date) + '&notes=' + encodeURIComponent(description),
                     });
-
-                    // On récupère le résultat de la requête
-                    const data = await result.json();
-                    console.log(data);
-                    page('/main');
+                    if (context.previous == "main") {
+                        page('/main');
+                    } else if (context.previous == "monpotager") {
+                        page('/monpotager');
+                    } else if (context.previous == "agenda") {
+                        page('/agenda');
+                    }
                 }
                 catch (e) {
                     console.error(e);
-                    page('/main');
+                    if (context.previous == "main") {
+                        page('/main');
+                    } else if (context.previous == "monpotager") {
+                        page('/monpotager');
+                    } else if (context.previous == "agenda") {
+                        page('/agenda');
+                    }
                     return;
                 }
             }

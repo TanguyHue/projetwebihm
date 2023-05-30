@@ -113,6 +113,30 @@ module.exports = (passport) => {
         );
     });
 
+    app.post('/taches/changeEtat', function (req, res, next){
+        dbHelper.taches.changeEtat(req.body.id, req.body.etat).then(
+            taches => {
+                res.set('Content-type', 'application/json');
+                res.send(JSON.stringify(taches));
+            },
+            err => {
+                next(err);
+            },
+        )
+    });
+
+    app.post('/taches/changeRealisateur', function (req, res, next){
+        dbHelper.taches.changeRealisateur(req.body.id, req.body.realisateur).then(
+            taches => {
+                res.set('Content-type', 'application/json');
+                res.send(JSON.stringify(taches));
+            },
+            err => {
+                next(err);
+            },
+        )
+    });
+
 
     // Authentification pour accéder aux parties privées de l'api (on n'en a pas dans cet exemple)
     // et aux templates privés
@@ -186,6 +210,16 @@ module.exports = (passport) => {
         const notes = req.body.notes; // Récupérer les notes de la tâche à partir du corps de la requête
 
         dbHelper.taches.addTache(idCreateur, idRealisateur, titre, date, notes).then(
+            taches => {
+                res.set('Content-type', 'application/json');
+                res.send(JSON.stringify(taches));
+            }
+        );
+
+    });
+
+    app.post('/taches/remove', function (req, res, next) {
+        dbHelper.taches.rmTache(req.body.id).then(
             taches => {
                 res.set('Content-type', 'application/json');
                 res.send(JSON.stringify(taches));

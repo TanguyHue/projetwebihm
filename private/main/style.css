@@ -143,6 +143,12 @@ main ul.ulToDo {
   display: flex;
   align-items: center;
   justify-content: center;
+  display: flex;
+  justify-content: space-between;
+  list-style-type: none;
+  align-items: center;
+  padding: 0;
+  margin: 0;
 }
 
 main ul.ulToDo>li {
@@ -150,8 +156,12 @@ main ul.ulToDo>li {
   margin-left: 32px;
 }
 
-main ul li:not(.desc) {
-  display: inline-block;
+main ul.ulToDo>li:first-of-type {
+  margin-left: 20px;
+}
+
+main ul.ulToDo>li:last-of-type {
+  margin-right: 20px;
 }
 
 main #general {
@@ -184,8 +194,9 @@ main #toDo {
   box-shadow: 0px 1px 0px 0px grey;
   padding: 8px;
   position: relative;
-  padding-bottom: 24px;
+  padding-bottom: 28px;
   padding-right: 30px;
+  right: 4px;
 }
 
 main #toDo h2 {
@@ -196,12 +207,16 @@ main #toDo h2 {
 main #toDo ul {
   margin-left: 20px;
   list-style-type: none;
+  max-height: 140px;
+  overflow-y: auto;
+  overflow-x: hidden;
 }
 
 main #toDo ul li:not(.desc) {
   margin-bottom: 14px;
   height: 100%;
   width: 100%;
+  margin-right: 10px;
 }
 
 main #toDo ul li form {
@@ -218,7 +233,6 @@ main #toDo ul li label.nomTache {
   margin-left: 4px;
   font-weight: bold;
   font-size: 14px;
-  margin-bottom: 0;
 }
 
 main #toDo ul li label.description {
@@ -226,7 +240,7 @@ main #toDo ul li label.description {
   margin-top: -10px;
   font-size: 12px;
   margin-right: 20px;
-  margin-bottom: 0;
+  width: 300px;
 }
 
 main #toDo ul li label.date {
@@ -248,12 +262,41 @@ main #toDo ul li input[type="button"] {
   padding-top: 4px;
   padding-bottom: 4px;
   cursor: pointer;
-  width: 200px;
   transition: all 0.2s ease-in-out;
 }
 
-main #toDo ul li input[type="button"]:hover {
-  background-color: #cacaca;
+main #toDo ul li input[type="button"][name="assignation"] {
+  width: 200px;
+}
+
+main #toDo ul li input[type="button"][name="assignation"] {
+  width: 200px;
+}
+
+main #toDo ul li input.assigné {
+  background-color: rgb(223, 219, 172);
+}
+
+main #toDo ul li input.assigné:hover {
+  background-color: rgb(229, 226, 190);
+}
+
+main #toDo ul li input.nonassigné {
+  background-color: #e2e2e4;
+}
+
+main #toDo ul li input.nonassigné:hover {
+  background-color: #efefef;
+}
+
+main #toDo ul li input[type="button"][name="suppression"] {
+  width: 100px;
+  background-color: #f78888;
+}
+
+main #toDo ul li input[type="button"][name="suppression"]:hover {
+  width: 100px;
+  background-color: #ffa8a8;
 }
 
 main #toDo button {
@@ -261,5 +304,4 @@ main #toDo button {
   background-color: transparent;
   position: absolute;
   right: 8px;
-  bottom: 8px;
 }
