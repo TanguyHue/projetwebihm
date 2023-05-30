@@ -56,7 +56,11 @@ module.exports.users = {
 
     changeEtat: (id, etat) => get(`
         update user set etat = ${etat | 0} where id = ${id | 0};
-    `)
+    `),
+
+    listeUsers: () => all(`
+                select id, nom, prenom, etat from user;
+            `),
 };
 
 
@@ -148,6 +152,9 @@ select * from taches where etat = '${etat}';
         }
     }),
     byUser: id => all(`
+select * from taches where idCreateur = ${id | 0};
+`),
+    byUserComplete: id => all(`
 select * from taches where idRealisateur = ${id | 0} OR idCreateur = ${id | 0};
 `),
 

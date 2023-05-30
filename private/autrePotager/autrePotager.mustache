@@ -5,7 +5,7 @@
 
 <head> <!-- entête: titre, feuilles de style, scripts, etc. -->
   <meta charset="utf-8" lang="en"> <!-- encodage des caractères : obligatoire ! -->
-  <link rel="stylesheet" href="private/monPotager/style.css"> <!-- feuille de style: optionnel -->
+  <link rel="stylesheet" href="private/autrePotager/style.css"> <!-- feuille de style: optionnel -->
   <link type="image/png" sizes="96x96" rel="icon" href="images/favicon.png">
   <meta name="viewport" content="width=device-width, initial-scale=1.0"> <!-- responsive: obligatoire -->
 </head>
@@ -13,7 +13,7 @@
 <body>
   <header>
     <div>
-      <h1>Mon potager
+      <h1 id="titrePotager">Un autre potager
         <img src="private/monPotager/images/uwu.png" alt="uwu">
       </h1>
     </div>
@@ -29,13 +29,12 @@
           <!--Etat potager-->
           <li>
             <div class="etatPotager">
-              <label for="etat">État potager</label>
-              <select name="etat" id="etat">
-                <option value="0">Bon état &#128522;</option>
-                <option value="1">Mauvais état &#128532;</option>
-                <option value="2">À arroser &#128167;</option>
-                <option value="3">En travaux &#x1F6A7;</option>
+              <label for="proprietaire">Propriétaire : </label>
+              <select name="proprietaire" id="proprietaire">
               </select>
+            </div>
+            <div class="etatPotager">
+              <label id="etat">État potager : </label>
             </div>
             <button id="retour" type="button" class="etatPotager">
               Retour
@@ -48,7 +47,6 @@
               <h2>À faire</h2>
               <ul>
               </ul>
-              <button type="button" name="button" id="ajouttache">+ Ajouter une tâche</button>
             </div>
           </li>
         </ul>

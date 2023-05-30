@@ -88,6 +88,18 @@ module.exports = (passport) => {
         );
     });
 
+    app.get('/tachesComplete/:idUser', function (req, res, next) {
+        dbHelper.taches.byUserComplete(req.params.idUser).then(
+            taches => {
+                res.set('Content-type', 'application/json');
+                res.send(JSON.stringify(taches));
+            },
+            err => {
+                next(err);
+            },
+        );
+    });
+
     app.post('/taches/:idTache/add/:idUser', function (req, res, next) {
         dbHelper.taches.addUser(req.params.idTache, req.params.idUser).then(
             taches => {
@@ -209,6 +221,18 @@ module.exports = (passport) => {
                 res.set('Content-type', 'application/json');
                 res.send(JSON.stringify(taches));
             }
+        );
+    });
+
+    app.get('/user/liste', function (req, res, next) {
+        dbHelper.users.listeUsers().then(
+            users => {
+                res.set('Content-type', 'application/json');
+                res.send(JSON.stringify(users));
+            },
+            err => {
+                next(err);
+            },
         );
     });
 

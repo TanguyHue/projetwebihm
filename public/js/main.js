@@ -11,6 +11,7 @@ let context = { 'logged': false, 'user': 0, 'previous': 0, 'button': 0, 'nbTache
 let dataPlante = [];
 let plantes = [];
 let potagers = [];
+let taillePotager = { 'x': 4, 'y': 5 };
 
 // fonction utilitaire permettant de faire du 
 // lazy loading (chargement à la demande) des templates
@@ -51,11 +52,18 @@ const loadPartials = (() => {
     }
 })();
 
-async function loadTaches() {
+async function loadTaches(type) {
     const ulToDo = document.getElementById('toDo').querySelector('ul');
     console.log(ulToDo);
     try {
-        const result = await fetch('http://127.0.0.1:8080/api/taches/' + context.user.id);
+        let result;
+        if (type == "main") {
+            result = await fetch('http://127.0.0.1:8080/api/tachesComplete/' + context.user.id);
+        } else if (type == "visit") {
+            result = await fetch('http://127.0.0.1:8080/api/taches/' + context.user.visit);
+        } else if (type == "potager") {
+            result = await fetch('http://127.0.0.1:8080/api/taches/' + context.user.id);
+        }
         const taches = await result.json();
         console.log(taches);
         let li;
@@ -168,44 +176,49 @@ async function loadTaches() {
                 }
             })
 
-            let deleteButton = document.createElement('input');
-            deleteButton.type = "button";
-            deleteButton.name = "suppression";
-            deleteButton.value = "Supprimer";
-            deleteButton.idTache = taches[i].id;
+            let deleteButton;
+            if (type == "admin") {
+                deleteButton = document.createElement('input');
+                deleteButton.type = "button";
+                deleteButton.name = "suppression";
+                deleteButton.value = "Supprimer";
+                deleteButton.idTache = taches[i].id;
 
-            deleteButton.addEventListener('click', async (event) => {
-                try {
-                    await fetch('api/taches/remove', {
-                        method: 'POST',
-                        headers: {
-                            'Accept': 'application/json',
-                            'Content-Type': 'application/x-www-form-urlencoded; charset=utf-8',
-                        },
-                        body: 'id=' + event.target.idTache
-                    });
+                deleteButton.addEventListener('click', async (event) => {
+                    try {
+                        await fetch('api/taches/remove', {
+                            method: 'POST',
+                            headers: {
+                                'Accept': 'application/json',
+                                'Content-Type': 'application/x-www-form-urlencoded; charset=utf-8',
+                            },
+                            body: 'id=' + event.target.idTache
+                        });
 
-                    form.style.display = "none";
+                        form.style.display = "none";
 
-                    context.nbTache--;
+                        context.nbTache--;
 
-                    if(context.nbTache == 0) {
-                        const p = document.createElement('p');
-                        p.innerHTML = "Aucune tâche pour le moment";
-                        document.getElementById('toDo').querySelector('ul').appendChild(document.createElement('li').appendChild(p));
+                        if (context.nbTache == 0) {
+                            const p = document.createElement('p');
+                            p.innerHTML = "Aucune tâche pour le moment";
+                            document.getElementById('toDo').querySelector('ul').appendChild(document.createElement('li').appendChild(p));
+                        }
+                    } catch (e) {
+                        console.log(e);
                     }
-                } catch (e) {
-                    console.log(e);
-                }
 
-                
-            })
+
+                })
+            }
 
             form.appendChild(input);
             form.appendChild(ulDescription);
             form.appendChild(date);
             form.appendChild(bouton);
-            form.appendChild(deleteButton);
+            if (type == "admin") {
+                form.appendChild(deleteButton);
+            }
 
             li.appendChild(form);
             li.checked = bouton.checked;
@@ -225,12 +238,12 @@ async function loadTaches() {
             }
         }
 
-        if(ulListe.length == 0) {
+        if (ulListe.length == 0) {
             const p = document.createElement('p');
             p.innerHTML = "Aucune tâche pour le moment";
             ulToDo.appendChild(document.createElement('li').appendChild(p));
         } else {
-            context.nbTache= ulListe.length;
+            context.nbTache = ulListe.length;
         }
 
         var boutonsAssignation = document.querySelectorAll("#toDo input[name='assignation']");
@@ -293,7 +306,7 @@ page('main', async function () {
             }
             );
 
-            loadTaches();
+            loadTaches("main");
 
             const boutonPotager = document.getElementById('potager');
             boutonPotager.addEventListener('click', () => {
@@ -301,15 +314,15 @@ page('main', async function () {
             }
             );
 
-            const boutonAgenda = document.getElementById('agenda');
-            boutonAgenda.addEventListener('click', () => {
-                page('/agenda');
+            const autrePotager = document.getElementById('autrePotager');
+            autrePotager.addEventListener('click', () => {
+                page('/autrePotager');
             }
             );
 
-            const boutonAjoutTache = document.getElementById('ajouttache');
-            boutonAjoutTache.addEventListener('click', () => {
-                page('/ajouttache');
+            const boutonAgenda = document.getElementById('agenda');
+            boutonAgenda.addEventListener('click', () => {
+                page('/agenda');
             }
             );
 
@@ -344,48 +357,7 @@ page('monpotager', async function () {
         context.previous = 'monpotager';
         async function loadPotager() {
             await renderTemplate(templates('private/monpotager/monpotager.mustache'));
-            let etatSelect = document.getElementById('etat');
-            const imgEtat = document.getElementById('imgEtat');
-            
-            etatSelect.value = context.user.etat;
 
-            const etat = etatSelect.value;
-            if (etat == "0") {
-                imgEtat.src = "private/monPotager/images/etatPotager/bon.png";
-            } else if (etat == "1") {
-                imgEtat.src = "private/monPotager/images/etatPotager/mauvais.png";
-            } else if (etat == "2") {
-                imgEtat.src = "private/monPotager/images/etatPotager/arroser.png";
-            } else {
-                imgEtat.src = "private/monPotager/images/etatPotager/travaux.png";
-            }
-
-            etatSelect.addEventListener('change', async (event) => {
-                const etat = event.target.value;
-                context.user.etat = etat;
-                if (etat == "0") {
-                    imgEtat.src = "private/monPotager/images/etatPotager/bon.png";
-                } else if (etat == "1") {
-                    imgEtat.src = "private/monPotager/images/etatPotager/mauvais.png";
-                } else if (etat == "2") {
-                    imgEtat.src = "private/monPotager/images/etatPotager/arroser.png";
-                } else {
-                    imgEtat.src = "private/monPotager/images/etatPotager/travaux.png";
-                }
-
-                try {
-                    await fetch('api/user/changeEtat', {
-                        method: 'POST',
-                        headers: {
-                            'Accept': 'application/json',
-                            'Content-Type': 'application/x-www-form-urlencoded; charset=utf-8',
-                        },
-                        body: 'id=' + context.user.id + '&etat=' + event.target.value
-                    });
-                } catch (e) {
-                    console.log(e);
-                }
-            });
 
             const boutonRetour = document.getElementById('retour');
             boutonRetour.addEventListener('click', () => {
@@ -399,21 +371,44 @@ page('monpotager', async function () {
             }
             );
 
-            loadTaches();
+            loadTaches("potager");
+
+            const tablePotager = document.getElementById('potager').querySelector('tbody');
+
+
+            for (var i = 0; i < taillePotager.x; i++) {
+                let trPotager = document.createElement('tr');
+                for (var y = 0; y < taillePotager.y; y++) {
+                    let tdPotager = document.createElement('td');
+                    let button = document.createElement('button');
+                    button.type = 'button';
+                    button.name = 'button';
+                    button.className = 'buttonType';
+                    let img = document.createElement('img');
+                    img.src = "private/monPotager/images/type/ajouter.png";
+                    img.alt = 'type Plante';
+                    button.appendChild(img);
+                    tdPotager.appendChild(button);
+                    trPotager.appendChild(tdPotager);
+                }
+                tablePotager.appendChild(trPotager);
+            }
 
             const boutonsAjout = document.getElementsByClassName("buttonType");
             let j = 0;
             let result;
             let potager;
             let plante;
+            let etatArroser = 0;
             for (var i = 0; i < boutonsAjout.length; i++) {
-                boutonsAjout[i].id = j + "" + i % 5;
-                if (i % 5 == 4) {
+                if (i % taillePotager.y == 0 && i != 0) {
+                    console.log("i = " + i);
                     j++;
                 }
+                boutonsAjout[i].id = j + "" + i % taillePotager.y;
 
                 try {
-                    result = await fetch('http://127.0.0.1:8080/api/potager/byXandYandUser/' + j + '/' + i % 5 + '/' + context.user.id);
+                    result = await fetch('http://127.0.0.1:8080/api/potager/byXandYandUser/' + j + '/' + i % taillePotager.y + '/' + context.user.id);
                     potager = await result.json();
 
                     if (potager != null) {
@@ -434,9 +429,53 @@ page('monpotager', async function () {
                         }
                         boutonsAjout[i].querySelector('img').src = icone;
 
-                        boutonsAjout[i].addEventListener('click', function () {
+                        let dateObjet = new Date(potager.date_dernier_arrosage);
+                        dateObjet.setDate(dateObjet.getDate() + Number(plante.intervalle_arrosage));
+
+                        const aujourdhui = new Date();
+
+
+
+                        if (dateObjet.getTime() < aujourdhui.getTime()) {
+                            boutonsAjout[i].querySelector('img').style.border = "3px solid red";
+                            boutonsAjout[i].statut = 'nok';
+                            etatArroser++;
+                            if (i == 0) {
+                                const p = document.getElementById('checkArrosé');
+                                p.innerHTML = 'A arroser ! <img src="private/monPotager/images/nok.png" alt="nok">';
+                            }
+                        } else {
+                            boutonsAjout[i].statut = 'ok';
+                        }
+
+                        boutonsAjout[i].addEventListener('click', function (e) {
                             context.button = this.id;
                             console.log("bouton : " + context.button);
+                            e.target.style.border = "3px solid rgb(47 148 47)";
+
+                            if (context.lastButton != null) {
+                                if (context.lastButton.statut == 'ok') {
+                                    context.lastButton.style.border = "2px solid rgb(70, 192, 70)";
+                                } else {
+                                    context.lastButton.style.border = "2px solid red";
+                                }
+                            }
+
+                            context.lastButton = this.querySelector('img');
+                            context.lastButton.statut = this.statut;
+
+                            console.log(context.lastButton.statut);
+
+                            if (this.statut == 'nok') {
+                                const p = document.getElementById('checkArrosé');
+                                p.innerHTML = 'A arroser ! <img src="private/monPotager/images/nok.png" alt="nok">';
+                                e.target.style.border = "4px solid red";
+                            } else {
+                                const p = document.getElementById('checkArrosé');
+                                p.innerHTML = 'Arrosé ! <img src="private/monPotager/images/ok.png" alt="nok">';
+                                e.target.style.border = "4px solid rgb(47 148 47)";
+                            }
+
 
                             const titre = document.getElementById('infoTitre');
                             const infoDernArrosage = document.getElementById('infoDernArrosage');
@@ -468,6 +507,7 @@ page('monpotager', async function () {
 
                             nouvelleDateChaine = 'Date du prochain arrossage : ' + jour + '/' + mois + '/' + annee;
                             infoProchArrosage.innerHTML = nouvelleDateChaine;
+
                             infoIntervalle.innerHTML = "Intervalle d'arrossage : " + plantes[this.numero].intervalle_arrosage + ' jours';
                             infoEngrais.innerHTML = "Engrais conseillé : " + plantes[this.numero].engrais_conseille;
                             infoConseil.innerHTML = "Conseil : " + plantes[this.numero].conseils;
@@ -586,8 +626,32 @@ page('monpotager', async function () {
                         infoProchArrosage.innerHTML = nouvelleDateChaine;
 
                         potagers.find(potager => potager.x == context.button[0] && potager.y == context.button[1]).date_dernier_arrosage = date;
-                    } else {
-                        console.log("Erreur : " + result.status);
+
+                        if (context.lastButton.statut == 'nok') {
+                            const p = document.getElementById('checkArrosé');
+                            p.innerHTML = 'Arrosé ! <img src="private/monPotager/images/ok.png" alt="nok">';
+                            context.lastButton.style.border = '4px solid rgb(70, 192, 70)';
+                            context.lastButton.statut = 'ok';
+                            document.getElementById(context.button).statut = 'ok';
+                            etatArroser--;
+                            if (etatArroser == 0) {
+                                let etatSelect = document.getElementById('etat');
+                                const imgEtat = document.getElementById('imgEtat');
+                                etatSelect.value = "0";
+                                const etat = etatSelect.value;
+                                if (etat == "0") {
+                                    imgEtat.src = "private/monPotager/images/etatPotager/bon.png";
+                                } else if (etat == "1") {
+                                    imgEtat.src = "private/monPotager/images/etatPotager/mauvais.png";
+                                } else if (etat == "2") {
+                                    imgEtat.src = "private/monPotager/images/etatPotager/arroser.png";
+                                } else {
+                                    imgEtat.src = "private/monPotager/images/etatPotager/travaux.png";
+                                }
+                            }
+                        } else {
+                            console.log("Erreur : " + result.status);
+                        }
                     }
 
                 } catch (error) {
@@ -597,11 +661,440 @@ page('monpotager', async function () {
                     notification.style.opacity = "0";
                 }, 3000);
             });
+
+            let etatSelect = document.getElementById('etat');
+            const imgEtat = document.getElementById('imgEtat');
+
+            if (etatArroser) {
+                etatSelect.value = 2;
+                try {
+                    await fetch('api/user/changeEtat', {
+                        method: 'POST',
+                        headers: {
+                            'Accept': 'application/json',
+                            'Content-Type': 'application/x-www-form-urlencoded; charset=utf-8',
+                        },
+                        body: 'id=' + context.user.id + '&etat=' + 2
+                    });
+                } catch (e) {
+                    console.log(e);
+                }
+
+            } else {
+                if (context.user.etat == 2) {
+                    try {
+                        await fetch('api/user/changeEtat', {
+                            method: 'POST',
+                            headers: {
+                                'Accept': 'application/json',
+                                'Content-Type': 'application/x-www-form-urlencoded; charset=utf-8',
+                            },
+                            body: 'id=' + context.user.id + '&etat=' + 0
+                        });
+                        context.user.etat = 0;
+                        etatSelect.value = 0;
+                    } catch (e) {
+                        console.log(e);
+                    }
+                } else {
+                    etatSelect.value = context.user.etat;
+                }
+            }
+
+            const etat = etatSelect.value;
+            if (etat == "0") {
+                imgEtat.src = "private/monPotager/images/etatPotager/bon.png";
+            } else if (etat == "1") {
+                imgEtat.src = "private/monPotager/images/etatPotager/mauvais.png";
+            } else if (etat == "2") {
+                imgEtat.src = "private/monPotager/images/etatPotager/arroser.png";
+            } else {
+                imgEtat.src = "private/monPotager/images/etatPotager/travaux.png";
+            }
+
+            etatSelect.addEventListener('change', async (event) => {
+                const etat = event.target.value;
+                context.user.etat = etat;
+                if (etat == "0") {
+                    imgEtat.src = "private/monPotager/images/etatPotager/bon.png";
+                } else if (etat == "1") {
+                    imgEtat.src = "private/monPotager/images/etatPotager/mauvais.png";
+                } else if (etat == "2") {
+                    imgEtat.src = "private/monPotager/images/etatPotager/arroser.png";
+                } else {
+                    imgEtat.src = "private/monPotager/images/etatPotager/travaux.png";
+                }
+
+                try {
+                    await fetch('api/user/changeEtat', {
+                        method: 'POST',
+                        headers: {
+                            'Accept': 'application/json',
+                            'Content-Type': 'application/x-www-form-urlencoded; charset=utf-8',
+                        },
+                        body: 'id=' + context.user.id + '&etat=' + event.target.value
+                    });
+                } catch (e) {
+                    console.log(e);
+                }
+            });
         }
 
         loadPotager();
     }
 });
+
+page('autrePotager', async function () {
+    if (!context.logged) {
+        page('/');
+    }
+    else {
+        context.previous = 'autrePotager';
+        async function loadPotager() {
+            await renderTemplate(templates('private/autrePotager/autrePotager.mustache'));
+            let userVisit;
+            try {
+                const response = await fetch('http://127.0.0.1:8080/api/user/liste');
+                if (response.ok) {
+                    const result = await response.json();
+                    console.log(result);
+                    const selectProprietaire = document.getElementById('proprietaire');
+                    for (var i = 0; i < result.length; i++) {
+                        if (result[i].id != context.user.id) {
+                            const option = document.createElement('option');
+                            option.value = result[i].id;
+                            option.innerHTML = result[i].nom + ' ' + result[i].prenom;
+                            selectProprietaire.appendChild(option);
+                        }
+                    }
+
+                    context.user.visit = Number(selectProprietaire.value);
+                    userVisit = result.find(user => user.id == context.user.visit);
+                    console.log(userVisit);
+
+                    selectProprietaire.addEventListener('change', async (event) => {
+                        context.user.visit = Number(event.target.value);
+                        newPotager();
+                    });
+
+                    newPotager();
+                }
+            } catch (error) {
+                console.log(error);
+            }
+
+            async function newPotager() {
+                const boutonRetour = document.getElementById('retour');
+                boutonRetour.addEventListener('click', () => {
+                    page('/main');
+                }
+                );
+
+                const titrePotager = document.getElementById('titrePotager');
+                titrePotager.innerHTML = 'Potager de ' + userVisit.prenom + ' ' + userVisit.nom + '<img src="private/monPotager/images/uwu.png" alt="uwu">';
+
+                loadTaches("visit");
+
+                const tablePotager = document.getElementById('potager').querySelector('tbody');
+
+
+                for (var i = 0; i < taillePotager.x; i++) {
+                    let trPotager = document.createElement('tr');
+                    for (var y = 0; y < taillePotager.y; y++) {
+                        let tdPotager = document.createElement('td');
+                        let button = document.createElement('button');
+                        button.type = 'button';
+                        button.name = 'button';
+                        button.className = 'buttonType';
+                        let img = document.createElement('img');
+                        img.src = "private/monPotager/images/type/vide.webp";
+                        img.alt = 'type Plante';
+                        button.appendChild(img);
+                        tdPotager.appendChild(button);
+                        trPotager.appendChild(tdPotager);
+                    }
+                    tablePotager.appendChild(trPotager);
+                }
+
+                const boutonsAjout = document.getElementsByClassName("buttonType");
+                let j = 0;
+                let result;
+                let potager;
+                let plante;
+                let etatArroser = 0;
+                for (var i = 0; i < boutonsAjout.length; i++) {
+                    if (i % taillePotager.y == 0 && i != 0) {
+                        console.log("i = " + i);
+                        j++;
+                    }
+                    boutonsAjout[i].id = j + "" + i % taillePotager.y;
+
+                    try {
+                        result = await fetch('http://127.0.0.1:8080/api/potager/byXandYandUser/' + j + '/' + i % taillePotager.y + '/' + context.user.visit);
+                        potager = await result.json();
+
+                        if (potager != null) {
+                            result = await fetch('http://127.0.0.1:8080/api/planteData/' + potager.idPlanteData);
+                            plante = await result.json();
+                            plantes.push(plante);
+                            potagers.push(potager);
+                            boutonsAjout[i].numero = plantes.length - 1;
+                            let icone;
+                            if (plante.img == 0) {
+                                icone = "private/monPotager/images/type/carotte.png";
+                            } else if (plante.img == 1) {
+                                icone = "private/monPotager/images/type/salade.png";
+                            } else if (plante.img == 2) {
+                                icone = "private/monPotager/images/type/tomate.png";
+                            } else {
+                                console.log("Erreur : potager.img = " + plante.img);
+                            }
+                            boutonsAjout[i].querySelector('img').src = icone;
+
+                            let dateObjet = new Date(potager.date_dernier_arrosage);
+                            dateObjet.setDate(dateObjet.getDate() + Number(plante.intervalle_arrosage));
+
+                            const aujourdhui = new Date();
+
+
+
+                            if (dateObjet.getTime() < aujourdhui.getTime()) {
+                                boutonsAjout[i].querySelector('img').style.border = "3px solid red";
+                                boutonsAjout[i].statut = 'nok';
+                                etatArroser++;
+                                if (i == 0) {
+                                    const p = document.getElementById('checkArrosé');
+                                    p.innerHTML = 'A arroser ! <img src="private/monPotager/images/nok.png" alt="nok">';
+                                }
+                            } else {
+                                boutonsAjout[i].statut = 'ok';
+                            }
+
+                            boutonsAjout[i].addEventListener('click', function (e) {
+                                context.button = this.id;
+                                console.log("bouton : " + context.button);
+                                e.target.style.border = "3px solid rgb(47 148 47)";
+
+                                if (context.lastButton != null) {
+                                    if (context.lastButton.statut == 'ok') {
+                                        context.lastButton.style.border = "2px solid rgb(70, 192, 70)";
+                                    } else {
+                                        context.lastButton.style.border = "2px solid red";
+                                    }
+                                }
+
+                                context.lastButton = this.querySelector('img');
+                                context.lastButton.statut = this.statut;
+
+                                console.log(context.lastButton.statut);
+
+                                if (this.statut == 'nok') {
+                                    const p = document.getElementById('checkArrosé');
+                                    p.innerHTML = 'A arroser ! <img src="private/monPotager/images/nok.png" alt="nok">';
+                                    e.target.style.border = "4px solid red";
+                                } else {
+                                    const p = document.getElementById('checkArrosé');
+                                    p.innerHTML = 'Arrosé ! <img src="private/monPotager/images/ok.png" alt="nok">';
+                                    e.target.style.border = "4px solid rgb(47 148 47)";
+                                }
+
+
+                                const titre = document.getElementById('infoTitre');
+                                const infoDernArrosage = document.getElementById('infoDernArrosage');
+                                infoDernArrosage.style.display = "flex";
+                                const infoProchArrosage = document.getElementById('infoProchArrosage');
+                                infoProchArrosage.style.display = "flex";
+                                const infoIntervalle = document.getElementById('infoIntervalle');
+                                infoIntervalle.style.display = "flex";
+                                const infoEngrais = document.getElementById('infoEngrais');
+                                infoEngrais.style.display = "flex";
+                                const infoConseil = document.getElementById('infoConseil');
+                                infoConseil.style.display = "flex";
+                                const arroser = document.getElementById('arroser');
+                                arroser.style.display = "flex";
+
+                                titre.innerHTML = plantes[this.numero].nom;
+                                let date = potagers[this.numero].date_dernier_arrosage.split('-');
+                                let annee = date[0];
+                                let mois = date[1];
+                                let jour = date[2];
+                                let nouvelleDateChaine = 'Date du dernier arrossage : ' + jour + '/' + mois + '/' + annee;
+                                infoDernArrosage.innerHTML = nouvelleDateChaine;
+                                let dateObjet = new Date(potagers[this.numero].date_dernier_arrosage);
+                                dateObjet.setDate(dateObjet.getDate() + Number(plantes[this.numero].intervalle_arrosage));
+
+                                jour = String(dateObjet.getDate()).padStart(2, '0');
+                                mois = String(dateObjet.getMonth() + 1).padStart(2, '0');
+                                annee = String(dateObjet.getFullYear());
+
+                                nouvelleDateChaine = 'Date du prochain arrossage : ' + jour + '/' + mois + '/' + annee;
+                                infoProchArrosage.innerHTML = nouvelleDateChaine;
+
+                                infoIntervalle.innerHTML = "Intervalle d'arrossage : " + plantes[this.numero].intervalle_arrosage + ' jours';
+                                infoEngrais.innerHTML = "Engrais conseillé : " + plantes[this.numero].engrais_conseille;
+                                infoConseil.innerHTML = "Conseil : " + plantes[this.numero].conseils;
+                            });
+                        }
+                    } catch (error) {
+                        console.log(error);
+                    }
+                }
+
+                if (plantes.length > 0) {
+                    const titre = document.getElementById('infoTitre');
+                    const infoDernArrosage = document.getElementById('infoDernArrosage');
+                    const infoProchArrosage = document.getElementById('infoProchArrosage');
+                    const infoIntervalle = document.getElementById('infoIntervalle');
+                    const infoEngrais = document.getElementById('infoEngrais');
+                    const infoConseil = document.getElementById('infoConseil');
+
+                    titre.innerHTML = plantes[0].nom;
+                    let date = potagers[0].date_dernier_arrosage.split('-');
+                    let annee = date[0];
+                    let mois = date[1];
+                    let jour = date[2];
+                    let nouvelleDateChaine = 'Date du dernier arrossage : ' + jour + '/' + mois + '/' + annee;
+                    infoDernArrosage.innerHTML = nouvelleDateChaine;
+                    let dateObjet = new Date(potagers[0].date_dernier_arrosage);
+                    dateObjet.setDate(dateObjet.getDate() + Number(plantes[0].intervalle_arrosage));
+
+                    jour = String(dateObjet.getDate()).padStart(2, '0');
+                    mois = String(dateObjet.getMonth() + 1).padStart(2, '0');
+                    annee = String(dateObjet.getFullYear());
+
+                    nouvelleDateChaine = 'Date du prochain arrossage : ' + jour + '/' + mois + '/' + annee;
+                    infoProchArrosage.innerHTML = nouvelleDateChaine;
+                    infoIntervalle.innerHTML = "Intervalle d'arrossage : " + plantes[0].intervalle_arrosage + ' jours';
+                    infoEngrais.innerHTML = "Engrais conseillé : " + plantes[0].engrais_conseille;
+                    infoConseil.innerHTML = "Conseil : " + plantes[0].conseils;
+                } else {
+                    const titre = document.getElementById('infoTitre');
+                    const checkArrosé = document.getElementById('checkArrosé');
+                    const infoDernArrosage = document.getElementById('infoDernArrosage');
+                    const infoProchArrosage = document.getElementById('infoProchArrosage');
+                    const infoIntervalle = document.getElementById('infoIntervalle');
+                    const infoEngrais = document.getElementById('infoEngrais');
+                    const infoConseil = document.getElementById('infoConseil');
+                    const arroser = document.getElementById('arroser');
+
+                    titre.innerHTML = "Aucune plante";
+                    checkArrosé.innerHTML = "Ce potager semble bien vide...";
+                    infoDernArrosage.style.display = "none";
+                    infoProchArrosage.style.display = "none";
+                    infoIntervalle.style.display = "none";
+                    infoEngrais.style.display = "none";
+                    infoConseil.style.display = "none";
+                    arroser.style.display = "none";
+                }
+
+                const notification = document.getElementById('notification');
+                const boutonArroser = document.getElementById('arroser');
+
+                boutonArroser.addEventListener('click', async (event) => {
+                    console.log("click");
+                    notification.style.opacity = "1";
+
+                    try {
+                        console.log('x=' + context.button[0] + '&y=' + context.button[1] + '&idUser=' + context.user.visit);
+                        result = await fetch('api/potager/arrose', {
+                            method: 'POST',
+                            headers: {
+                                'Accept': 'application/json',
+                                'Content-Type': 'application/x-www-form-urlencoded; charset=utf-8',
+                            },
+                            body: 'x=' + context.button[0] + '&y=' + context.button[1] + '&idUser=' + context.user.visit
+                        });
+
+
+                        if (result.status == 200) {
+                            const infoDernArrosage = document.getElementById('infoDernArrosage');
+                            const infoProchArrosage = document.getElementById('infoProchArrosage');
+                            const infoIntervalle = document.getElementById('infoIntervalle');
+
+                            const intervalle_arrosage = Number(infoIntervalle.innerHTML.split(' ')[3]);
+                            console.log("intervalle_arrosage : " + intervalle_arrosage);
+
+                            const dateActuelle = new Date();
+                            let mois = '';
+                            let jour = '';
+                            if (dateActuelle.getMonth() < 10) {
+                                mois = '0' + (dateActuelle.getMonth() + 1);
+                            } else {
+                                mois = dateActuelle.getMonth() + 1;
+                            }
+
+                            if (dateActuelle.getDate() < 10) {
+                                jour = '0' + dateActuelle.getDate();
+                            } else {
+                                jour = dateActuelle.getDate();
+                            }
+
+                            let date = jour + '/' + mois + '/' + dateActuelle.getFullYear();
+                            infoDernArrosage.innerHTML = 'Date du dernier arrossage : ' + date;
+                            date = dateActuelle.getFullYear() + '-' + mois + '-' + jour;
+                            let dateObjet = new Date(date);
+                            dateObjet.setDate(dateObjet.getDate() + intervalle_arrosage);
+
+                            jour = String(dateObjet.getDate()).padStart(2, '0');
+                            mois = String(dateObjet.getMonth() + 1).padStart(2, '0');
+                            let annee = String(dateObjet.getFullYear());
+
+                            let nouvelleDateChaine = 'Date du prochain arrossage : ' + jour + '/' + mois + '/' + annee;
+                            infoProchArrosage.innerHTML = nouvelleDateChaine;
+
+                            potagers.find(potager => potager.x == context.button[0] && potager.y == context.button[1]).date_dernier_arrosage = date;
+
+                            if (context.lastButton.statut == 'nok') {
+                                const p = document.getElementById('checkArrosé');
+                                p.innerHTML = 'Arrosé ! <img src="private/monPotager/images/ok.png" alt="nok">';
+                                context.lastButton.style.border = '4px solid rgb(70, 192, 70)';
+                                context.lastButton.statut = 'ok';
+                                document.getElementById(context.button).statut = 'ok';
+                                etatArroser--;
+                                if (etatArroser == 0) {
+                                    const imgEtat = document.getElementById('imgEtat');
+                                    const labelEtat = document.getElementById('etat');
+                                    if (userVisit.etat == "2") {
+                                        imgEtat.src = "private/monPotager/images/etatPotager/bon.png";
+                                        labelEtat.innerHTML = "État : Bon état &#128522;";
+                                    }
+                                }
+                            } else {
+                                console.log("Erreur : " + result.status);
+                            }
+                        }
+
+                    } catch (error) {
+                        console.log(error);
+                    }
+                    setTimeout(function () {
+                        notification.style.opacity = "0";
+                    }, 3000);
+                });
+                const imgEtat = document.getElementById('imgEtat');
+                const labelEtat = document.getElementById('etat');
+
+                const etat = userVisit.etat;
+                if (etat == "0") {
+                    imgEtat.src = "private/monPotager/images/etatPotager/bon.png";
+                    labelEtat.innerHTML = "État : Bon état &#128522;";
+                } else if (etat == "1") {
+                    imgEtat.src = "private/monPotager/images/etatPotager/mauvais.png";
+                    labelEtat.innerHTML = "État : Mauvais état &#128532;";
+                } else if (etat == "2") {
+                    imgEtat.src = "private/monPotager/images/etatPotager/arroser.png";
+                    labelEtat.innerHTML = "État : À arroser &#128167;";
+                } else {
+                    imgEtat.src = "private/monPotager/images/etatPotager/travaux.png";
+                    labelEtat.innerHTML = "État : En travaux &#x1F6A7;";
+                }
+            }
+        }
+
+        loadPotager();
+    }
+}
+)
 
 page('agenda', async function () {
     if (!context.logged) {
