@@ -101,45 +101,49 @@ module.exports.PlantePotager = {
     arrose: (x, y, idUser, aujourdhui) => get(`
                 update PlantePotager set date_dernier_arrosage = '${aujourdhui}' where x = ${x | 0} and y = ${y | 0} and idUser = ${idUser | 0};
             `),
+
+    rmPotager: (x, y, idUser) => get(`
+                delete from PlantePotager where x = ${x | 0} and y = ${y | 0} and idUser = ${idUser | 0};
+            `),
 };
 
 module.exports.PlanteData = {
     byId: id => get(`
-                select * from PlanteData where id = ${id | 0};
-            `),
+                select * from PlanteData where id = ${ id | 0};
+`),
 
     all: () => all('select * from PlanteData'),
 
     byNom: nom => get(`
                 select id from PlanteData where nom = '${nom}';
-            `),
+`),
 
     byIdPlantePotager: id => ({
         get PlanteData() {
             return all(`
-                select * from PlanteData where idPlantePotager = ${id | 0};
-            `);
+select * from PlanteData where idPlantePotager = ${ id | 0 };
+`);
         }
     }),
     byXandY: (x, y, userId) => ({
         get PlanteData() {
             return all(`
-                select * from PlanteData p, PlantePotager q where p.id = q.idPlanteData and q.x = ${x | 0} and q.y = ${y | 0} and q.idUser = ${userId | 0};
-            `);
+select * from PlanteData p, PlantePotager q where p.id = q.idPlanteData and q.x = ${ x | 0 } and q.y = ${ y | 0 } and q.idUser = ${ userId | 0 };
+`);
         }
     }),
 
     add: (nom, intervalle_arrosage, conseils, engrais_conseille, img) => get(`
-        insert into PlanteData (nom, intervalle_arrosage, conseils, engrais_conseille, img)
-        values ('${nom}', '${intervalle_arrosage}', '${conseils}', '${engrais_conseille}', '${img}');
-    `),
+        insert into PlanteData(nom, intervalle_arrosage, conseils, engrais_conseille, img)
+values('${nom}', '${intervalle_arrosage}', '${conseils}', '${engrais_conseille}', '${img}');
+`),
 };
 
 module.exports.taches = {
     byId: id => ({
         get taches() {
             return all(`
-                select * from taches where id = ${id | 0};
+select * from taches where id = ${ id | 0 };
 `);
         }
     }),
@@ -152,10 +156,10 @@ select * from taches where etat = '${etat}';
         }
     }),
     byUser: id => all(`
-select * from taches where idCreateur = ${id | 0};
+select * from taches where idCreateur = ${ id | 0 };
 `),
     byUserComplete: id => all(`
-select * from taches where idRealisateur = ${id | 0} OR idCreateur = ${id | 0};
+select * from taches where idRealisateur = ${ id | 0 } OR idCreateur = ${ id | 0 };
 `),
 
     toDo: () => all(`
@@ -164,40 +168,40 @@ select * from taches where etat = '0';
     byUserToDo: id => ({
         get taches() {
             return all(`
-select * from taches where idUser = ${id | 0} and etat = '0';
+select * from taches where idUser = ${ id | 0 } and etat = '0';
 `);
         }
     }),
     ajoutUser: (id, idUser) => ({
         get taches() {
             return all(`
-                update taches set idRealisateur = ${idUser | 0} where id = ${id | 0};
+                update taches set idRealisateur = ${ idUser | 0 } where id = ${ id | 0 };
 `);
         }
     }),
 
     addTache: (idCreateur, idRealisateur, titre, date, notes) => get(`
               insert into taches(idCreateur, idRealisateur, titre, date, notes, etat)
-values(${idCreateur | 0}, ${idRealisateur | 0}, '${titre}', '${date}', '${notes}', 0);
+values(${ idCreateur | 0}, ${ idRealisateur | 0}, '${titre}', '${date}', '${notes}', 0);
 `),
 
     suppRealisateurTache: id => ({
         get taches() {
             return all(`
-                update tache set idRealisateur = null where id = ${id | 0};
+                update tache set idRealisateur = null where id = ${ id | 0 };
 `);
         }
     }),
 
     changeEtat: (id, etat) => get(`
-        update taches set etat = ${etat | 0} where id = ${id | 0};
-    `),
+        update taches set etat = ${ etat | 0 } where id = ${ id | 0 };
+`),
 
     changeRealisateur: (id, realisateur) => get(`
-        update taches set idRealisateur = ${realisateur | 0} where id = ${id | 0};
-    `),
+        update taches set idRealisateur = ${ realisateur | 0 } where id = ${ id | 0 };
+`),
 
     rmTache: (id) => get(`
-    delete from taches where id = ${id | 0};
-    `),
+delete from taches where id = ${ id | 0 };
+`),
 };

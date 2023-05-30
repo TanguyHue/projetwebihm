@@ -328,5 +328,18 @@ module.exports = (passport) => {
         );
 
     });
+
+    app.post('/potager/remove', function (req, res, next) {
+        const x = req.body.x; // Récupérer l'id du créateur de la tâche à partir du corps de la requête
+        const y = req.body.y; // Récupérer le titre de la tâche à partir du corps de la requête
+        const idUser = req.body.idUser; // Récupérer la date de la tâche à partir du corps de la requête
+        dbHelper.PlantePotager.rmPotager(x, y, idUser).then(
+            potagers => {
+                res.set('Content-type', 'application/json');
+                res.send(JSON.stringify(potagers));
+            }
+        );
+        
+    });
     return app;
 }

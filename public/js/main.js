@@ -490,6 +490,8 @@ page('monpotager', async function () {
                             infoConseil.style.display = "flex";
                             const arroser = document.getElementById('arroser');
                             arroser.style.display = "flex";
+                            const supprimer = document.getElementById('supprimer');
+                            supprimer.style.display = "flex";
 
                             titre.innerHTML = plantes[this.numero].nom;
                             let date = potagers[this.numero].date_dernier_arrosage.split('-');
@@ -525,31 +527,24 @@ page('monpotager', async function () {
 
             if (plantes.length > 0) {
                 const titre = document.getElementById('infoTitre');
+                const checkArrosé = document.getElementById('checkArrosé');
                 const infoDernArrosage = document.getElementById('infoDernArrosage');
                 const infoProchArrosage = document.getElementById('infoProchArrosage');
                 const infoIntervalle = document.getElementById('infoIntervalle');
                 const infoEngrais = document.getElementById('infoEngrais');
                 const infoConseil = document.getElementById('infoConseil');
+                const arroser = document.getElementById('arroser');
+                const suppression = document.getElementById('supprimer');
 
-                titre.innerHTML = plantes[0].nom;
-                let date = potagers[0].date_dernier_arrosage.split('-');
-                let annee = date[0];
-                let mois = date[1];
-                let jour = date[2];
-                let nouvelleDateChaine = 'Date du dernier arrossage : ' + jour + '/' + mois + '/' + annee;
-                infoDernArrosage.innerHTML = nouvelleDateChaine;
-                let dateObjet = new Date(potagers[0].date_dernier_arrosage);
-                dateObjet.setDate(dateObjet.getDate() + Number(plantes[0].intervalle_arrosage));
-
-                jour = String(dateObjet.getDate()).padStart(2, '0');
-                mois = String(dateObjet.getMonth() + 1).padStart(2, '0');
-                annee = String(dateObjet.getFullYear());
-
-                nouvelleDateChaine = 'Date du prochain arrossage : ' + jour + '/' + mois + '/' + annee;
-                infoProchArrosage.innerHTML = nouvelleDateChaine;
-                infoIntervalle.innerHTML = "Intervalle d'arrossage : " + plantes[0].intervalle_arrosage + ' jours';
-                infoEngrais.innerHTML = "Engrais conseillé : " + plantes[0].engrais_conseille;
-                infoConseil.innerHTML = "Conseil : " + plantes[0].conseils;
+                titre.innerHTML = "Aucune plante sélectionné";
+                checkArrosé.innerHTML = "Sélectionnez une plante pour voir ses informations";
+                infoDernArrosage.style.display = "none";
+                infoProchArrosage.style.display = "none";
+                infoIntervalle.style.display = "none";
+                infoEngrais.style.display = "none";
+                infoConseil.style.display = "none";
+                arroser.style.display = "none";
+                suppression.style.display = "none";
             } else {
                 const titre = document.getElementById('infoTitre');
                 const checkArrosé = document.getElementById('checkArrosé');
@@ -559,6 +554,7 @@ page('monpotager', async function () {
                 const infoEngrais = document.getElementById('infoEngrais');
                 const infoConseil = document.getElementById('infoConseil');
                 const arroser = document.getElementById('arroser');
+                const suppression = document.getElementById('supprimer');
 
                 titre.innerHTML = "Aucune plante";
                 checkArrosé.innerHTML = "Ajouter une plante en cliquant sur le bouton + à droite";
@@ -568,6 +564,7 @@ page('monpotager', async function () {
                 infoEngrais.style.display = "none";
                 infoConseil.style.display = "none";
                 arroser.style.display = "none";
+                suppression.style.display = "none";
             }
 
             const notification = document.getElementById('notification');
@@ -738,6 +735,53 @@ page('monpotager', async function () {
                     console.log(e);
                 }
             });
+
+            const btnSupprimer = document.getElementById('supprimer');
+            btnSupprimer.addEventListener('click', async (event) => {
+                try {
+                    await fetch('api/potager/remove', {
+                        method: 'POST',
+                        headers: {
+                            'Accept': 'application/json',
+                            'Content-Type': 'application/x-www-form-urlencoded; charset=utf-8',
+                        },
+                        body: 'idUser=' + context.user.id + '&x=' + context.button[0] + '&y=' + context.button[1]
+                    });
+
+                    const btn = document.getElementById(context.button);
+                    btn.querySelector('img').src = 'private/monPotager/images/type/ajouter.png';
+                    btn.querySelector('img').style.border = '2px solid rgb(70, 192, 70)';
+                    btn.addEventListener('click', async (event) => {
+                        context.button = event.target.id;
+                        page('/ajoutplante');
+                    }
+                    );
+
+                    const titre = document.getElementById('infoTitre');
+                    const checkArrosé = document.getElementById('checkArrosé');
+                    const infoDernArrosage = document.getElementById('infoDernArrosage');
+                    const infoProchArrosage = document.getElementById('infoProchArrosage');
+                    const infoIntervalle = document.getElementById('infoIntervalle');
+                    const infoEngrais = document.getElementById('infoEngrais');
+                    const infoConseil = document.getElementById('infoConseil');
+                    const arroser = document.getElementById('arroser');
+                    const supprimer = document.getElementById('supprimer');
+
+                    titre.innerHTML = "Aucune plante sélectionné";
+                    checkArrosé.innerHTML = "Sélectionnez une plante pour voir ses informations";
+                    infoDernArrosage.style.display = "none";
+                    infoProchArrosage.style.display = "none";
+                    infoIntervalle.style.display = "none";
+                    infoEngrais.style.display = "none";
+                    infoConseil.style.display = "none";
+                    arroser.style.display = "none";
+                    supprimer.style.display = "none";
+
+                } catch (e) {
+                    console.log(e);
+                }
+            }
+            );
         }
 
         loadPotager();
@@ -942,31 +986,22 @@ page('autrePotager', async function () {
 
                 if (plantes.length > 0) {
                     const titre = document.getElementById('infoTitre');
+                    const checkArrosé = document.getElementById('checkArrosé');
                     const infoDernArrosage = document.getElementById('infoDernArrosage');
                     const infoProchArrosage = document.getElementById('infoProchArrosage');
                     const infoIntervalle = document.getElementById('infoIntervalle');
                     const infoEngrais = document.getElementById('infoEngrais');
                     const infoConseil = document.getElementById('infoConseil');
-
-                    titre.innerHTML = plantes[0].nom;
-                    let date = potagers[0].date_dernier_arrosage.split('-');
-                    let annee = date[0];
-                    let mois = date[1];
-                    let jour = date[2];
-                    let nouvelleDateChaine = 'Date du dernier arrossage : ' + jour + '/' + mois + '/' + annee;
-                    infoDernArrosage.innerHTML = nouvelleDateChaine;
-                    let dateObjet = new Date(potagers[0].date_dernier_arrosage);
-                    dateObjet.setDate(dateObjet.getDate() + Number(plantes[0].intervalle_arrosage));
-
-                    jour = String(dateObjet.getDate()).padStart(2, '0');
-                    mois = String(dateObjet.getMonth() + 1).padStart(2, '0');
-                    annee = String(dateObjet.getFullYear());
-
-                    nouvelleDateChaine = 'Date du prochain arrossage : ' + jour + '/' + mois + '/' + annee;
-                    infoProchArrosage.innerHTML = nouvelleDateChaine;
-                    infoIntervalle.innerHTML = "Intervalle d'arrossage : " + plantes[0].intervalle_arrosage + ' jours';
-                    infoEngrais.innerHTML = "Engrais conseillé : " + plantes[0].engrais_conseille;
-                    infoConseil.innerHTML = "Conseil : " + plantes[0].conseils;
+                    const arroser = document.getElementById('arroser');
+    
+                    titre.innerHTML = "Aucune plante sélectionné";
+                    checkArrosé.innerHTML = "Sélectionnez une plante pour voir ses informations";
+                    infoDernArrosage.style.display = "none";
+                    infoProchArrosage.style.display = "none";
+                    infoIntervalle.style.display = "none";
+                    infoEngrais.style.display = "none";
+                    infoConseil.style.display = "none";
+                    arroser.style.display = "none";
                 } else {
                     const titre = document.getElementById('infoTitre');
                     const checkArrosé = document.getElementById('checkArrosé');
@@ -976,9 +1011,9 @@ page('autrePotager', async function () {
                     const infoEngrais = document.getElementById('infoEngrais');
                     const infoConseil = document.getElementById('infoConseil');
                     const arroser = document.getElementById('arroser');
-
+    
                     titre.innerHTML = "Aucune plante";
-                    checkArrosé.innerHTML = "Ce potager semble bien vide...";
+                    checkArrosé.innerHTML = "Ajouter une plante en cliquant sur le bouton + à droite";
                     infoDernArrosage.style.display = "none";
                     infoProchArrosage.style.display = "none";
                     infoIntervalle.style.display = "none";

@@ -296,16 +296,30 @@ main #info div.etatPotager img {
 }
 
 main #info div.etatPotager button {
-  background-color: aqua;
   border-radius: 4px;
   border-style: none;
   padding: 4px;
   transition: all 0.2s ease-in-out;
   margin-bottom: 12px;
+  width: 92px;
+  text-align: center;
 }
 
-main #info div.etatPotager button:hover {
+main #info div.etatPotager button#arroser {
+  background-color: aqua;
+}
+
+main #info div.etatPotager button#arroser:hover {
   background-color: aquamarine;
+}
+
+main #info div.etatPotager button#supprimer {
+  color: white;
+  background-color: rgb(231, 70, 56);
+}
+
+main #info div.etatPotager button#supprimer:hover {
+  background-color: rgb(215, 99, 88);
 }
 
 
