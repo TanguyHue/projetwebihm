@@ -7,7 +7,7 @@
 
 // Notre objet contexte, qui contiendra toutes les données
 // pour les templates Mustache
-let context = { 'logged': false, 'user': 0, 'previous': 0, 'button': 0 };
+let context = { 'logged': false, 'user': 0, 'previous': 0, 'button': 0, 'nbTache': 0 };
 let dataPlante = [];
 let plantes = [];
 let potagers = [];
@@ -186,9 +186,19 @@ async function loadTaches() {
                     });
 
                     form.style.display = "none";
+
+                    context.nbTache--;
+
+                    if(context.nbTache == 0) {
+                        const p = document.createElement('p');
+                        p.innerHTML = "Aucune tâche pour le moment";
+                        document.getElementById('toDo').querySelector('ul').appendChild(document.createElement('li').appendChild(p));
+                    }
                 } catch (e) {
                     console.log(e);
                 }
+
+                
             })
 
             form.appendChild(input);
@@ -219,6 +229,8 @@ async function loadTaches() {
             const p = document.createElement('p');
             p.innerHTML = "Aucune tâche pour le moment";
             ulToDo.appendChild(document.createElement('li').appendChild(p));
+        } else {
+            context.nbTache= ulListe.length;
         }
 
         var boutonsAssignation = document.querySelectorAll("#toDo input[name='assignation']");
