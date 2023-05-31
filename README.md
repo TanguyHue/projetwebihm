@@ -169,6 +169,113 @@ On y trouve aussi un bouton "Retour" sous la forme d'une flèche qui permet de r
 
 ### Page Autres potagers `/autrepotager`
 
-Sur cette page, on peut visualiser les potagers des autres utilisateurs de la base de données. On retrouve une liste déroulante permettant de choisir un utilisateur. Une fois un utilisateur sélectionné, on peut voir son potager, avec les différentes plantes présentes dans son potager. On peut cliquer sur une plante pour afficher ses informations. 
+Sur cette page, on peut visualiser les potagers des autres utilisateurs de la base de données. On retrouve une liste déroulante permettant de choisir un utilisateur. Une fois un utilisateur sélectionné, on peut voir son potager, avec les différentes plantes présentes dans son potager. On peut cliquer sur une plante pour afficher ses informations. L'état du potager est également affiché en haut à droite de la page, en dessous du nom de l'utilisateur. Enfin, on peut trouver un bouton "Retour" qui permet de retourner à la page d'accueil (`/main`), situé sous l'état du potager.
 
-On peut aussi voir la liste des tâches associées à ce potager, avec la possibilité de les cocher si elles sont effectuées. On peut également s'assigner une tâche en cliquant sur le bouton "Je m'assigne cette tâche" ou 
+On peut aussi voir la liste des tâches associées à ce potager, avec la possibilité de les cocher si elles sont effectuées. On peut également s'assigner une tâche en cliquant sur le bouton "Je m'assigne cette tâche". Si elle est déjà assignée à quelqu'un, on ne peut pas s'assigner la tâche et le bouton affiche le nom de la personne à qui la tâche est assignée.
+
+## Base de données
+
+La base de données est composée de 4 tables :
+- `user` : Table contenant les informations des utilisateurs
+- `PlanteData` : Table contenant les informations des plantes
+- `PlantePotager` : Table contenant les informations des plantes présentes dans les potagers
+- `Taches` : Table contenant les informations des tâches
+
+Ces tables sont créées dans le fichier `createDB.sql` qui permet de créer la base de données.
+
+### Table `user`
+
+Cette table contient les informations des utilisateurs. Elle est composée des champs suivants :
+- `id` : Identifiant de l'utilisateur (clé primaire)
+- `password` : Mot de passe de l'utilisateur
+- `nom` : Nom de l'utilisateur
+- `prenom` : Prénom de l'utilisateur
+- `adresse_mail` : Adresse mail de l'utilisateur
+- `departement` : Département de l'utilisateur
+- `langue` : Langue de l'utilisateur
+- `role` : Rôle de l'utilisateur
+- `etat` : Etat du potager de l'utilisateur
+
+Cette table permet de stocker les informations sur l'utilisateur, ainsi que l'état de son potager.
+
+### Table `PlanteData`
+
+Cette table contient les informations des plantes. Elle est composée des champs suivants :
+- `id` : Identifiant de la plante (clé primaire)
+- `nom` : Nom de la plante
+- `intervalle_arrosage` : Intervalle d'arrosage de la plante
+- `conseils` : Conseils pour la plante
+- `engrais_conseille` : Engrais conseillé pour la plante
+- `img` : Icône de la plante
+
+Cette table permet de stocker les informations sur les plantes. Elle permet ainsi de créer une liste des plantes déjà existantes, et de les ajouter dans les potagers.
+
+### Table `PlantePotager`
+
+Cette table contient les informations des plantes présentes dans les potagers. Elle est composée des champs suivants :
+- `id` : Identifiant de la plante (clé primaire)
+- `x` : Position en x de la plante dans le potager
+- `y` : Position en y de la plante dans le potager
+- `idPlanteData` : Identifiant de la plante dans la table `PlanteData`
+- `idUser` : Identifiant de l'utilisateur dans la table `user`
+- `date_recolte` : Date de recolte de la plante
+- `date_dernier_arrosage` : Date du dernier arrosage de la plante (Lors de la création de la plante, cette date est initialisée à la date de plantation)
+
+On a deux clés étrangères dans cette table :
+- `idPlanteData` : Clé étrangère de la table `PlanteData`
+- `idUser` : Clé étrangère de la table `user`
+
+Cette table permet de stocker les informations des plantes présentes dans les potagers. On peut ainsi récupérer les informations des plantes présentes dans un potager, et les afficher sur la carte du potager.
+
+### Table `Taches`
+
+Cette table contient les informations des tâches. Elle est composée des champs suivants :
+- `id` : Identifiant de la tâche (clé primaire)
+- `idCreateur` : Identifiant de l'utilisateur qui a créé la tâche
+- `idRealisateur` : Identifiant de l'utilisateur qui doit réaliser la tâche
+- `titre` : Titre de la tâche
+- `date` : Date avant laquelle la tâche doit être effectuée
+- `notes` : Notes sur la tâche
+- `etat` : Etat de la tâche (0 : Non effectuée, 1 : Effectuée)	
+
+On a deux clés étrangères dans cette table :
+- `idCreateur` : Clé étrangère de la table `user`
+- `idRealisateur` : Clé étrangère de la table `user`
+
+Cette table permet de stocker les informations des tâches. On peut ainsi récupérer les informations des tâches, et les afficher sur la liste des tâches.
+
+## API
+
+L'API est composée de 5 routes principales :
+- `/planteData`
+- `/taches`
+- `/login`
+- `/user`
+- `/potager`
+
+### Route `/planteData`
+
+- **GET `/planteData`**: Récupère toutes les données des plantes.
+- **GET`/planteData/:id`** : Récupère les données d'une plante spécifique en utilisant son identifiant.
+- **GET`/planteData/nom/:nom`** : Récupère les données d'une plante spécifique en utilisant son nom.
+- **POST `/planteData/add`** : Ajoute une nouvelle plante en fournissant les informations nécessaires.
+
+### Route `/taches`
+
+- **GET `/taches`**: Récupère toutes les tâches.
+- **GET `/taches/:idUser`**: Récupère toutes les tâches d'un utilisateur spécifique en utilisant son identifiant.
+- **GET `/tachesComplete/:idUser`**: Récupère toutes les tâches terminées d'un utilisateur spécifique en utilisant son identifiant.
+- **POST `/taches/:idTache/add/:idUser`** : Ajoute un utilisateur à une tâche spécifique.
+- **POST `/taches/:idTache/remove`** : Supprime une tâche spécifique.
+- **POST `/taches/changeEtat`** : Modifie l'état d'une tâche.
+- **POST `/taches/changeRealisateur`** : Modifie le réalisateur d'une tâche.
+
+### Route `/login`
+
+- **POST `/login`** : Authentification d'un utilisateur en utilisant un nom d'utilisateur et un mot de passe.
+- **GET `/login/:username/:password`** : Authentification d'un utilisateur en utilisant un nom d'utilisateur et un mot de passe.
+
+### Route `/user` : 
+
+A compléter
+
