@@ -189,7 +189,9 @@ async function loadTaches(type) {
             })
 
             let deleteButton;
-            if (type == "admin") {
+            console.log("Type : " + type);
+            if (type == "main" || type == "potager") {
+                console.log("Je suis rentré dans le if");
                 deleteButton = document.createElement('input');
                 deleteButton.type = "button";
                 deleteButton.name = "suppression";
@@ -228,7 +230,7 @@ async function loadTaches(type) {
             form.appendChild(ulDescription);
             form.appendChild(date);
             form.appendChild(bouton);
-            if (type == "admin") {
+            if (type == "main" || type == "potager") {
                 form.appendChild(deleteButton);
             }
 
@@ -251,6 +253,7 @@ async function loadTaches(type) {
         }
 
         if (ulListe.length == 0) {
+            ulToDo.innerHTML = "";
             const p = document.createElement('p');
             p.innerHTML = "Aucune tâche pour le moment";
             ulToDo.appendChild(document.createElement('li').appendChild(p));
@@ -354,6 +357,28 @@ page('main', async function () {
 
             const departUser = document.getElementById('departUser');
             departUser.innerHTML = "Département : " + context.user.departement;
+
+            let users;
+            await fetch('http://127.0.0.1:8080/api/user/liste')
+                    .then(response => response.json())
+                    .then(data => {
+                        users = data;
+                    })
+                    .catch(err => console.error(err));
+
+            const user = users.find(user => user.id == context.user.id);
+
+            const etatPotager = document.getElementById('etatPotager');
+
+            if (user.etat == "0") {
+                etatPotager.innerHTML = "Bon état <img src='private/monPotager/images/etatPotager/bon.png' alt='bon état' id='imgEtatPotager'>";
+            } else if (user.etat == "1") {
+                etatPotager.innerHTML = "Mauvais état <img src='private/monPotager/images/etatPotager/mauvais.png' alt='mauvais état' id='imgEtatPotager'>";
+            } else if (user.etat == "2") {
+                etatPotager.innerHTML = "A arroser <img src='private/monPotager/images/etatPotager/arroser.png' alt='arroser' id='imgEtatPotager'>";
+            } else {
+                etatPotager.innerHTML = "Travaux <img src='private/monPotager/images/etatPotager/travaux.png' alt='travaux' id='imgEtatPotager'>";
+            }
         }
 
         loadMain();
@@ -429,16 +454,7 @@ page('monpotager', async function () {
                         plantes.push(plante);
                         potagers.push(potager);
                         boutonsAjout[i].numero = plantes.length - 1;
-                        let icone;
-                        if (plante.img == 0) {
-                            icone = "private/monPotager/images/type/carotte.png";
-                        } else if (plante.img == 1) {
-                            icone = "private/monPotager/images/type/salade.png";
-                        } else if (plante.img == 2) {
-                            icone = "private/monPotager/images/type/tomate.png";
-                        } else {
-                            console.log("Erreur : potager.img = " + plante.img);
-                        }
+                        let icone = "private/monPotager/images/type/" + plante.img + ".png";
                         boutonsAjout[i].querySelector('img').src = icone;
 
                         let dateObjet = new Date(potager.date_dernier_arrosage);
@@ -896,16 +912,7 @@ page('autrePotager', async function () {
                             plantes.push(plante);
                             potagers.push(potager);
                             boutonsAjout[i].numero = plantes.length - 1;
-                            let icone;
-                            if (plante.img == 0) {
-                                icone = "private/monPotager/images/type/carotte.png";
-                            } else if (plante.img == 1) {
-                                icone = "private/monPotager/images/type/salade.png";
-                            } else if (plante.img == 2) {
-                                icone = "private/monPotager/images/type/tomate.png";
-                            } else {
-                                console.log("Erreur : potager.img = " + plante.img);
-                            }
+                            let icone = "private/monPotager/images/type/" + plante.img + ".png";
                             boutonsAjout[i].querySelector('img').src = icone;
 
                             let dateObjet = new Date(potager.date_dernier_arrosage);
@@ -1267,10 +1274,11 @@ page('ajouttache', async function () {
                 var description = document.getElementById("note").value;
                 var date = document.getElementById("date").value;
                 if (titre != '' && date != '') {
+                    let assignation;
                     if (document.getElementById("assignation").checked) {
-                        var assignation = context.user.id;
+                        assignation = context.user.id;
                     } else {
-                        var assignation = "none";
+                        assignation = -1;
                     }
                     var tache = { titre: titre, description: description, date: date, assignation: assignation };
                     console.log(tache);
@@ -1341,13 +1349,7 @@ page('ajoutplante', async function () {
             const selectIcone = document.getElementById('icone');
             const imageIcone = document.getElementById('imageIcone');
             selectIcone.addEventListener('change', () => {
-                if (selectIcone.selectedIndex == 0) {
-                    imageIcone.src = "private/monPotager/images/type/carotte.png";
-                } else if (selectIcone.selectedIndex == 1) {
-                    imageIcone.src = "private/monPotager/images/type/salade.png";
-                } else if (selectIcone.selectedIndex == 2) {
-                    imageIcone.src = "private/monPotager/images/type/tomate.png";
-                }
+                imageIcone.src = "private/monPotager/images/type/" + selectIcone.selectedIndex +".png";
             }
             );
 
@@ -1382,13 +1384,7 @@ page('ajoutplante', async function () {
                             document.getElementById('nom').disabled = false;
                             selectIcone.getElementsByTagName("option")[0].selected = 'selected';
                             selectIcone.disabled = false;
-                            if (selectIcone.selectedIndex == 0) {
-                                imageIcone.src = "private/monPotager/images/type/carotte.png";
-                            } else if (selectIcone.selectedIndex == 1) {
-                                imageIcone.src = "private/monPotager/images/type/salade.png";
-                            } else if (selectIcone.selectedIndex == 2) {
-                                imageIcone.src = "private/monPotager/images/type/tomate.png";
-                            }
+                            imageIcone.src = "private/monPotager/images/type/" + selectIcone.selectedIndex +".png";
                             document.getElementById('intervalleArrosage').value = "";
                             document.getElementById('intervalleArrosage').disabled = false;
                             document.getElementById('engrais').value = "";
@@ -1402,13 +1398,7 @@ page('ajoutplante', async function () {
                             console.log(Number(dataPlante[selectPlante.selectedIndex - 1].img));
                             selectIcone.getElementsByTagName("option")[Number(dataPlante[selectPlante.selectedIndex - 1].img)].selected = 'selected';
                             selectIcone.disabled = true;
-                            if (selectIcone.selectedIndex == 0) {
-                                imageIcone.src = "private/monPotager/images/type/carotte.png";
-                            } else if (selectIcone.selectedIndex == 1) {
-                                imageIcone.src = "private/monPotager/images/type/salade.png";
-                            } else if (selectIcone.selectedIndex == 2) {
-                                imageIcone.src = "private/monPotager/images/type/tomate.png";
-                            }
+                            imageIcone.src = "private/monPotager/images/type/" + selectIcone.selectedIndex +".png";
                             document.getElementById('intervalleArrosage').value = Number(dataPlante[selectPlante.selectedIndex - 1].intervalle_arrosage);
                             document.getElementById('intervalleArrosage').disabled = true;
                             document.getElementById('engrais').value = dataPlante[selectPlante.selectedIndex - 1].engrais_conseille;

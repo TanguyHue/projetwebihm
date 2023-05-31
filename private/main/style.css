@@ -29,6 +29,7 @@ header #infoUser {
   border-radius: 5px;
   font-size: 16px;
   box-shadow: 0px 1px 0px 0px grey;
+  width: 200px;
 }
 
 header #infoUser p {
@@ -42,6 +43,30 @@ header #infoUser button {
   border-style: none;
   margin-top: 4px;
   margin-bottom: 4px;
+}
+
+header #infoEtat {
+  width: 200px;
+  position: absolute;
+  background-color: white;
+  color: black;
+  text-align: left;
+  margin-top: 16px;
+  top: 144px;
+  margin-left: 12px;
+  padding: 2px;
+  border-radius: 5px;
+  font-size: 16px;
+  box-shadow: 0px 1px 0px 0px grey;
+  text-align: center;
+}
+
+header #infoEtat p {
+  margin: 6px;
+}
+
+header #infoEtat p img {
+  width: 24px;
 }
 
 header #météo {
@@ -111,7 +136,7 @@ main {
 main img:first-of-type {
   position: absolute;
   top: 16px;
-  left: 200px;
+  left: 230px;
   width: 500px;
   border-radius: 8px;
 }
