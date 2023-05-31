@@ -148,6 +148,13 @@ main #toDo {
 main #toDo h2 {
   margin-left: 16px;
   margin-bottom: 8px;
+  display: flex;
+  align-items: center;
+}
+
+main #toDo h2 img {
+  width: 50px;
+  margin-left: 10px;
 }
 
 main #toDo ul {
@@ -307,6 +314,7 @@ main #info div.etatPotager img {
 
 main #info div.etatPotager button {
   border-radius: 4px;
+  display: block;
   border-style: none;
   padding: 4px;
   transition: all 0.2s ease-in-out;
@@ -316,6 +324,7 @@ main #info div.etatPotager button {
 }
 
 main #info div.etatPotager button#arroser {
+  text-align: center;
   background-color: aqua;
 }
 
@@ -324,6 +333,7 @@ main #info div.etatPotager button#arroser:hover {
 }
 
 main #info div.etatPotager button#supprimer {
+  text-align: center;
   color: white;
   background-color: rgb(231, 70, 56);
 }

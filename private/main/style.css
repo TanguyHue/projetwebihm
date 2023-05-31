@@ -133,6 +133,15 @@ main {
   margin-right: 4px;
 }
 
+main #titre {
+  position: absolute;
+  background-color: white;
+  padding: 8px;
+  border-radius: 5px;
+  top: 30px;
+  left: 245;
+}
+
 main img:first-of-type {
   position: absolute;
   top: 16px;
@@ -227,6 +236,13 @@ main #toDo {
 main #toDo h2 {
   margin-left: 16px;
   margin-bottom: 8px;
+  display: inline-block;
+}
+
+main #toDo h2 img {
+  width: 50px;
+  left: 130px;
+  top: 10px;
 }
 
 main #toDo ul {

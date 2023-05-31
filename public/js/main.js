@@ -507,19 +507,19 @@ page('monpotager', async function () {
 
                             const titre = document.getElementById('infoTitre');
                             const infoDernArrosage = document.getElementById('infoDernArrosage');
-                            infoDernArrosage.style.display = "flex";
+                            infoDernArrosage.style.display = "block";
                             const infoProchArrosage = document.getElementById('infoProchArrosage');
-                            infoProchArrosage.style.display = "flex";
+                            infoProchArrosage.style.display = "block";
                             const infoIntervalle = document.getElementById('infoIntervalle');
-                            infoIntervalle.style.display = "flex";
+                            infoIntervalle.style.display = "block";
                             const infoEngrais = document.getElementById('infoEngrais');
-                            infoEngrais.style.display = "flex";
+                            infoEngrais.style.display = "block";
                             const infoConseil = document.getElementById('infoConseil');
-                            infoConseil.style.display = "flex";
+                            infoConseil.style.display = "block";
                             const arroser = document.getElementById('arroser');
-                            arroser.style.display = "flex";
+                            arroser.style.display = "block";
                             const supprimer = document.getElementById('supprimer');
-                            supprimer.style.display = "flex";
+                            supprimer.style.display = "block";
 
                             titre.innerHTML = plantes[this.numero].nom;
                             let date = potagers[this.numero].date_dernier_arrosage.split('-');

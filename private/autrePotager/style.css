@@ -149,6 +149,13 @@ main #toDo {
 main #toDo h2 {
   margin-left: 16px;
   margin-bottom: 8px;
+  display: flex;
+  align-items: center;
+}
+
+main #toDo h2 img {
+  width: 50px;
+  margin-left: 10px;
 }
 
 main #toDo ul {
@@ -307,6 +314,8 @@ main #info div.etatPotager img {
 }
 
 main #info div.etatPotager button {
+  text-align: center;
+  display: block;
   background-color: aqua;
   border-radius: 4px;
   border-style: none;
