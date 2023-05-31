@@ -1151,7 +1151,7 @@ page('agenda', async function () {
 
             // Construction du calendrier
             const calendar = document.getElementById('calendar');
-            const daysOfWeek = ['', 'Lun', 'Mar', 'Mer', 'Jeu', 'Ven', 'Sam', 'Dim'];
+            const daysOfWeek = ['Lun', 'Mar', 'Mer', 'Jeu', 'Ven', 'Sam', 'Dim'];
             const headerRow = document.createElement('tr');
 
             // Construction des colonnes (jours)
@@ -1169,28 +1169,26 @@ page('agenda', async function () {
             table.appendChild(tableHeader);
             table.setAttribute('class', 'table table-striped-columns');
 
-            // Création des lignes (heures de 8 à 22)
+            // Création de la ligne
             const tableBody = document.createElement('tbody');
 
-            for (var i = 8; i <= 22; i++) {
-                // Ligne de la table
-                const new_row = document.createElement('tr');
+            // Ligne de la table
+            const newRow = document.createElement('tr');
 
-                // Heure correspondant à la ligne
-                const hour = document.createElement('th');
-                hour.setAttribute('scope', 'row');
-                const hourText = document.createTextNode(i);
-                hour.appendChild(hourText);
-                new_row.appendChild(hour);
+            // Label de la ligne
+            const labelRow = document.createElement('th');
+            labelRow.setAttribute('scope', 'row');
+            const labelRowText = document.createTextNode('Tâches');
+            labelRow.appendChild(labelRowText);
+            newRow.appendChild(labelRow);
 
-                // Créneaux horaires de chaque ligne
-                for (var j = 1; j < daysOfWeek.length; j++) {
-                    const time_slot = document.createElement('td');
-                    new_row.appendChild(time_slot);
-                }
-
-                tableBody.appendChild(new_row)
+            // Créneaux de chaque ligne
+            for (var j = 1; j < daysOfWeek.length; j++) {
+                const time_slot = document.createElement('td');
+                newRow.appendChild(time_slot);
             }
+
+            tableBody.appendChild(newRow);
 
             // Ajout des cases "notes"
             const memo_row = document.createElement('tr');
