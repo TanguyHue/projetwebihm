@@ -63,8 +63,8 @@ main #general button {
 
 #calendar table{
   width: 100%;
+  table-layout: fixed;
 }
-
 
 main #newTask{
   margin: 10px auto;

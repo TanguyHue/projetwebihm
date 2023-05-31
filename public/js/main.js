@@ -1142,7 +1142,7 @@ page('agenda', async function () {
             const endOfWeek = new Date(startOfWeek.getTime() + 6 * 24 * 60 * 60 * 1000); // Ajoute 6 jours à la date de début de la semaine
 
             // Vérifie si la date donnée est comprise entre la date de début et de fin de la semaine courante
-            return currentDate >= startOfWeek && currentDate <= endOfWeek;
+            return date >= startOfWeek && date <= endOfWeek;
         }
 
         async function loadSchedule() {
@@ -1226,8 +1226,9 @@ page('agenda', async function () {
                                     const taskDate = new Date(task.date);
                                     if (isDateInCurrentWeek(taskDate)) {
                                         const taskCell = document.querySelector(`html body main #calendar table tbody tr #jour${taskDate.getDay()+1}`);
-                                        const taskLabel = document.createTextNode(task.notes);
+                                        const taskLabel = document.createTextNode(task.titre);
                                         const aTask = document.createElement('p');
+                                        aTask.setAttribute('class', 'task');
                                         aTask.appendChild(taskLabel);
                                         taskCell.appendChild(aTask);
                                     }
