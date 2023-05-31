@@ -135,11 +135,26 @@ main {
 
 main #titre {
   position: absolute;
-  background-color: white;
+  background: rgb(0,0,0,0.2);
   padding: 8px;
   border-radius: 5px;
   top: 30px;
-  left: 245;
+  left: 245px;
+  cursor: url(images/plante.cur) 24 24, auto;
+}
+
+main #titre h1 {
+  color: white;
+  font-weight: bold;
+  font-family: cursive;
+  display: flex;
+  align-items: center;
+}
+
+main #titre h1 img {
+  width: 24px;
+  position: inherit;
+  margin-left: 8px;
 }
 
 main img:first-of-type {
@@ -152,19 +167,6 @@ main img:first-of-type {
 
 main img:first-of-type:hover {
   cursor: url(images/plante.cur) 24 24, auto;
-  animation: pulse 1s;
-}
-
-@keyframes pulse {
-
-  0%,
-  100% {
-    transform: scale(1);
-  }
-
-  50% {
-    transform: scale(0.8);
-  }
 }
 
 @media screen and (max-width: 1220px) {
