@@ -1151,7 +1151,7 @@ page('agenda', async function () {
 
             // Construction du calendrier
             const calendar = document.getElementById('calendar');
-            const daysOfWeek = ['Lun', 'Mar', 'Mer', 'Jeu', 'Ven', 'Sam', 'Dim'];
+            const daysOfWeek = ['', 'Lun', 'Mar', 'Mer', 'Jeu', 'Ven', 'Sam', 'Dim'];
             const headerRow = document.createElement('tr');
 
             // Construction des colonnes (jours)
@@ -1185,6 +1185,7 @@ page('agenda', async function () {
             // Créneaux de chaque ligne
             for (var j = 1; j < daysOfWeek.length; j++) {
                 const time_slot = document.createElement('td');
+                time_slot.setAttribute('id', 'jour' + j.toString());
                 newRow.appendChild(time_slot);
             }
 
@@ -1222,18 +1223,17 @@ page('agenda', async function () {
 
                                 // Ajout des tâches dans la page
                                 for (let task of tasks) {
-                                    const taskDate = new Date(task.Date);
+                                    const taskDate = new Date(task.date);
                                     if (isDateInCurrentWeek(taskDate)) {
-                                        console.log('Oui !');
+                                        const taskCell = document.querySelector(`html body main #calendar table tbody tr #jour${taskDate.getDay()+1}`);
+                                        const taskLabel = document.createTextNode(task.notes);
+                                        const aTask = document.createElement('p');
+                                        aTask.appendChild(taskLabel);
+                                        taskCell.appendChild(aTask);
                                     }
                                 }
-                                const main = document.querySelector('main');
 
-                                const taskLabel = document.createTextNode(tasks[0].notes);
-                                const aTask = document.createElement('p');
-                                aTask.appendChild(taskLabel);
-                                main.appendChild(aTask);
-
+                                
 
                             });
                     });
