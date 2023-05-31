@@ -227,6 +227,16 @@ main #toDo ul li input.assigné:hover {
   background-color: rgb(229, 226, 190);
 }
 
+main #toDo ul li input.assigné:hover {
+  background-color: rgb(229, 226, 190);
+}
+
+main #toDo ul li input.dejaassigne {
+  background-color: rgb(242, 153, 58);
+  cursor: default;
+  color: #f6f6f6;
+}
+
 main #toDo ul li input.nonassigné {
   background-color: #e2e2e4;
 }

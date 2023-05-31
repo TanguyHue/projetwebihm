@@ -137,11 +137,23 @@ async function loadTaches(type) {
             bouton.previousRealisateur = taches[i].idRealisateur;
             console.log("Realisateur précédent : " + bouton.previousRealisateur);
 
+            let users;
+            await fetch('http://127.0.0.1:8080/api/user/liste')
+                    .then(response => response.json())
+                    .then(data => {
+                        users = data;
+                    })
+                    .catch(err => console.error(err));
+
             if (bouton.previousRealisateur == context.user.id) {
                 bouton.className = "assigné";
                 bouton.checked = true;
                 bouton.value = "Assigné";
                 bouton.previousRealisateur = '-1';
+            } else if (bouton.previousRealisateur != -1 && bouton.previousRealisateur != null) {
+                bouton.className = "dejaassigne";
+                bouton.disabled = true;
+                bouton.value = users.find(user => user.id == bouton.previousRealisateur).prenom + ' ' + users.find(user => user.id == bouton.previousRealisateur).nom;
             } else {
                 bouton.className = "nonassigné";
                 bouton.checked = false;
@@ -840,6 +852,7 @@ page('autrePotager', async function () {
                 loadTaches("visit");
 
                 const tablePotager = document.getElementById('potager').querySelector('tbody');
+                tablePotager.innerHTML = "";
 
 
                 for (var i = 0; i < taillePotager.x; i++) {
@@ -1627,7 +1640,7 @@ page('/', async function () {
                         'Content-Type': 'application/x-www-form-urlencoded; charset=utf-8',
                     },
                     method: 'POST',
-                    body: 'username=' + encodeURIComponent(username) + '&password=' + encodeURIComponent(password),
+                    body: `username=${encodeURIComponent(username)}&password=${encodeURIComponent(password)}`,
                 });
             }
             catch (e) {

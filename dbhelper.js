@@ -40,7 +40,7 @@ const all = sql => new Promise(function (resolve, reject) {
 
 module.exports.users = {
     byUsername: (username) => get(`
-        select * from user where adresse_mail = '${username}';
+        select * from user where adresse_mail = "${username}";
     `),
     a: Promise.resolve({
         id: 0,
@@ -51,7 +51,7 @@ module.exports.users = {
 
     addUser: (adresse_mail, password, nom, prenom, departement, langue, role, etat) => get(`
               insert into user (adresse_mail, password, nom, prenom, departement, langue, role, etat)
-                values ('${adresse_mail}', '${password}', '${nom}', '${prenom}', '${departement}', '${langue}', '${role}', '${etat});
+                values ("${adresse_mail}", "${password}", "${nom}", "${prenom}", "${departement}", "${langue}", "${role}", '${etat}');
           `),
 
     changeEtat: (id, etat) => get(`
