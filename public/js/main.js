@@ -139,11 +139,11 @@ async function loadTaches(type) {
 
             let users;
             await fetch('http://127.0.0.1:8080/api/user/liste')
-                    .then(response => response.json())
-                    .then(data => {
-                        users = data;
-                    })
-                    .catch(err => console.error(err));
+                .then(response => response.json())
+                .then(data => {
+                    users = data;
+                })
+                .catch(err => console.error(err));
 
             if (bouton.previousRealisateur == context.user.id) {
                 bouton.className = "assigné";
@@ -360,11 +360,11 @@ page('main', async function () {
 
             let users;
             await fetch('http://127.0.0.1:8080/api/user/liste')
-                    .then(response => response.json())
-                    .then(data => {
-                        users = data;
-                    })
-                    .catch(err => console.error(err));
+                .then(response => response.json())
+                .then(data => {
+                    users = data;
+                })
+                .catch(err => console.error(err));
 
             const user = users.find(user => user.id == context.user.id);
 
@@ -846,8 +846,13 @@ page('autrePotager', async function () {
 
                     selectProprietaire.addEventListener('change', async (event) => {
                         context.user.visit = Number(event.target.value);
+                        const titrePotager = document.getElementById('titrePotager');
+                        titrePotager.innerHTML = 'Potager de ' + selectProprietaire[selectProprietaire.selectedIndex].text + '<img src="private/monPotager/images/uwu.png" alt="uwu">';
                         newPotager();
                     });
+
+                    const titrePotager = document.getElementById('titrePotager');
+                    titrePotager.innerHTML = 'Potager de ' + selectProprietaire[selectProprietaire.selectedIndex].text + '<img src="private/monPotager/images/uwu.png" alt="uwu">';
 
                     newPotager();
                 }
@@ -861,9 +866,6 @@ page('autrePotager', async function () {
                     page('/main');
                 }
                 );
-
-                const titrePotager = document.getElementById('titrePotager');
-                titrePotager.innerHTML = 'Potager de ' + userVisit.prenom + ' ' + userVisit.nom + '<img src="private/monPotager/images/uwu.png" alt="uwu">';
 
                 loadTaches("visit");
 
@@ -1013,7 +1015,7 @@ page('autrePotager', async function () {
                     const infoEngrais = document.getElementById('infoEngrais');
                     const infoConseil = document.getElementById('infoConseil');
                     const arroser = document.getElementById('arroser');
-    
+
                     titre.innerHTML = "Aucune plante sélectionnée";
                     checkArrosé.innerHTML = "Sélectionnez une plante pour voir ses informations";
                     infoDernArrosage.style.display = "none";
@@ -1031,7 +1033,7 @@ page('autrePotager', async function () {
                     const infoEngrais = document.getElementById('infoEngrais');
                     const infoConseil = document.getElementById('infoConseil');
                     const arroser = document.getElementById('arroser');
-    
+
                     titre.innerHTML = "Aucune plante";
                     checkArrosé.innerHTML = "Ajouter une plante en cliquant sur le bouton + à droite";
                     infoDernArrosage.style.display = "none";
@@ -1349,7 +1351,7 @@ page('ajoutplante', async function () {
             const selectIcone = document.getElementById('icone');
             const imageIcone = document.getElementById('imageIcone');
             selectIcone.addEventListener('change', () => {
-                imageIcone.src = "private/monPotager/images/type/" + selectIcone.selectedIndex +".png";
+                imageIcone.src = "private/monPotager/images/type/" + selectIcone.selectedIndex + ".png";
             }
             );
 
@@ -1384,7 +1386,7 @@ page('ajoutplante', async function () {
                             document.getElementById('nom').disabled = false;
                             selectIcone.getElementsByTagName("option")[0].selected = 'selected';
                             selectIcone.disabled = false;
-                            imageIcone.src = "private/monPotager/images/type/" + selectIcone.selectedIndex +".png";
+                            imageIcone.src = "private/monPotager/images/type/" + selectIcone.selectedIndex + ".png";
                             document.getElementById('intervalleArrosage').value = "";
                             document.getElementById('intervalleArrosage').disabled = false;
                             document.getElementById('engrais').value = "";
@@ -1398,7 +1400,7 @@ page('ajoutplante', async function () {
                             console.log(Number(dataPlante[selectPlante.selectedIndex - 1].img));
                             selectIcone.getElementsByTagName("option")[Number(dataPlante[selectPlante.selectedIndex - 1].img)].selected = 'selected';
                             selectIcone.disabled = true;
-                            imageIcone.src = "private/monPotager/images/type/" + selectIcone.selectedIndex +".png";
+                            imageIcone.src = "private/monPotager/images/type/" + selectIcone.selectedIndex + ".png";
                             document.getElementById('intervalleArrosage').value = Number(dataPlante[selectPlante.selectedIndex - 1].intervalle_arrosage);
                             document.getElementById('intervalleArrosage').disabled = true;
                             document.getElementById('engrais').value = dataPlante[selectPlante.selectedIndex - 1].engrais_conseille;
