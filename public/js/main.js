@@ -54,7 +54,6 @@ const loadPartials = (() => {
 
 async function loadTaches(type) {
     const ulToDo = document.getElementById('toDo').querySelector('ul');
-    console.log(ulToDo);
     try {
         let result;
         if (type == "main") {
@@ -65,11 +64,9 @@ async function loadTaches(type) {
             result = await fetch('http://127.0.0.1:8080/api/taches/' + context.user.id);
         }
         const taches = await result.json();
-        console.log(taches);
         let li;
         let ulListe = [];
         for (var i = 0; i < taches.length; i++) {
-            console.log(taches[i]);
             li = document.createElement('li');
             const form = document.createElement('form');
             li.appendChild(form);
@@ -135,7 +132,6 @@ async function loadTaches(type) {
             bouton.value = "Je m'assigne cette tâche";
             bouton.idTache = taches[i].id;
             bouton.previousRealisateur = taches[i].idRealisateur;
-            console.log("Realisateur précédent : " + bouton.previousRealisateur);
 
             if (bouton.previousRealisateur == context.user.id) {
                 bouton.className = "assigné";
@@ -993,7 +989,7 @@ page('autrePotager', async function () {
                     const infoEngrais = document.getElementById('infoEngrais');
                     const infoConseil = document.getElementById('infoConseil');
                     const arroser = document.getElementById('arroser');
-    
+
                     titre.innerHTML = "Aucune plante sélectionnée";
                     checkArrosé.innerHTML = "Sélectionnez une plante pour voir ses informations";
                     infoDernArrosage.style.display = "none";
@@ -1011,7 +1007,7 @@ page('autrePotager', async function () {
                     const infoEngrais = document.getElementById('infoEngrais');
                     const infoConseil = document.getElementById('infoConseil');
                     const arroser = document.getElementById('arroser');
-    
+
                     titre.innerHTML = "Aucune plante";
                     checkArrosé.innerHTML = "Ajouter une plante en cliquant sur le bouton + à droite";
                     infoDernArrosage.style.display = "none";
@@ -1137,6 +1133,18 @@ page('agenda', async function () {
     }
     else {
         context.previous = 'agenda';
+
+        function isDateInCurrentWeek(date) {
+            const currentDate = new Date(); // Obtient la date courante
+            const firstDayOfWeek = currentDate.getDate() - currentDate.getDay() + (currentDate.getDay() === 0 ? -6 : 1); // Obtient le premier jour de la semaine courante (lundi)
+
+            const startOfWeek = new Date(currentDate.getFullYear(), currentDate.getMonth(), firstDayOfWeek);
+            const endOfWeek = new Date(startOfWeek.getTime() + 6 * 24 * 60 * 60 * 1000); // Ajoute 6 jours à la date de début de la semaine
+
+            // Vérifie si la date donnée est comprise entre la date de début et de fin de la semaine courante
+            return currentDate >= startOfWeek && currentDate <= endOfWeek;
+        }
+
         async function loadSchedule() {
             await renderTemplate(templates('private/agenda/agenda.mustache'));
             console.log('Construction du calendrier.');
@@ -1204,8 +1212,38 @@ page('agenda', async function () {
             const boutonNewTask = document.getElementById('newTask');
             boutonNewTask.addEventListener('click', () => {
                 page('/ajouttache');
+            });
+
+            // Récupération des tâches de l'api
+            try {
+                fetch('http://127.0.0.1:8080/api/taches/' + context.user.id)
+                    .then(response => {
+                        response.json()
+                            .then(tasks => {
+                                console.log(tasks);
+
+                                // Ajout des tâches dans la page
+                                for (let task of tasks) {
+                                    const taskDate = new Date(task.Date);
+                                    if (isDateInCurrentWeek(taskDate)) {
+                                        console.log('Oui !');
+                                    }
+                                }
+                                const main = document.querySelector('main');
+
+                                const taskLabel = document.createTextNode(tasks[0].notes);
+                                const aTask = document.createElement('p');
+                                aTask.appendChild(taskLabel);
+                                main.appendChild(aTask);
+
+
+                            });
+                    });
             }
-            );
+            catch (error) {
+                console.log('Impossible de charger les tâches : ' + error);
+            }
+
         }
         loadSchedule();
     }
