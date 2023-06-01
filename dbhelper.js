@@ -61,6 +61,10 @@ module.exports.users = {
     listeUsers: () => all(`
                 select id, nom, prenom, etat from user;
             `),
+    
+    listeUsersById: id => all(`
+                select id, nom, prenom, etat from user where id = ${id | 0};
+            `),
 };
 
 
