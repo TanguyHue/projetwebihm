@@ -1186,6 +1186,10 @@ page('agenda', async function () {
             for (var j = 1; j < daysOfWeek.length; j++) {
                 const time_slot = document.createElement('td');
                 time_slot.setAttribute('id', 'jour' + j.toString());
+
+                const ulist = document.createElement('ul');
+                time_slot.appendChild(ulist);
+                
                 newRow.appendChild(time_slot);
             }
 
@@ -1221,21 +1225,26 @@ page('agenda', async function () {
                             .then(tasks => {
                                 console.log(tasks);
 
-                                // Ajout des tâches dans la page
+                                // Ajout des tâches liées à un utilisateur dans la page
                                 for (let task of tasks) {
                                     const taskDate = new Date(task.date);
                                     if (isDateInCurrentWeek(taskDate)) {
-                                        const taskCell = document.querySelector(`html body main #calendar table tbody tr #jour${taskDate.getDay()+1}`);
+                                        const taskCell = document.querySelector(`html body main #calendar table tbody tr #jour${taskDate.getDay()} ul`);
                                         const taskLabel = document.createTextNode(task.titre);
-                                        const aTask = document.createElement('p');
-                                        aTask.setAttribute('class', 'task');
-                                        aTask.appendChild(taskLabel);
-                                        taskCell.appendChild(aTask);
+                                        const taskLink = document.createElement('a');
+                                        taskLink.setAttribute('class', 'task');
+
+                                        // Couleur de fond de la tâche : vert foncé si elle nous est assigné, sinon vert clair
+                                        if (task.idRealisateur === context.user.id){
+                                            taskLink.style.backgroundColor = '#0fa80f';
+                                        }
+                                        else {
+                                            taskLink.style.backgroundColor = 'lightgreen';
+                                        }
+                                        taskLink.appendChild(taskLabel);
+                                        taskCell.appendChild(taskLink);
                                     }
                                 }
-
-                                
-
                             });
                     });
             }

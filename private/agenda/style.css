@@ -19,7 +19,7 @@ button {
 header h1 {
   padding-top: 30px;
   text-align: center;
-  padding-bottom: 30px;
+  padding-bottom: 40px;
 }
 
 header #back{
@@ -58,12 +58,39 @@ main #general button {
 /* Calendrier */
 #calendar{
   width: 100%;
-  padding: 0 20%;
+  padding: 0 10%;
 }
 
 #calendar table{
   width: 100%;
   table-layout: fixed;
+}
+
+#calendar td ul{
+  list-style: none;
+  padding: 0%;
+}
+
+#calendar .task{
+  background-color: green;
+  margin: 3px;
+  font-size: small;
+  display: block;
+  text-align: center;
+  padding: 3px;
+  border-radius: 5px;
+}
+
+main p{
+  padding-left: 10%;
+}
+
+main #myTasks{
+  color: #0fa80f;
+}
+
+main #myGardenTasks{
+  color: lightgreen;
 }
 
 main #newTask{
