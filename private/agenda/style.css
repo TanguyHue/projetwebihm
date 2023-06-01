@@ -24,7 +24,7 @@ header h1 {
 
 header #back{
   position: absolute;
-  top: 10%;
+  top: 20px;
   right: 10%;
   width: 85px;
   height: 85px;
@@ -72,13 +72,15 @@ main #general button {
 }
 
 #calendar .task{
-  background-color: green;
   margin: 3px;
   font-size: small;
   display: block;
   text-align: center;
   padding: 3px;
   border-radius: 5px;
+  text-decoration: none;
+  color: black;
+  cursor: pointer;
 }
 
 main p{
@@ -95,4 +97,15 @@ main #myGardenTasks{
 
 main #newTask{
   margin: 10px auto;
+}
+
+.popupTache{
+  width: 500px;
+  background-color: white;
+  position: absolute;
+  text-align: center;
+  border: solid 1px black;
+  border-radius: 5px;
+  padding: 10px;
+  top: 10%;
 }

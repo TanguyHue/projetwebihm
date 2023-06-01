@@ -1134,6 +1134,7 @@ page('agenda', async function () {
     else {
         context.previous = 'agenda';
 
+        // Renvoie true si la date est dans la semaine courante
         function isDateInCurrentWeek(date) {
             const currentDate = new Date(); // Obtient la date courante
             const firstDayOfWeek = currentDate.getDate() - currentDate.getDay() + (currentDate.getDay() === 0 ? -6 : 1); // Obtient le premier jour de la semaine courante (lundi)
@@ -1143,6 +1144,73 @@ page('agenda', async function () {
 
             // Vérifie si la date donnée est comprise entre la date de début et de fin de la semaine courante
             return date >= startOfWeek && date <= endOfWeek;
+        }
+
+        // Affiche la popup de détails d'une tâche
+        function showTaskDetails(task) {
+            closeTaskDetails();
+            const popup = document.createElement('div');
+            popup.setAttribute('class', 'popupTache');
+
+
+            // Nom de la tâche
+            const popupTaskName = document.createElement('h2');
+            popupTaskName.textContent = task.titre;
+
+            // Date de la tâche
+            const popupTaskDate = document.createElement('p');
+            popupTaskDate.textContent = 'Date : ' + task.date;
+
+            // Créateur de la tâche
+            const popupTaskCreator = document.createElement('p');
+            // ATTENTION ! Ne fonctionne que si l'utilisateur connecté est celui qui a créé la tâche
+            popupTaskCreator.textContent = 'Créée par : ' + context.user.nom + " " + context.user.prenom; 
+
+            // Personne à qui la tâche est assignée
+            const popupTaskAssignee = document.createElement('p');
+            if (task.idRealisateur === -1) {
+                popupTaskAssignee.textContent = 'Non assignée';
+            }
+            else {
+                // ATTENTION ! Ne fonctionne que si l'utilisateur connecté est celui qui à qui est assignée la tâche
+                popupTaskAssignee.textContent = 'Assigné à : ' + task.idRealisateur;
+            }
+
+            // Description de la tâche
+            const popupTaskDescription = document.createElement('p');
+            if (task.description === undefined || task.description === null || task.description === '') {
+                popupTaskDescription.textContent = 'Pas de description';
+            }
+            else {
+                popupTaskDescription.textContent = 'Description : ' + task.description;
+            }
+
+            // Bouton de fermeture de la popup
+            const popupCloseButton = document.createElement('button');
+            popupCloseButton.textContent = 'Fermer';
+            popupCloseButton.addEventListener('click', () => closeTaskDetails());
+
+
+            // Ajout à l'élément parent
+            popup.appendChild(popupTaskName);
+            popup.appendChild(popupTaskDate);
+            popup.appendChild(popupTaskCreator);
+            popup.appendChild(popupTaskAssignee);
+            popup.appendChild(popupTaskDescription);
+            popup.appendChild(popupCloseButton);
+
+            document.body.appendChild(popup);
+
+
+            // Positionnement de la popup
+            const html = document.querySelector('html');
+            popup.style.left = `${html.clientWidth / 2 - popup.clientWidth / 2}px`;
+        }
+
+        function closeTaskDetails() {
+            const popup = document.querySelector('.popupTache');
+            if (popup !== null)
+                popup.parentNode.removeChild(popup);
         }
 
         async function loadSchedule() {
@@ -1233,6 +1301,7 @@ page('agenda', async function () {
                                         const taskLabel = document.createTextNode(task.titre);
                                         const taskLink = document.createElement('a');
                                         taskLink.setAttribute('class', 'task');
+                                        taskLink.addEventListener('click', () => showTaskDetails(task));
 
                                         // Couleur de fond de la tâche : vert foncé si elle nous est assigné, sinon vert clair
                                         if (task.idRealisateur === context.user.id){
