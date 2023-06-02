@@ -19,12 +19,12 @@ button {
 header h1 {
   padding-top: 30px;
   text-align: center;
-  padding-bottom: 30px;
+  padding-bottom: 40px;
 }
 
 header #back{
   position: absolute;
-  top: 10%;
+  top: 20px;
   right: 10%;
   width: 85px;
   height: 85px;
@@ -58,14 +58,54 @@ main #general button {
 /* Calendrier */
 #calendar{
   width: 100%;
-  padding: 0 20%;
+  padding: 0 10%;
 }
 
 #calendar table{
   width: 100%;
+  table-layout: fixed;
 }
 
+#calendar td ul{
+  list-style: none;
+  padding: 0%;
+}
+
+#calendar .task{
+  margin: 3px;
+  font-size: small;
+  display: block;
+  text-align: center;
+  padding: 3px;
+  border-radius: 5px;
+  text-decoration: none;
+  color: black;
+  cursor: pointer;
+}
+
+main p{
+  padding-left: 10%;
+}
+
+main #myTasks{
+  color: #0fa80f;
+}
+
+main #myGardenTasks{
+  color: lightgreen;
+}
 
 main #newTask{
   margin: 10px auto;
+}
+
+.popupTache{
+  width: 500px;
+  background-color: white;
+  position: absolute;
+  text-align: center;
+  border: solid 1px black;
+  border-radius: 5px;
+  padding: 10px;
+  top: 10%;
 }
