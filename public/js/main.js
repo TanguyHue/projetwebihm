@@ -1156,6 +1156,7 @@ page('agenda', async function () {
             // Nom de la tâche
             const popupTaskName = document.createElement('h2');
             popupTaskName.textContent = task.titre;
+            popupTaskName.setAttribute('class', 'h2');
 
             // Date de la tâche
             const popupTaskDate = document.createElement('p');
@@ -1163,10 +1164,8 @@ page('agenda', async function () {
 
             // Créateur de la tâche
             const popupTaskCreator = document.createElement('p');
-            console.log('TEST : ' + task.idCreateur);
             fetch('http://127.0.0.1:8080/api/user/liste/' + task.idCreateur)
                 .then(response => {
-                    console.log('TEST : ' + response);
                     response.json().then(users => {
                         const userCreator = users[0];
                         popupTaskCreator.textContent = 'Créée par : ' + userCreator.nom + ' ' + userCreator.prenom;
@@ -1179,14 +1178,12 @@ page('agenda', async function () {
 
             // Personne à qui la tâche est assignée
             const popupTaskAssignee = document.createElement('p');
-            console.log('TEST : ' + task.idRealisateur);
             if (task.idRealisateur === -1) {
                 popupTaskAssignee.textContent = 'Non assignée';
             }
             else {
                 fetch('http://127.0.0.1:8080/api/user/liste/' + task.idRealisateur)
                     .then(response => {
-                        console.log('TEST : ' + response);
                         response.json().then(users => {
                             const userAssignee = users[0];
                             popupTaskAssignee.textContent = 'Assigné à : ' + userAssignee.nom + ' ' + userAssignee.prenom;
@@ -1210,6 +1207,7 @@ page('agenda', async function () {
             // Bouton de fermeture de la popup
             const popupCloseButton = document.createElement('button');
             popupCloseButton.textContent = 'Fermer';
+            popupCloseButton.setAttribute('class', 'btn btn-primary');
             popupCloseButton.addEventListener('click', () => closeTaskDetails());
 
 
