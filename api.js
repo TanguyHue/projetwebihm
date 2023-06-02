@@ -236,6 +236,18 @@ module.exports = (passport) => {
         );
     });
 
+    app.get('/user/liste/:id', function (req, res, next) {
+        dbHelper.users.listeUsersById(req.params.id).then(
+            users => {
+                res.set('Content-type', 'application/json');
+                res.send(JSON.stringify(users));
+            },
+            err => {
+                next(err);
+            },
+        );
+    });
+
     app.post('/taches/add', function (req, res, next) {
         const idCreateur = req.body.idCreateur; // Récupérer l'id du créateur de la tâche à partir du corps de la requête
         const idRealisateur = req.body.idRealisateur; // Récupérer l'id du réalisateur de la tâche à partir du corps de la requête

@@ -40,7 +40,7 @@ const all = sql => new Promise(function (resolve, reject) {
 
 module.exports.users = {
     byUsername: (username) => get(`
-        select * from user where adresse_mail = '${username}';
+        select * from user where adresse_mail = "${username}";
     `),
     a: Promise.resolve({
         id: 0,
@@ -51,7 +51,7 @@ module.exports.users = {
 
     addUser: (adresse_mail, password, nom, prenom, departement, langue, role, etat) => get(`
               insert into user (adresse_mail, password, nom, prenom, departement, langue, role, etat)
-                values ('${adresse_mail}', '${password}', '${nom}', '${prenom}', '${departement}', '${langue}', '${role}', '${etat});
+                values ("${adresse_mail}", "${password}", "${nom}", "${prenom}", "${departement}", "${langue}", "${role}", '${etat}');
           `),
 
     changeEtat: (id, etat) => get(`
@@ -60,6 +60,10 @@ module.exports.users = {
 
     listeUsers: () => all(`
                 select id, nom, prenom, etat from user;
+            `),
+    
+    listeUsersById: id => all(`
+                select id, nom, prenom, etat from user where id = ${id | 0};
             `),
 };
 
@@ -135,7 +139,7 @@ select * from PlanteData p, PlantePotager q where p.id = q.idPlanteData and q.x 
 
     add: (nom, intervalle_arrosage, conseils, engrais_conseille, img) => get(`
         insert into PlanteData(nom, intervalle_arrosage, conseils, engrais_conseille, img)
-values('${nom}', '${intervalle_arrosage}', '${conseils}', '${engrais_conseille}', '${img}');
+values("${nom}", '${intervalle_arrosage}', "${conseils}", "${engrais_conseille}", '${img}');
 `),
 };
 
@@ -182,7 +186,7 @@ select * from taches where idUser = ${ id | 0 } and etat = '0';
 
     addTache: (idCreateur, idRealisateur, titre, date, notes) => get(`
               insert into taches(idCreateur, idRealisateur, titre, date, notes, etat)
-values(${ idCreateur | 0}, ${ idRealisateur | 0}, '${titre}', '${date}', '${notes}', 0);
+values(${ idCreateur | 0}, ${ idRealisateur | 0}, "${titre}", '${date}', "${notes}", 0);
 `),
 
     suppRealisateurTache: id => ({

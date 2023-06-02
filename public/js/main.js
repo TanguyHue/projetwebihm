@@ -1163,17 +1163,39 @@ page('agenda', async function () {
 
             // Créateur de la tâche
             const popupTaskCreator = document.createElement('p');
-            // ATTENTION ! Ne fonctionne que si l'utilisateur connecté est celui qui a créé la tâche
-            popupTaskCreator.textContent = 'Créée par : ' + context.user.nom + " " + context.user.prenom; 
+            console.log('TEST : ' + task.idCreateur);
+            fetch('http://127.0.0.1:8080/api/user/liste/' + task.idCreateur)
+                .then(response => {
+                    console.log('TEST : ' + response);
+                    response.json().then(users => {
+                        const userCreator = users[0];
+                        popupTaskCreator.textContent = 'Créée par : ' + userCreator.nom + ' ' + userCreator.prenom;
+                    });
+                })
+                .catch(error => {
+                    console.log('Impossible de trouver qui a créé la tâche : ' + error);
+                    popupTaskCreator.textContent = 'Créée par : inconnu';
+                });
 
             // Personne à qui la tâche est assignée
             const popupTaskAssignee = document.createElement('p');
+            console.log('TEST : ' + task.idRealisateur);
             if (task.idRealisateur === -1) {
                 popupTaskAssignee.textContent = 'Non assignée';
             }
             else {
-                // ATTENTION ! Ne fonctionne que si l'utilisateur connecté est celui qui à qui est assignée la tâche
-                popupTaskAssignee.textContent = 'Assigné à : ' + task.idRealisateur;
+                fetch('http://127.0.0.1:8080/api/user/liste/' + task.idRealisateur)
+                    .then(response => {
+                        console.log('TEST : ' + response);
+                        response.json().then(users => {
+                            const userAssignee = users[0];
+                            popupTaskAssignee.textContent = 'Assigné à : ' + userAssignee.nom + ' ' + userAssignee.prenom;
+                        });
+                    })
+                    .catch(error => {
+                        console.log('Impossible de trouver qui a créé la tâche : ' + error);
+                        popupTaskAssignee.textContent = 'Assigné à : inconnu';
+                    });
             }
 
             // Description de la tâche
@@ -1257,7 +1279,7 @@ page('agenda', async function () {
 
                 const ulist = document.createElement('ul');
                 time_slot.appendChild(ulist);
-                
+
                 newRow.appendChild(time_slot);
             }
 
@@ -1304,7 +1326,7 @@ page('agenda', async function () {
                                         taskLink.addEventListener('click', () => showTaskDetails(task));
 
                                         // Couleur de fond de la tâche : vert foncé si elle nous est assigné, sinon vert clair
-                                        if (task.idRealisateur === context.user.id){
+                                        if (task.idRealisateur === context.user.id) {
                                             taskLink.style.backgroundColor = '#0fa80f';
                                         }
                                         else {
