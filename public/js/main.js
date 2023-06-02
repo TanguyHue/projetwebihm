@@ -190,7 +190,7 @@ async function loadTaches(type) {
 
             let deleteButton;
             console.log("Type : " + type);
-            if (type == "main" || type == "potager") {
+            if (type == "potager") {
                 console.log("Je suis rentré dans le if");
                 deleteButton = document.createElement('input');
                 deleteButton.type = "button";
@@ -230,7 +230,7 @@ async function loadTaches(type) {
             form.appendChild(ulDescription);
             form.appendChild(date);
             form.appendChild(bouton);
-            if (type == "main" || type == "potager") {
+            if (type == "potager") {
                 form.appendChild(deleteButton);
             }
 
